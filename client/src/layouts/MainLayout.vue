@@ -1,6 +1,24 @@
 <template>
     <div>
         Main
-        {{this.$store.state.userLoggedIn}}
+        <p v-if="this.$store.state.auth.userLoggedIn">Залогинен</p>
+        {{this.$store.state.auth.user}}
+        <button
+          v-if="this.$store.state.auth.userLoggedIn"
+          @click="logout"
+        >
+          Log out
+        </button>
     </div>
 </template>
+<script>
+export default {
+  name: 'main',
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+      this.$router.push('/login')
+    }
+  }
+}
+</script>

@@ -34,6 +34,10 @@ export default {
         })
         commit('SET_TOKEN', response.data.token)
         commit('SET_USER', response.data.user)
+    },
+    logout({commit}) {
+      commit('SET_TOKEN', null)
+      commit('SET_USER', null)
     }
   }
 }
