@@ -31,7 +31,8 @@ module.exports = {
                     email: email
                 }
             })
-            console.log(`User: ${user}`)
+            
+            console.log(`User hueaaaser: ${user}`)
             const isPasswordValid = await user.comparePassword(password)
             if (user && isPasswordValid) {
                     const userJSON = user.toJSON()
