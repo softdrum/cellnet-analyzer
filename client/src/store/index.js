@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './auth'
+import modem from './modem'
 import persistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
@@ -11,6 +12,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    auth
+    auth,
+    modem
   }
 })
