@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
+  <v-app>
     <component :is="layout">
       <router-view/>
     </component>
-  </div>
+  </v-app>
 </template>
 <script>
 import EmptyLayout from './layouts/EmptyLayout'

@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <Sidebar @sideClick="isShown = !isShown" :class="{sidebarOpened: isShown}"/>
+    <v-app>
+        <!-- <Sidebar @sideClick="isShown = !isShown" :class="{sidebarOpened: isShown}"/> -->
         <Navbar  :class="{fullNavbar: isShown}"/>
         <div :class="{fullNavbar: isShown}">
           <p v-if="this.$store.state.auth.userLoggedIn">Залогинен</p>
@@ -13,16 +13,36 @@
             Log out
           </button>
         </div>
-    </div>
+        <v-bottom-navigation
+          v-model="bottomNav"
+          dark
+          shift
+        >
+          <v-btn value="recent">
+            <span>Recent</span>
+            <v-icon>mdi-history</v-icon>
+          </v-btn>
+
+          <v-btn value="favorites">
+            <span>Favorites</span>
+            <v-icon>mdi-heart</v-icon>
+          </v-btn>
+
+          <v-btn value="nearby">
+            <span>Nearby</span>
+            <v-icon>mdi-map-marker</v-icon>
+          </v-btn>
+        </v-bottom-navigation>
+    </v-app>
 </template>
 <script>
-import Sidebar from '../components/Sidebar'
+// import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 export default {
   name: 'main',
   components: {
-    Sidebar,
-    Navbar,
+    // Sidebar,
+    Navbar
   },
   data: () => ({
     isShown: false
