@@ -1,7 +1,7 @@
 <template>
     <v-app>
-        <!-- <Sidebar @sideClick="isShown = !isShown" :class="{sidebarOpened: isShown}"/> -->
-        <Navbar  :class="{fullNavbar: isShown}"/>
+        <!-- <Sidebar @sideClick="isShown = !isShown" :class="{sidebarOpened: isShown}"/>
+        <Navbar />
         <div :class="{fullNavbar: isShown}">
           <p v-if="this.$store.state.auth.userLoggedIn">Залогинен</p>
           {{this.$store.state.auth.user}}
@@ -12,36 +12,25 @@
           >
             Log out
           </button>
-        </div>
-        <v-bottom-navigation
-          v-model="bottomNav"
-          dark
-          shift
-        >
-          <v-btn value="recent">
-            <span>Recent</span>
-            <v-icon>mdi-history</v-icon>
-          </v-btn>
-
-          <v-btn value="favorites">
-            <span>Favorites</span>
-            <v-icon>mdi-heart</v-icon>
-          </v-btn>
-
-          <v-btn value="nearby">
-            <span>Nearby</span>
-            <v-icon>mdi-map-marker</v-icon>
-          </v-btn>
-        </v-bottom-navigation>
+        </div> -->
+            <div class="d-flex">
+              <div class="">
+                <Sidebar @sideClick="isShown = !isShown" :class="{sidebarOpened: isShown}" />
+              </div>
+              <div class="right-content">
+                <Navbar />
+                <v-divider></v-divider>
+              </div>
+            </div>
     </v-app>
 </template>
 <script>
-// import Sidebar from '../components/Sidebar'
+import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 export default {
   name: 'main',
   components: {
-    // Sidebar,
+    Sidebar,
     Navbar
   },
   data: () => ({
@@ -73,5 +62,10 @@ export default {
   }
   .fullNavbar {
     padding-left: 260px;
+  }
+  .right-content {
+    height: 100vh;
+    width: 100%;
+    background: #051018;
   }
 </style>

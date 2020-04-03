@@ -1,12 +1,14 @@
 <template>
-  <div class="navbar">
-    Главная
-  </div>
+  <v-app-bar
+  flat
+  class="mynav"
+  >
+    Main dashboard
+  </v-app-bar>
 </template>
 <style scoped>
-  .navbar {
-    width: 100%;
-    height: 64px;
-    background: #eee;
-  }
+.mynav {
+  height: 56px !important;
+  background: #051018 !important;
+}
 </style>

@@ -1,84 +1,81 @@
 <template>
-  <v-navigation-drawer
-        v-model="drawer"
-        :color="color"
-        :mini-variant="expandOnHover"
-        :right="right"
-        :src="bg"
-        absolute
-        dark
-      >
-        <v-list
-          dense
-          nav
-          class="py-0"
+    <v-navigation-drawer
+      v-model="drawer"
+      :mini-variant="mini"
+      dark
+      floating
+      :color="'side-dark'"
+      class="sidebar"
+    >
+      <v-list-item class="px-2">
+        <v-list-item-avatar
+          @click.stop="mini = !mini"
+          style="cursor: pointer"
         >
-          <v-list-item two-line :class="miniVariant && 'px-0'">
-            <v-list-item-avatar @click.prevent="expandOnHover = !expandOnHover">
-              <img src="https://randomuser.me/api/portraits/men/81.jpg">
-            </v-list-item-avatar>
+          <v-icon>mdi-radar</v-icon>
+        </v-list-item-avatar>
 
-            <v-list-item-content>
-              <v-list-item-title>Application</v-list-item-title>
-              <v-list-item-subtitle>Subtext</v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
+        <v-list-item-title>Cellnet Anal</v-list-item-title>
 
-          <v-divider></v-divider>
+        <v-btn
+          icon
+          @click.stop="mini = true"
+        >
+          <v-icon>mdi-chevron-left</v-icon>
+        </v-btn>
+      </v-list-item>
 
+      <v-divider ></v-divider>
+      <v-list>
+        <v-list-item-group mandatory>
+          <v-list-tile
+          v-for="item in items"
+          :key="item.title"
+          link
+        >
           <v-list-item
-            v-for="item in items"
-            :key="item.title"
-            link
+            :ripple="{ class: 'blue--text' }"
+            :active-class="'side-item'"
           >
-            <v-list-item-icon>
+            <v-list-item-icon >
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
+
           </v-list-item>
-        </v-list>
-      </v-navigation-drawer>
+          </v-list-tile>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
 </template>
 <script>
-  export default {
-    data () {
+export default {
+  name: 'sidebar',
+  data () {
       return {
-        drawer: true,
         items: [
           { title: 'Dashboard', icon: 'mdi-view-dashboard' },
           { title: 'Photos', icon: 'mdi-image' },
           { title: 'About', icon: 'mdi-help-box' },
         ],
-        color: 'primary',
-        colors: [
-          'primary',
-          'blue',
-          'success',
-          'red',
-          'teal',
-        ],
-        right: false,
-        miniVariant: false,
-        expandOnHover: false,
-        background: false,
-      }
-    },
-    computed: {
-      bg () {
-        return this.background ? 'https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg' : undefined
-      },
-    },
+      mini: false
+    }
   }
+}
 </script>
-<style>
-  .sidebar {
-    position: fixed;
-    width: 64px;
-    height: 100vh;
-    background: #222;
-    transition: 0.3s ease;
-  }
+<style scoped>
+.sidebar {
+  color: tomato !important;
+}
+.side-dark {
+  background: #06141F !important;
+}
+.side-item {
+  color:#4E9F40!important;
+}
+.v-list-item--link::before { background-color: rgb(17, 36, 51);}
+.v-list-item--link:hover { background-color: #0A1924;}
 </style>
