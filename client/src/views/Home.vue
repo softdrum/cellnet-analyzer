@@ -28,7 +28,6 @@
 <script>
 // @ is an alias to /src
 // import ContentCard from '../components/ContentCard'
-
 export default {
   name: 'Home',
   components: {
