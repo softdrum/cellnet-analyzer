@@ -34,8 +34,9 @@
           link
         >
           <v-list-item
-            :ripple="{ class: 'blue--text' }"
+            :ripple="false"
             :active-class="'side-item'"
+            :to="item.link"
           >
             <v-list-item-icon >
               <v-icon>{{ item.icon }}</v-icon>
@@ -57,9 +58,9 @@ export default {
   data () {
       return {
         items: [
-          { title: 'Dashboard', icon: 'mdi-view-dashboard' },
-          { title: 'Photos', icon: 'mdi-image' },
-          { title: 'About', icon: 'mdi-help-box' },
+          { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/'},
+          { title: 'Photos', icon: 'mdi-image', link: '/database' },
+          { title: 'About', icon: 'mdi-help-box', link: '/register'},
         ],
       mini: false
     }
@@ -68,14 +69,14 @@ export default {
 </script>
 <style scoped>
 .sidebar {
-  color: tomato !important;
 }
 .side-dark {
   background: #06141F !important;
 }
 .side-item {
   color:#4E9F40!important;
+  background-color: #0A1924;
 }
-.v-list-item--link::before { background-color: rgb(17, 36, 51);}
-.v-list-item--link:hover { background-color: #0A1924;}
+.v-list-item--link::before { background-color: #0A1924;}
+.v-list-item--link:hover { background-color: #0C1B26;}
 </style>

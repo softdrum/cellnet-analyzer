@@ -11,6 +11,12 @@ const routes = [
     component: () => import('../views/Home.vue')
   }, 
   {
+    path: '/database',
+    name: 'Database',
+    meta: {layout: 'main', auth: true},
+    component: () => import('../views/Database.vue')
+  }, 
+  {
     path: '/login',
     name: 'login',
     meta: {layout: 'empty'},

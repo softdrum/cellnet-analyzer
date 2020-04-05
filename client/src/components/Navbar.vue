@@ -2,6 +2,7 @@
   <v-app-bar
   flat
   class="mynav"
+  dark
   >
     Main dashboard
   </v-app-bar>

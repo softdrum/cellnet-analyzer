@@ -3,7 +3,7 @@
     <v-container class="">
     <v-row :justify="'start'">
       <v-col
-        v-for="n in 9"
+        v-for="n in 3"
         :key="n"
         cols="12"
         xl="4"
@@ -16,7 +16,7 @@
           class="pa-2"
           outlined
           tile
-          style="height: 200px; background: #114"
+          style="height: 200px; background: #412"
         >
         </v-card>
       </v-col>
@@ -30,7 +30,7 @@
 // import ContentCard from '../components/ContentCard'
 
 export default {
-  name: 'Home',
+  name: 'Database',
   components: {
     // ContentCard
   }

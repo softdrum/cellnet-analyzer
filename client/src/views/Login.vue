@@ -4,26 +4,21 @@
       <div>
           <span>Вход</span>
           <div>
-            <input
-              id="email"
+            <v-text-field label="Email"
               type="email"
+              :rules="rules"
               v-model.trim="email"
-            >
-            <label for="email">Email</label>
-            <small></small>
+            />
           </div>
           <div>
-            <input
-              id="password"
+            <v-text-field label="Passord"
               type="password"
               v-model.trim="password"
-            >
-            <label for="password">Password</label>
-            <small></small>
+            />
           </div>
       </div>
       <div>
-        <button type="submit">Войти</button>
+        <v-btn type="submit">Войти</v-btn>
         <p><router-link to="/register">Зарегистрироваться</router-link></p>
       </div>
     </form>
@@ -34,7 +29,11 @@ export default {
   name: 'login',
   data: () => ({
     email: 'user@mail.ru',
-    password: '12345'
+    password: '12345',
+    rules: [
+        value => !!value || 'Required.',
+        value => (value && value.length >= 3) || 'Min 3 characters',
+      ]
   }),
   methods: {
     async submitHandler() {
