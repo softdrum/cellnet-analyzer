@@ -1,30 +1,40 @@
 <template>
-    <v-app>
-      <div class="d-flex">
-        <div class="">
+    <div>
+      <div class="d-flex" v-if="h > 700">
+        <div class="" >
           <Sidebar @sideClick="isShown = !isShown" :class="{sidebarOpened: isShown}"/>
         </div>
         <div class="right-content">
           <Navbar class="nav-z"/>
-          <v-divider></v-divider>
+          <v-divider dark></v-divider>
           <transition name="fade" mode="out-in">
-            <router-view style="z-index: 1;"/>
+            <router-view/>
           </transition>
         </div>
       </div>
-    </v-app>
+      <div v-else style="background: #051018;">
+        <Navbar class="nav-z"/>
+        <transition name="fade" mode="out-in">
+            <router-view/>
+          </transition>
+        <BottomNavigation />
+      </div>
+    </div>
 </template>
 <script>
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
+import BottomNavigation from '../components/BottomNavigation'
 export default {
   name: 'main',
   components: {
     Sidebar,
-    Navbar
+    Navbar,
+    BottomNavigation
   },
   data: () => ({
-    isShown: false
+    isShown: false,
+    h: window.innerWidth
   }),
   methods: {
     logout() {
@@ -43,13 +53,6 @@ export default {
 }
 </script>
 <style>
-  *{
-    margin: 0px;
-    padding: 0px;
-  }
-  .nav-z {
-    z-index: 1000;
-  }
   .sidebarOpened{
     width: 250px;
   }
@@ -57,16 +60,16 @@ export default {
     padding-left: 260px;
   }
   .right-content {
-    height: 100vh;
+    height: 100%;
     width: 100%;
     background: #051018;
   }
   .fade-enter-active, .fade-leave-active {
     transition: opacity 0.3s ease-in-out, transform 0.3s ease;
   }
- .fade-enter-active {
-   transition-delay: 0.1s;
- }
+ /* .fade-enter-active {
+   transition-delay: 0.0s;
+ } */
  .fade-enter {
    opacity: 0;
    transform: translateY(50px)

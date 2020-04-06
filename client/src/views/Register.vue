@@ -1,31 +1,55 @@
 <template>
   <div>
-    <form @submit.prevent="submitHandler">
-      <div>
-          <span>Регистрация</span>
-          <div>
-            <input
-              id="email"
-              type="email"
-              v-model.trim="email"
+    <v-container
+        style="height: 100vh !important;"
+      >
+      <v-row
+        align="center"
+        justify="center"
+      >
+        <v-col
+          sm="12"
+          md="8"
+          lg="4"
+        >
+          <v-card 
+            class="elevation-8 pa-10"
+            color="#0A1823"
+            dark
+          >
+            <v-form @submit.prevent="submitHandler"
+               class="d-flex flex-column align-center"
             >
-            <label for="email">Email</label>
-            <small></small>
-          </div>
-          <div>
-            <input
-              id="password"
-              type="password"
-              v-model.trim="password"
-            >
-            <label for="password">Password</label>
-            <small></small>
-          </div>
-      </div>
-      <div>
-        <button type="submit">Зарегистрироваться</button>
-      </div>
-    </form>
+              <v-card-text class="display-1 text-center">Регистрация</v-card-text>
+                <div class="shift">
+                  <v-text-field
+                    label="Email"
+                    type="email"
+                    name="email"
+                    :rules="rules"
+                    v-model.trim="email"
+                    prepend-icon="mdi-account"  
+                    color="#4E9F40"
+                  />
+                  <v-text-field
+                    label="Password"
+                    type="password"
+                    name="password"
+                    v-model.trim="password"
+                    prepend-icon="mdi-lock"
+                    color="#4E9F40"
+                  />
+                </div>
+              <div class="d-flex flex-column align-center">
+                <v-btn color="success" class="mb-2" width="200px" block type="submit">Зарегистрироваться</v-btn>
+                <p><router-link  class="grey--text" to="/Login">Уже зарегистрированы?</router-link></p>
+              </div>
+            </v-form>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    
   </div>
 </template>
 <script>
