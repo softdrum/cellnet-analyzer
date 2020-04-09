@@ -6,13 +6,13 @@
         </div>
         <div class="right-content">
           <Navbar class="nav-z"/>
-          <v-divider dark></v-divider>
+          <v-divider></v-divider>
           <transition name="fade" mode="out-in">
             <router-view/>
           </transition>
         </div>
       </div>
-      <div v-else style="background: #051018;">
+      <div v-else>
         <Navbar class="nav-z"/>
         <transition name="fade" mode="out-in">
             <router-view/>
@@ -62,7 +62,6 @@ export default {
   .right-content {
     height: 100%;
     width: 100%;
-    background: #051018;
   }
   .fade-enter-active, .fade-leave-active {
     transition: opacity 0.3s ease-in-out, transform 0.3s ease;

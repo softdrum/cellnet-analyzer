@@ -7,9 +7,18 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   plugins: [persistedState()],
-  state: {},
-  mutations: {},
+  state: {
+    darkTheme: true
+  },
+  mutations: {
+    SET_THEME(state, value) {
+      state.darkTheme = value
+    }
+  },
   actions: {
+    setTheme({commit}, value) {
+      commit('SET_THEME', value)
+    }
   },
   modules: {
     auth,

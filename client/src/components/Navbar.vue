@@ -1,15 +1,14 @@
 <template>
   <v-app-bar
   flat
-  class="mynav"
-  dark
+  class="mynav px-4"
   >
-    Main dashboard
+    <h2 class="font-weight-light">Main dashboard</h2>
   </v-app-bar>
 </template>
 <style scoped>
 .mynav {
   height: 56px !important;
-  background: #051018 !important;
+  background: transparent !important;
 }
 </style>

@@ -14,8 +14,6 @@
         >
           <v-card 
             class="elevation-8 pa-10"
-            color="#0A1823"
-            dark
           >
             <v-form @submit.prevent="submitHandler"
                class="d-flex flex-column align-center"

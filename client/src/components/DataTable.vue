@@ -1,7 +1,7 @@
 <template>
   <v-card>
     <v-card-title>
-      Nutrition
+      Some data
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"

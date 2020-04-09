@@ -1,74 +1,100 @@
 <template>
   <div>
-    <v-container class="">
+    <div class="px-7">
     <v-row :justify="'start'">
-      <v-col
-        cols="12"
-        xl="4"
-        lg="4"
-        md="4"
-        sm="6"
-        xs="12"
-      >
-        <v-card
-          class="pa-2"
-          outlined
-          tile
-          style="height: 200px; background: #0C1B26; border-radius: 7px"
-        >
-          <apexchart height="180px" type="line" :options="options" :series="series"></apexchart>
-        </v-card>
-      </v-col>
-      <v-col
-        cols="12"
-        xl="4"
-        lg="4"
-        md="4"
-        sm="6"
-        xs="12"
-      >
-        <v-card
-          class="pa-2"
-          outlined
-          tile
-          style="height: 200px; background: #0C1B26"
-        >
-          <apexchart height="180px" type="line" :options="options2" :series="series"></apexchart>
-        </v-card>
-      </v-col>
-      <v-col
-        v-for="n in 9"
+      <v-col 
+        v-for="n in 2"
         :key="n"
         cols="12"
-        xl="4"
-        lg="4"
-        md="4"
-        sm="6"
+        xl="6"
+        lg="6"
+        md="6"
+        sm="12"
         xs="12"
       >
         <v-card
-          class="pa-2"
+          class="pa-2 elevation-2"
           outlined
-          tile
-          style="height: 200px; background: #0C1B26"
         >
-        
+          <apexchart height="250px" width="100%" type="line" :options="options" :series="series"></apexchart>
         </v-card>
       </v-col>
+      <v-col
+        v-for="stat in stats"
+        :key="stat"
+        cols="12"
+        xl="3"
+        lg="3"
+        md="3"
+        sm="6"
+        xs="12"
+      >
+        <StatCard :stat="stat"/>
+      </v-col>
     </v-row>
-  </v-container>
+    <v-row>
+      <v-col
+        v-for="n in 2"
+        :key="n"
+        cols="12"
+        xl="6"
+        lg="6"
+        md="6"
+        sm="12"
+        xs="12"
+      >
+        <DataTable/>
+      </v-col>
+    </v-row>
+  </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-// import ContentCard from '../components/ContentCard'
+import StatCard from '../components/Cards/StatCard'
+import DataTable from '../components/DataTable'
 export default {
   name: 'Home',
   components: {
-    // ContentCard
+    StatCard,
+    DataTable
   },
   data: () => ({
+    stats: [
+      {
+        title: 'Capacity',
+        subtitle: '105GB',
+        icon: {
+          name: 'mdi-database',
+          color: 'primary'
+        },
+      },
+      {
+        title: 'Operator',
+        subtitle: 'Megafon',
+        icon: {
+          name: 'mdi-signal-variant',
+          color: 'success'
+        }
+      },
+      {
+        title: 'Signal strength',
+        subtitle: '-85 dBm',
+        icon: {
+          name: 'mdi-signal-cellular-2',
+          color: 'orange'
+        }
+      },
+      {
+        title: 'Bit Error Rate',
+        subtitle: '25',
+        icon: {
+          name: 'mdi-chart-donut',
+          color: 'yellow'
+        }
+      },
+    ],
     options: {
         chart: {
           id: 'vuechart-example',
@@ -110,7 +136,20 @@ export default {
             stops: [0, 90, 100],
             colorStops: []
           }
+        },
+        animations: {
+        enabled: false,
+        easing: 'easeinout',
+        speed: 800,
+        animateGradually: {
+            enabled: true,
+            delay: 150
+        },
+        dynamicAnimation: {
+            enabled: false,
+            speed: 350
         }
+      }
       },
     options2: {
         chart: {
@@ -153,7 +192,20 @@ export default {
             stops: [0, 90, 100],
             colorStops: []
           }
+        },
+        animations: {
+        enabled: true,
+        easing: 'easeinout',
+        speed: 800,
+        animateGradually: {
+            enabled: true,
+            delay: 150
+        },
+        dynamicAnimation: {
+            enabled: true,
+            speed: 350
         }
+    }
       },
       
       series: [{
@@ -164,3 +216,8 @@ export default {
   }),
 }
 </script>
+<style scoped>
+  .ani {
+    transition: all 0.3s ease;
+  }
+</style>

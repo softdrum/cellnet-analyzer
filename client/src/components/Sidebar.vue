@@ -2,10 +2,10 @@
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="mini"
-      dark
       floating
-      :color="'side-dark'"
-      class="sidebar"
+      style="height: 100vh; z-index: 4"
+      class="elevation-4"
+      dark
     >
       <v-list-item class="px-2">
         <v-list-item-avatar
@@ -59,8 +59,10 @@ export default {
       return {
         items: [
           { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/'},
-          { title: 'Photos', icon: 'mdi-image', link: '/database' },
-          { title: 'About', icon: 'mdi-help-box', link: '/register'},
+          { title: 'Charts', icon: 'mdi-chart-line', link: '/charts'},
+          { title: 'Map', icon: 'mdi-map', link: '/map'},
+          { title: 'Database', icon: 'mdi-database', link: '/database' },
+          { title: 'Settings', icon: 'mdi-cog-outline', link: '/user-settings'},
         ],
       mini: false
     }
@@ -70,7 +72,7 @@ export default {
 <style scoped>
 .sidebar {
 }
-.side-dark {
+/* .side-dark {
   background: #06141F !important;
 }
 .side-item {
@@ -78,5 +80,5 @@ export default {
   background-color: #0A1924;
 }
 .v-list-item--link::before { background-color: #0A1924;}
-.v-list-item--link:hover { background-color: #0C1B26;}
+.v-list-item--link:hover { background-color: #0C1B26;} */
 </style>
