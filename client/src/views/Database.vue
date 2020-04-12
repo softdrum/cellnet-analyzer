@@ -1,12 +1,10 @@
 <template>
   <div>
-    <div class="px-7">
     <v-row :justify="'center'">
       <v-col cols="12">
         <DataTable />
       </v-col>
     </v-row>
-  </div>
   </div>
 </template>
 

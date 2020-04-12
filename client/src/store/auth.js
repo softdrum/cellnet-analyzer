@@ -5,6 +5,9 @@ export default {
     user: null,
     userLoggedIn: false
   },
+  getters: {
+    user: s => s
+  },
   mutations: {
     SET_TOKEN (state, token) {
       state.token = token

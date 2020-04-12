@@ -1,7 +1,6 @@
 <template>
-  <v-app style="
-  transition: all 0.7s cubic-bezier(0.075, 0.82, 0.165, 1);">
-    <component :is="layout">
+  <v-app style="transition: background 0.7s cubic-bezier(0.075, 0.82, 0.165, 1);">
+    <component class="main-container" :is="layout">
       <router-view/>
     </component>
   </v-app>
@@ -25,6 +24,8 @@ export default {
 }
 </script>
 <style>
+@import './styles/animation.css';
+@import './styles/scrollbar.scss';
 .v-card {
    border: none !important;
 }

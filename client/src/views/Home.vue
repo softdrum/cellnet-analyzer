@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div class="px-7">
     <v-row :justify="'start'">
       <v-col 
         v-for="n in 2"
@@ -12,12 +11,9 @@
         sm="12"
         xs="12"
       >
-        <v-card
-          class="pa-2 elevation-2"
-          outlined
-        >
-          <apexchart height="250px" width="100%" type="line" :options="options" :series="series"></apexchart>
-        </v-card>
+        <ChartCard :title="'Signal level'">
+          <apexchart slot="chart" type="line" :options="options" :series="series"></apexchart>
+       </ChartCard>
       </v-col>
       <v-col
         v-for="stat in stats"
@@ -47,17 +43,18 @@
       </v-col>
     </v-row>
   </div>
-  </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import StatCard from '../components/Cards/StatCard'
 import DataTable from '../components/DataTable'
+import ChartCard from '../components/Cards/ChartCard'
 export default {
   name: 'Home',
   components: {
     StatCard,
+    ChartCard,
     DataTable
   },
   data: () => ({

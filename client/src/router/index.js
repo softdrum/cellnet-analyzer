@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
+import Home from '../views/Home.vue'
+import Charts from '../views/Charts.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -8,7 +9,19 @@ const routes = [
     path: '/',
     name: 'Home',
     meta: {layout: 'main', auth: true},
-    component: () => import('../views/Home.vue')
+    component: Home
+  }, 
+  {
+    path: '/charts',
+    name: 'Charts',
+    meta: {layout: 'main', auth: true},
+    component: Charts
+  }, 
+  {
+    path: '/map',
+    name: 'Map',
+    meta: {layout: 'main', auth: true},
+    component: () => import('../views/Map.vue')
   }, 
   {
     path: '/database',

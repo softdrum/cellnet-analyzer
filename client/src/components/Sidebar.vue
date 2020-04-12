@@ -1,15 +1,15 @@
 <template>
     <v-navigation-drawer
-      v-model="drawer"
       :mini-variant="mini"
       floating
-      style="height: 100vh; z-index: 4"
+      style="height: 100vh;"
       class="elevation-4"
       dark
+      fixed
     >
       <v-list-item class="px-2">
         <v-list-item-avatar
-          @click.stop="mini = !mini"
+          @click.stop="sidebarHandler"
           style="cursor: pointer"
         >
           <v-icon>mdi-radar</v-icon>
@@ -19,7 +19,7 @@
 
         <v-btn
           icon
-          @click.stop="mini = true"
+          @click.stop="sidebarHandler"
         >
           <v-icon>mdi-chevron-left</v-icon>
         </v-btn>
@@ -28,12 +28,10 @@
       <v-divider ></v-divider>
       <v-list>
         <v-list-item-group mandatory>
-          <v-list-tile
-          v-for="item in items"
-          :key="item.title"
-          link
-        >
           <v-list-item
+            v-for="item in items"
+            :key="item.title"
+            link
             :ripple="false"
             :active-class="'side-item'"
             :to="item.link"
@@ -47,14 +45,13 @@
             </v-list-item-content>
 
           </v-list-item>
-          </v-list-tile>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
 </template>
 <script>
 export default {
-  name: 'sidebar',
+  name: 'Sidebar',
   data () {
       return {
         items: [
@@ -66,12 +63,16 @@ export default {
         ],
       mini: false
     }
+  },
+  methods: {
+    sidebarHandler() {
+      this.mini = !this.mini
+      this.$emit('sideClicked')
+    }
   }
 }
 </script>
 <style scoped>
-.sidebar {
-}
 /* .side-dark {
   background: #06141F !important;
 }
