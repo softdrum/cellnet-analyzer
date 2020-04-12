@@ -29,6 +29,9 @@
                     v-model.trim="email"
                     prepend-icon="mdi-account"  
                     color="#4E9F40"
+                    @input="$v.email.$touch()"
+                    @blur="$v.email.$touch()"
+                    :error-messages="emailErrors"
                   />
                   <v-text-field
                     label="Password"
@@ -37,6 +40,9 @@
                     v-model.trim="password"
                     prepend-icon="mdi-lock"
                     color="#4E9F40"
+                    @input="$v.password.$touch()"
+                    @blur="$v.password.$touch()"
+                    :error-messages="passwordErrors"
                   />
                 </div>
               <div class="d-flex flex-column align-center">
@@ -52,18 +58,40 @@
   </div>
 </template>
 <script>
+import {email, required, minLength} from 'vuelidate/lib/validators'
+
 export default {
   name: 'login',
   data: () => ({
     email: 'user@mail.ru',
-    password: '12345',
-    rules: [
-        value => !!value || 'Required.',
-        value => (value && value.length >= 3) || 'Min 3 characters',
-      ]
+    password: '12345'
   }),
+  validations: {
+    email: {email, required},
+    password: {required, minLength: minLength(5)}
+  },
+  computed: {
+    passwordErrors () {
+        const errors = []
+        if (!this.$v.password.$dirty) return errors
+        !this.$v.password.minLength && errors.push('Minimal length is 5 characters!')
+        !this.$v.password.required && errors.push('Password is required')
+        return errors
+    },
+    emailErrors () {
+      const errors = []
+      if (!this.$v.email.$dirty) return errors
+      !this.$v.email.email && errors.push('Must be valid e-mail')
+      !this.$v.email.required && errors.push('E-mail is required')
+      return errors
+    },
+  },
   methods: {
     async submitHandler() {
+       if(this.$v.$invalid) {
+        this.$v.$touch()
+        return
+      }
       try {
         const formData = {
           email: this.email,
