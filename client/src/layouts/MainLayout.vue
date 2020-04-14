@@ -20,6 +20,16 @@ export default {
   data: () => ({
     windowWidth: window.innerWidth
   }),
+  methods: {
+    getData() {
+      this.$store.dispatch('getData')
+    }
+  },
+  mounted() {
+    // setInterval(() => {
+    //   this.getData()
+    // }, 1000);
+  }
   
 }
 </script>

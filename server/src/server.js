@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 app.use(bodyParser.json())
-app.use(cors({origin: 'http://192.168.0.243:8080'}));
+app.use(cors({origin: 'http://192.168.0.101:8080'}));
 require('./routes')(app)
 
 sequelize.sync()

@@ -2,13 +2,14 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './auth'
 import modem from './modem'
+import info from './info'
 import persistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   plugins: [persistedState()],
   state: {
-    darkTheme: true
+    darkTheme: true,
   },
   mutations: {
     SET_THEME(state, value) {
@@ -22,6 +23,7 @@ export default new Vuex.Store({
   },
   modules: {
     auth,
-    modem
+    modem,
+    info
   }
 })

@@ -7,7 +7,7 @@
       dark
       fixed
     >
-      <v-list-item class="px-2">
+      <v-list-item class="px-2 py-1">
         <v-list-item-avatar
           @click.stop="sidebarHandler"
           style="cursor: pointer"
@@ -26,7 +26,7 @@
       </v-list-item>
 
       <v-divider ></v-divider>
-      <v-list>
+      <v-list class="pt-0">
         <v-list-item-group mandatory>
           <v-list-item
             v-for="item in items"

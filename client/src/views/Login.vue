@@ -25,7 +25,6 @@
                     label="Email"
                     type="email"
                     name="email"
-                    :rules="rules"
                     v-model.trim="email"
                     prepend-icon="mdi-account"  
                     color="#4E9F40"
@@ -63,8 +62,9 @@ import {email, required, minLength} from 'vuelidate/lib/validators'
 export default {
   name: 'login',
   data: () => ({
-    email: 'user@mail.ru',
-    password: '12345'
+    email: '',
+    password: '',
+    alert: false
   }),
   validations: {
     email: {email, required},
@@ -90,6 +90,7 @@ export default {
     async submitHandler() {
        if(this.$v.$invalid) {
         this.$v.$touch()
+        this.alert = true
         return
       }
       try {
@@ -98,9 +99,10 @@ export default {
           password: this.password
         }
         this.$store.dispatch('login', formData)
+        this.$success('Вы вошли в систему')
         this.$router.push('/')
       } catch (error) {
-        console.log(error);
+        this.$error('Не удалось войти в систему')
       }
     }
   }

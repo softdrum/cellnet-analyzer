@@ -1,8 +1,8 @@
 <template>
   <div>
     <Sidebar @sideClicked="full = !full"/>
-    <Navbar class="side-animation" :fullMode="!full" />
-    <div class="content side-animation" :class="{full: !full}">
+    <Navbar class="side-animation" :fullMode="false" />
+    <div class="content side-animation" :class="{full: false}">
         <div class="px-7">
           <transition name="fade" mode="out-in">
             <router-view />
@@ -26,9 +26,9 @@ export default {
 </script>
 <style scoped>
   .content {
-    padding-left: 56px;
+    padding-left: 60px;
   }
   .full {
-    padding-left: 256px !important;
+    padding-left: 260px !important;
   }
 </style>

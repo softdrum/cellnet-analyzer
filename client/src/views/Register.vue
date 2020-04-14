@@ -24,7 +24,6 @@
                     label="Email"
                     type="email"
                     name="email"
-                    :rules="rules"
                     v-model.trim="email"
                     prepend-icon="mdi-account"  
                     color="#4E9F40"
@@ -97,6 +96,7 @@ export default {
           password: this.password
         }
         this.$store.dispatch('register', formData)
+        this.$success('Регистрация прошла успешно. Вы вошли в систему')
         this.$router.push('/')
       } catch (error) {
         console.log(error);
