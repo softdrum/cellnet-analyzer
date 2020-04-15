@@ -26,9 +26,7 @@ export default {
     }
   },
   mounted() {
-    // setInterval(() => {
-    //   this.getData()
-    // }, 1000);
+    
   }
   
 }

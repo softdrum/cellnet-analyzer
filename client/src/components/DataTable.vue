@@ -1,7 +1,6 @@
 <template>
   <v-card>
     <v-card-title>
-      Some data
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -20,23 +19,16 @@
   </v-card>
 </template>
 <script>
+import tableHeaders from './table.headers'
   export default {
+    props: {
+      // data: Array,
+      // headers: Array
+    },
     data () {
       return {
         search: '',
-        headers: [
-          {
-            text: 'Latitude',
-            align: 'start',
-            sortable: false,
-            value: 'lat',
-          },
-          { text: 'Longitude', value: 'long' },
-          { text: 'Radius', value: 'radius' },
-          { text: 'Operator', value: 'operator'},
-          { text: 'ARFCN', value: 'arfcn' },
-          { text: 'RX level, dBm', value: 'rx' },
-        ],
+        headers: tableHeaders.bs,
         data: [
           {
             lat: 59.33333,

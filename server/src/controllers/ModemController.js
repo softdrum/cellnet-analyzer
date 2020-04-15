@@ -1,10 +1,17 @@
-// const port = require('./port')()
+const {Signal} = require('../models')
+
 module.exports = {
   async getData (req, res) {
-    try {    
-      res.send({
-          data: Math.floor((Math.random(100)* 100))
-      })
+    try {
+      const generation = 4
+      const s_lvl = Math.floor((Math.random(100)* 100))
+      const data = {
+        signal_level: s_lvl,
+        generation : generation
+      }
+      const db_data = await Signal.create(data)
+      console.log(`DB_data: ${db_data.toJSON().signal_level}`);
+      res.send(data)
     } catch (error) {
       console.log(`Error ${error}`);
       res.status(400).send({

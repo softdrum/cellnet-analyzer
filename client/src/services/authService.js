@@ -1,11 +1,9 @@
 import api from '../services/api'
-const config = {
-}
 export default {
     register (credentials) {
-        return api().post('register', credentials, config)
+        return api().post('register', credentials)
     },
     login (credentials) {
-        return api().post('login', credentials, config)
+        return api().post('login', credentials)
     }
 }

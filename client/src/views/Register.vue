@@ -95,7 +95,7 @@ export default {
           email: this.email,
           password: this.password
         }
-        this.$store.dispatch('register', formData)
+        await this.$store.dispatch('register', formData)
         this.$success('Регистрация прошла успешно. Вы вошли в систему')
         this.$router.push('/')
       } catch (error) {

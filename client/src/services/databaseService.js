@@ -1,6 +1,6 @@
 import api from '../services/api'
 export default {
     getData () {
-        return api().get('data')
+        return api().get('signal')
     }
 }
