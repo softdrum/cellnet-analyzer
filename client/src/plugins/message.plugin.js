@@ -1,21 +1,21 @@
 export default {
   install(Vue) {
-    Vue.prototype.$message = function({message, type}) {
+    Vue.prototype.$message = function({message, color}) {
       this.$store.dispatch('setMessage', {
-        message,
-        type
+        message: message,
+        color: color
       })
     }
     Vue.prototype.$success = function(message) {
       this.$store.dispatch('setMessage', {
         message: message,
-        type: 'success'
+        color: 'success'
       })
     }
     Vue.prototype.$error = function(message) {
       this.$store.dispatch('setMessage', {
         message: message,
-        type: 'red'
+        color: 'red'
       })
     }
   }

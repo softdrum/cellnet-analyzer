@@ -1,7 +1,7 @@
 <template>
   <div id="wrapper">
     <div id="chart-line2">
-      <apexchart type="line" height="230" :options="chartOptions" :series="series"></apexchart>
+      <apexchart type="area" height="230" :options="chartOptions" :series="series"></apexchart>
     </div>
     <div id="chart-line">
       <apexchart type="area" height="130" :options="chartOptionsLine" :series="seriesLine"></apexchart>
@@ -10,9 +10,26 @@
 </template>
 <script>
 export default {
+  props: {
+    chartData: Array
+  },
+  mounted() {
+    setTimeout(() => {
+      this.series = [
+      {
+        data: this.chartData.slice()
+      }
+    ]
+    this.seriesLine = [
+      {
+        data: this.chartData.slice()
+      }
+    ]
+    }, 100);
+  },
   data: () => ({
           series: [{
-            data: [1, 2, 3 ,2, 1,2]
+            data: [1, 2, 3, 5,25,1300]
           }],
           chartOptions: {
             chart: {
@@ -24,15 +41,26 @@ export default {
                 show: false
               }
             },
-            colors: ['#546E7A'],
             stroke: {
-              width: 3
+              width: 2,
+              curve: 'smooth'
             },
             dataLabels: {
               enabled: false
             },
+            colors: ['#008FFB'],
             fill: {
-              opacity: 1,
+              type: 'gradient',
+              gradient: {
+                opacityFrom: 0.91,
+                opacityTo: 0.1,
+              }
+            },
+            xaxis: {
+              type: 'datetime',
+            },
+            theme: {
+              palette: 'palette8' // upto palette10
             },
             markers: {
               size: 0
@@ -40,7 +68,7 @@ export default {
           },
           
           seriesLine: [{
-            data: [1, 2, 3 ,2, 1,2]
+            data: [1, 2, 3, 5,25,13000]
           }],
           chartOptionsLine: {
             chart: {
@@ -53,9 +81,13 @@ export default {
               },
               selection: {
                 enabled: true,
+                fill: {
+                  color: "#fff",
+                  opacity: 0.1
+                }
               },
             },
-            colors: ['#008FFB'],
+            colors: ['#f30453'],
             fill: {
               type: 'gradient',
               gradient: {

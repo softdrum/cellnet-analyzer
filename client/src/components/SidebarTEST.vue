@@ -1,14 +1,9 @@
 <template>
-    <v-navigation-drawer
-      :mini-variant="mini"
-      floating
-      style="height: 100vh;"
-      class="elevation-4"
-      dark
-      permanent
-      fixed
+    <div
+      class="sidebar"
+      :class="{sidebarFull: full}"
     >
-      <v-list-item class="px-2 py-1">
+      <v-list-item class="py-1 px-3">
         <v-list-item-avatar
           @click.stop="sidebarHandler"
           style="cursor: pointer"
@@ -20,6 +15,7 @@
 
         <v-btn
           icon
+          v-if="full"
           @click.stop="sidebarHandler"
         >
           <v-icon>mdi-chevron-left</v-icon>
@@ -30,6 +26,7 @@
       <v-list class="pt-0">
         <v-list-item-group mandatory>
           <v-list-item
+            class="pl-5"
             v-for="item in items"
             :key="item.title"
             link
@@ -48,7 +45,7 @@
           </v-list-item>
         </v-list-item-group>
       </v-list>
-    </v-navigation-drawer>
+    </div>
 </template>
 <script>
 export default {
@@ -59,21 +56,31 @@ export default {
           { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/'},
           { title: 'Charts', icon: 'mdi-chart-line', link: '/charts'},
           { title: 'Map', icon: 'mdi-map', link: '/map'},
-          { title: 'Database', icon: 'mdi-database', link: '/database'},
+          { title: 'Database', icon: 'mdi-database', link: '/database' },
           { title: 'Settings', icon: 'mdi-cog-outline', link: '/user-settings'},
         ],
-      mini: false
+      full: true
     }
   },
   methods: {
     sidebarHandler() {
-      this.mini = !this.mini
+      this.full = !this.full
       this.$emit('sideClicked')
     }
   }
 }
 </script>
 <style scoped>
+.sidebar {
+  position: fixed;
+  width: 64px;
+  height: 100vh;
+  background-color: #1d2534;
+  transition: width 0.1s ease-in;
+}
+.sidebarFull {
+  width: 264px;
+}
 /* .side-dark {
   background: #06141F !important;
 }

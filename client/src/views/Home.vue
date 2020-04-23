@@ -1,9 +1,33 @@
 <template>
   <div>
-    <v-row :justify="'start'">
-      <v-col 
-        v-for="n in 2"
-        :key="n"
+    <v-row>
+      <v-col
+        cols="12"
+        xl="6"
+        lg="6"
+        md="6"
+        sm="6"
+        xs="12"
+      >
+        <ChartCard :title="'Signal level'">
+          <apexchart slot="chart" type="line" :options="options" :series="series"></apexchart>
+       </ChartCard>
+      </v-col>
+      <v-col
+        v-if="windowWidth > 768"
+        cols="12"
+        xl="6"
+        lg="6"
+        md="6"
+        sm="6"
+        xs="12"
+      >
+        <ChartCard :title="'Bit Error Rate'">
+          <apexchart slot="chart" type="line" :options="options" :series="series"></apexchart>
+       </ChartCard>
+      </v-col>
+      <v-col
+        v-else
         cols="12"
         xl="6"
         lg="6"
@@ -11,9 +35,34 @@
         sm="12"
         xs="12"
       >
-        <ChartCard :title="'Signal level'">
-          <apexchart slot="chart" type="line" :options="options" :series="series"></apexchart>
-       </ChartCard>
+        <v-card class="px-2">
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title class="headline text-center">Общая информация</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+            <v-list class="transparent">
+              <v-list-item
+                v-for="stat in stats"
+                :key="stat.title"
+                class="my-0"
+              >
+                <div class="d-flex align-center justrify-start" style="width: 60%">
+                  <v-list-item-subtitle style="font-size: 16px !important;">
+                    {{ stat.title }}
+                  </v-list-item-subtitle>
+                </div>
+                <div class="d-flex align-center justrify-start" style="width: 40%">
+                    <v-list-item-icon class="mr-4">
+                      <v-icon :color="stat.icon.color">{{ stat.icon.name }}</v-icon>
+                    </v-list-item-icon>
+                  <v-list-item-title>
+                    {{ stat.subtitle }}
+                  </v-list-item-title>
+                </div>
+              </v-list-item>
+          </v-list>
+        </v-card>
       </v-col>
       <v-col
         v-for="stat in stats"
@@ -39,7 +88,7 @@
         sm="12"
         xs="12"
       >
-        <DataTable/>
+        <SimpleTable />
       </v-col>
     </v-row>
   </div>
@@ -48,36 +97,21 @@
 <script>
 // @ is an alias to /src
 import StatCard from '../components/Cards/StatCard'
-import DataTable from '../components/DataTable'
+import SimpleTable from '@/components/SimpleTable'
 import ChartCard from '../components/Cards/ChartCard'
 export default {
   name: 'Home',
   components: {
     StatCard,
     ChartCard,
-    DataTable
+    SimpleTable
   },
   data: () => ({
+    windowWidth: window.innerWidth,
     stats: [
       {
-        title: 'Capacity',
-        subtitle: '105GB',
-        icon: {
-          name: 'mdi-database',
-          color: 'primary'
-        },
-      },
-      {
-        title: 'Operator',
-        subtitle: 'Megafon',
-        icon: {
-          name: 'mdi-signal-variant',
-          color: 'success'
-        }
-      },
-      {
-        title: 'Signal strength',
-        subtitle: '-85 dBm',
+        title: 'Channel',
+        subtitle: '98',
         icon: {
           name: 'mdi-signal-cellular-2',
           color: 'orange'
@@ -90,6 +124,22 @@ export default {
           name: 'mdi-chart-donut',
           color: 'yellow'
         }
+      },
+      {
+        title: 'Operator',
+        subtitle: 'Megafon',
+        icon: {
+          name: 'mdi-signal-variant',
+          color: 'success'
+        }
+      },
+      {
+        title: 'Capacity',
+        subtitle: '105GB',
+        icon: {
+          name: 'mdi-database',
+          color: 'primary'
+        },
       },
     ],
     options: {

@@ -1,18 +1,29 @@
 <template>
-  <v-app-bar
-  flat
-  class="mynav"
-  :class="{fullNav: fullMode}"
-  >
-    <div class="px-3"><h2 class="font-weight-light">Main dashboard</h2></div>
-    <!-- <h2 class="font-weight-light">{{ user }}</h2> -->
-    <!-- <v-btn primary @click="logout">Logout</v-btn> -->
-  </v-app-bar>
+  <div>
+    <v-app-bar
+    flat
+    class="mynav px-4"
+    :class="{fullNav: fullMode}"
+    >
+      <div><h2 class="font-weight-light">Main dashboard</h2></div>
+      <Battery :level="100" />
+      <v-spacer></v-spacer>
+      <v-btn icon>
+        <v-icon>mdi-account</v-icon>
+        {{username}}
+      </v-btn>
+    </v-app-bar>
+    <v-divider></v-divider>
+  </div>
 </template>
 <script>
+import Battery from '@/components/Battery'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Navbar',
+  components: {
+    Battery
+  },
   props: {
     fullMode: Boolean
   },
@@ -23,14 +34,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['username'])
   }
 }
 </script>
 <style scoped>
 .mynav {
-  height: 56px !important;
-  padding-left: 56px;
+  height: 64px !important;
   background: transparent !important;
 }
 .fullNav {

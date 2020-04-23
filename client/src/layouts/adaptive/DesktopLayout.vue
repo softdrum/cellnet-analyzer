@@ -1,13 +1,16 @@
 <template>
   <div>
-    <Sidebar @sideClicked="full = !full"/>
-    <Navbar class="side-animation" :fullMode="false" />
-    <div class="content side-animation" :class="{full: false}">
-        <div class="px-7">
-          <transition name="fade" mode="out-in">
-            <router-view />
-          </transition>
-        </div>
+    <Sidebar @sideClicked="opened = !opened"/>
+    <div class="d-flex">
+      <div class="ghostSidebar" :class="{sideOpened: opened}"></div>
+      <div class="content">
+        <Navbar class="side-animation"/>
+          <v-container fluid class="pl-8 pr-6">
+            <transition name="fade" mode="out-in">
+              <router-view />
+            </transition>
+          </v-container>
+    </div>
     </div>
   </div>
 </template>
@@ -20,13 +23,20 @@ export default {
     Navbar
   },
   data: () => ({
-    full: false
+    opened: true
   }),
 }
 </script>
 <style scoped>
   .content {
-    padding-left: 60px;
+    width: 100%;
+  }
+  .sideOpened {
+    width: 312px !important;
+  }
+  .ghostSidebar {
+    width: 56px;
+    transition: width 0.1s ease-in;
   }
   .full {
     padding-left: 260px !important;

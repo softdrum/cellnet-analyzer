@@ -5,10 +5,10 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 app.use(bodyParser.json())
-app.use(cors({origin: 'http://192.168.0.101:8080'}));
+app.use(cors({origin: 'http://localhost:8080'}));
 require('./routes')(app)
 
-sequelize.sync()
+sequelize.sync() //{force: true}
     .then(() => {
         console.log(`Server started on port ${config.port}`);
         app.listen(config.port)

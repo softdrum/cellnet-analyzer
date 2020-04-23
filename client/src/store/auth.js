@@ -6,7 +6,7 @@ export default {
     userLoggedIn: false
   },
   getters: {
-    user: s => s
+    username: s => s.user.email
   },
   mutations: {
     SET_TOKEN (state, token) {

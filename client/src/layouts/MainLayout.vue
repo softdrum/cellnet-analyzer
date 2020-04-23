@@ -21,9 +21,9 @@ export default {
     windowWidth: window.innerWidth
   }),
   methods: {
-    getData() {
-      this.$store.dispatch('getData')
-    }
+    // getData() {
+    //   this.$store.dispatch('getData')
+    // }
   },
   mounted() {
     

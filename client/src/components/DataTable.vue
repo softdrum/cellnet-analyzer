@@ -1,77 +1,75 @@
 <template>
-  <v-card>
-    <v-card-title>
+  <v-data-table
+    :dense="false"
+    v-model="selected"
+    :items="data"
+    :headers="headers"
+    show-select
+    class="elevation-1"
+  >
+  <template v-slot:item.generation="{ item }">
+    <v-chip dark>{{ item.generation }}</v-chip>
+  </template>
+  <template  v-slot:top>
+    <v-toolbar flat>
+      <v-toolbar-title>Таблица</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
-      :headers="headers"
-      :items="data"
-      :search="search"
-      dense
-    ></v-data-table>
-  </v-card>
+      <v-btn @click="deleteItems()" v-if="selected.length" text>Удалить</v-btn>
+      <v-btn @click="deleteItems(true)" v-if="selected.length" text>Удалить все<v-icon>mdi-delete</v-icon></v-btn>
+    </v-toolbar>
+  </template>
+  </v-data-table>
 </template>
 <script>
-import tableHeaders from './table.headers'
   export default {
     props: {
-      // data: Array,
-      // headers: Array
+      data: Array,
+      headers: Array,
     },
-    data () {
-      return {
-        search: '',
-        headers: tableHeaders.bs,
-        data: [
-          {
-            lat: 59.33333,
-            long: 39.11311,
-            radius: 1000,
-            operator: 'Megafon',
-            arfcn: 104,
-            rx: -66
-          },
-          {
-            lat: 59.33333,
-            long: 39.11311,
-            radius: 1000,
-            operator: 'TELE2',
-            arfcn: 17,
-            rx: -92
-          },
-          {
-            lat: 59.33333,
-            long: 39.11311,
-            radius: 1000,
-            operator: 'MTS',
-            arfcn: 10,
-            rx: -90
-          },
-          {
-            lat: 59.33333,
-            long: 39.11311,
-            radius: 1000,
-            operator: 'Megafon',
-            arfcn: 32,
-            rx: -44
-          },
-          {
-            lat: 59.33333,
-            long: 39.11311,
-            radius: 1000,
-            operator: 'Beeline',
-            arfcn: 66,
-            rx: -35
+    data: () => ({
+      selected: []
+    }),
+    methods: {
+      getColor(operator) {
+        switch (operator) {
+          case 'Megafon': return 'green'
+          case 'Beeline': return 'black'
+          case 'TELE2': return 'primary'
+          case 'MTS': return 'red'
+        }
+      },
+      spliceItems(all) {
+        if (all) {
+          this.data = []
+        } else {
+          this.selected.forEach( item => {
+            const index = this.data.indexOf(item)
+            this.data.splice(index, 1)
+          })
+        }
+      },
+      async deleteItems (all=false) {
+        const question = all ? 'все' : ''
+        const sure = confirm(`Вы уверены, что хотите удалить ${question} записи`)
+        if (sure) {
+          let itemsToDelete
+          if (all) {
+            itemsToDelete = this.data.slice()
+          } else {
+            itemsToDelete = this.selected.slice()
           }
-        ]
-      }
+          try {
+            await this.$store.dispatch('removeDataFromDatabase', {
+              tableName: 'signal',
+              selected: itemsToDelete
+            })
+            this.spliceItems(all)
+          } catch (error) {
+            console.log(error);
+            this.$error('Ошибка удаления')
+          }
+        }
+      },
     },
   }
 </script>

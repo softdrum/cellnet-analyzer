@@ -1,45 +1,41 @@
 <template>
   <v-snackbar
-        v-model="snackbar"
-        :color="type"
-        top
-        @click="snackbar = false"
-      >
-        {{ message }}
-        <v-btn
-          color="pink"
-          icon
-          @click="snackbar = false"
-        >
-          <v-icon>
-            mdi-close
-          </v-icon>
-        </v-btn>
-      </v-snackbar>
+    v-model="show"
+    :color="color"
+    top
+    @click="show = false"
+  >
+    {{ message }}
+    <v-btn
+      color="white"
+      icon
+      small
+      @click="snackbar = false"
+    >
+      <v-icon>
+        mdi-close
+      </v-icon>
+    </v-btn>
+  </v-snackbar>
 </template>
 <script>
-import { mapState } from 'vuex'
+
 export default {
   data: () => ({
+    show: false,
+    message: '',
+    color: ''
   }),
-  computed: {
-    ...mapState({
-      message: state => state.info.message,
-      type: state => state.info.type
-    }),
-    snackbar: {
-      get: function() {
-        return this.message !== null
-      },
-      set: function(value) {
-        this.$store.dispatch('clearMessage', value)
+  created: function () {
+    this.$store.watch(state => state.snackMessage, () => {
+      const msg = this.$store.state.snackMessage
+      if (msg !== '') {
+        this.show = true
+        this.message = this.$store.state.snackMessage.message
+        this.color = this.$store.state.snackMessage.color
+        this.$store.commit('CLEAR_MESSAGE')
       }
-    }
-  },
-  watch: {
-    message() {
-      this.snackbar = true
-    }
+    })
   }
 }
 </script>
