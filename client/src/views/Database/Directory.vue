@@ -6,7 +6,7 @@
     </v-btn>
     <v-row :justify="'center'">
       <v-col cols="12" v-if="directory === 'signals'">
-        <ChartCard :loading="loading" :title="'Signal level'">
+        <ChartCard :loading="loading">
           <BrushChart slot="chart" :chartData="chartData" />
         </ChartCard>
       </v-col>

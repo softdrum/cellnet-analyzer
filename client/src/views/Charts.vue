@@ -5,79 +5,42 @@
         <apexchart slot="chart" type="line" ref="chart2" :options="chartOptions" :series="series"></apexchart>
       </ChartCard>
     </v-col>
-    <v-col lg="6">
-      <ChartCard id="chart" :title="'asdadasd'">
-        <apexchart slot="chart" type="line" ref="chart" :options="chartOptions" :series="series"></apexchart>
-      </ChartCard>
-    </v-col>
   </v-row>
 </template>
 <script>
-  var lastDate = 0;
-  var data = []
-  var TICKINTERVAL = 1000
-  let XAXISRANGE = 9000
-  function getDayWiseTimeSeries(baseval, count, yrange) {
-    var i = 0;
-    while (i < count) {
-      var x = baseval;
-      var y = Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-  
-      data.push({
-        x, y
-      });
-      lastDate = baseval
-      baseval += TICKINTERVAL;
-      i++;
-    }
-  }
-  
-  getDayWiseTimeSeries(new Date().getTime(), 10, {
-    min: 10,
-    max: 90
+let data = []
+function getNewSeries() {
+  data.push({
+    x: new Date().getTime(),
+    y: Math.floor(Math.random() * (90 - 30 + 1)) + 30
   })
-  
-  function getNewSeries(baseval, yrange) {
-    var newDate = baseval + TICKINTERVAL;
-    lastDate = newDate
-  
-    for(var i = 0; i< data.length - 10; i++) {
-      // IMPORTANT
-      // we reset the x and y of the data which is out of drawing area
-      // to prevent memory leaks
-      data[i].x = newDate - XAXISRANGE - TICKINTERVAL
-      data[i].y = 0
-    }
-  
-    data.push({
-      x: newDate,
-      y: Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min
-    })
-  }
-  
-  function resetData(){
-    // Alternatively, you can also reset the data at certain intervals to prevent creating a huge series 
-    data = data.slice(data.length - 10, data.length);
-  }
+}
+function resetData(){
+// Alternatively, you can also reset the data at certain intervals to prevent creating a huge series 
+  data = data.slice(data.length - 10, data.length);
+}
 import ChartCard from '../components/Cards/ChartCard'
 export default {
   components: {
     ChartCard
   },
   data: () => ({
+    reset: false,
+    data: [],
     series: [{
       data: data.slice()
     }],
     chartOptions: {
             chart: {
               id: 'realtime',
-              height: 350,
               type: 'line',
-              speed: 300,
+              speed: 1000,
+              foreColor: '#fff',
               animations: {
                 enabled: true,
                 easing: 'linear',
                 dynamicAnimation: {
+                  enabled: true,
                   speed: 1000
                 }
               },
@@ -94,64 +57,85 @@ export default {
             stroke: {
               curve: 'smooth'
             },
-            title: {
-              text: 'Dynamic Updating Chart',
-              align: 'left'
-            },
             markers: {
               size: 0
             },
             xaxis: {
               type: 'datetime',
-              range: XAXISRANGE,
+              range: 10000,
             },
             yaxis: {
-              max: 100
+              max: 100,
+              labels: {
+                show: true,
+                style: {
+                  colors: ['#f3f3f3'],
+                },
+              }
             },
             legend: {
               show: false
             },
-            fill: {
-              type: 'gradient',
-              gradient: {
-                type: "vertical",
-                shadeIntensity: 0.5,
-                gradientToColors: [], // optional, if not defined - uses the shades of same color in series
-                inverseColors: false,
-                opacityFrom: 0.99,
-                opacityTo: 0.1,
-                stops: [0, 90, 100],
-                colorStops: []
+            grid: {
+              row: {
+                colors: ['#323C4A', 'transparent'],
+              }, 
+              column: {
+                  colors: ['#1d2534', 'transparent'],
+              },
+              yaxis: {
+                lines: {
+                  show: false
+                }
+              },
+              xaxis: {
+                lines: {
+                  show: false
+                }
+              }
+            },
+             fill: {
+            type: 'solid',
+            gradient: {
+            type: "vertical",
+            shadeIntensity: 0.5,
+            gradientToColors: [], // optional, if not defined - uses the shades of same color in series
+            inverseColors: false,
+            opacityFrom: 0.99,
+            opacityTo: 0.1,
+            stops: [0, 90, 100],
+            colorStops: []
           }
         },
           },
   }),
-  methods: {
-    resetData(){
-    // Alternatively, you can also reset the data at certain intervals to prevent creating a huge series 
-      data = data.slice(data.length - 10, data.length);
-    }
+  ready: function () {
+    window.addEventListener('beforeunload', () => {
+      window.alert()
+    });
   },
   mounted() {
+    var me = this
     setInterval(function () {
-            getNewSeries(lastDate, {
-              min: 10,
-              max: 90
-            })
-            
-            this.window.$refs.chart.updateSeries([{
-              data: data
-            }])
-          }, 1000)
-        
-          // every 60 seconds, we reset the data to prevent memory leaks
-          setInterval(function () {
-            resetData()
-            
-            this.window.$refs.chart.updateSeries([{
-              data
-            }], false, true)
-          }, 60000)
+     getNewSeries()
+      
+      me.$refs.chart2.updateSeries([{
+        data: data
+      }])
+      console.log(data[data.length - 1].y);
+    }, 1000)
+  
+    // every 60 seconds, we reset the data to prevent memory leaks
+    setInterval(function () {
+      me.chartOptions.chart.animations.enabled = false
+      resetData()
+      
+      me.$refs.chart2.updateSeries([{
+        data: me.data
+      }], false, true)
+      me.chartOptions.chart.animations.enabled = true
+      // alert('Reseted')
+    }, 20000)
   }
 }
 </script>
