@@ -30,9 +30,8 @@ export default {
     },
     { text: 'Radius', value: 'radius' },
     { text: 'Operator', value: 'operator'},
+    { text: 'Generation', value: 'generation'},
     { text: 'ARFCN', value: 'arfcn' },
-    { text: 'RX level, dBm', value: 'rx' },
-    
-    { text: 'Actions', value: 'actions', sortable: false },
+    { text: 'RX level, dBm', value: 'rx_level' },
   ]
 }

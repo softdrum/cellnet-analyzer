@@ -30,6 +30,12 @@ const routes = [
     component: () => import('../views/Database.vue')
   }, 
   {
+    path: '/database/:directory',
+    name: 'Directory',
+    meta: {layout: 'main', auth: true},
+    component: () => import('../views/Database/Directory.vue')
+  }, 
+  {
     path: '/user-settings',
     name: 'UserSettings',
     meta: {layout: 'main', auth: true},

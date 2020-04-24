@@ -1,54 +1,79 @@
 <template>
   <div>
-    <v-row :justify="'center'">
-      <v-col cols="12">
-        <ChartCard :title="'Signal level'">
-          <BrushChart slot="chart" :chartData="chartData" />
-        </ChartCard>
-      </v-col>
-      <v-col cols="12">
-        <DataTable :headers="headers" :data="data"/>
+    <v-row>
+      <v-col
+        v-for="dir in directives"
+        :key="dir"
+        cols="12"
+        xl="3"
+        lg="4"
+        sm="12"
+        xs="12"
+      >
+        <v-card
+          class="mx-auto"
+          :to="dir.to"
+          hover
+        >
+          <v-list-item three-line>
+            <v-list-item-content>
+              <div class="overline mb-4">last updated 5 minutes ago</div>
+              <v-list-item-title class="headline mb-1">{{ dir.title }}</v-list-item-title>
+              <v-list-item-subtitle>{{ dir.subtitle }}</v-list-item-subtitle>
+            </v-list-item-content>
+
+            <v-list-item-avatar
+              tile
+              size="80"
+            >
+              <v-icon
+                :color="dir.color"
+                style="font-size: 70px"
+              >
+                {{ dir.icon }}
+              </v-icon>
+            </v-list-item-avatar>
+          </v-list-item>
+
+          <v-card-actions>
+            <!-- <v-btn text>Open</v-btn>
+            <v-btn text >Copy</v-btn> -->
+          </v-card-actions>
+        </v-card>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import DataTable from '../components/DataTable'
-import BrushChart from '../components/BrushChart'
-import tableHeaders from '../components/table.headers'
-import ChartCard from '../components/Cards/ChartCard'
-
-import dateFilter from '../utils/filters/date.filter'
 export default {
   name: 'Database',
   components: {
-    BrushChart,
-    DataTable,
-    ChartCard
   },
   data: () => ({
-    data: [],
-    chartData: [],
-    date: null,
-    headers: tableHeaders.signal
-  }),
-  async mounted() {
-    try {
-      this.data = await this.$store.dispatch('getDataFromDatabase', 'signal')
-      this.data.forEach(element => {
-        this.chartData.push({
-          x: new Date(element.createdAt),
-          y: element.signal_level
-        })
-        element.createdAt = dateFilter(new Date(element.createdAt), 'datetime')
-      })
-      console.log(this.chartData);
-    } catch (error) {
-      console.log(error);
-      this.$error('Не удалось загрузить данные')
-    }
-  }
+    directives: [
+      {
+        title: 'Basestations',
+        subtitle: 'Explore local BS data',
+        icon: 'mdi-antenna',
+        color: 'blue',
+        to: '/database/basestations'
+      },
+      {
+        title: 'Signals',
+        subtitle: 'Analize signal data',
+        icon: 'mdi-current-ac',
+        color: 'green',
+        to: '/database/signals'
+      },
+      {
+        title: 'Heatmap',
+        subtitle: 'Saved heatmap data',
+        icon: 'mdi-map',
+        color: 'orange',
+        to: "/database/heatmap"
+      }
+    ]
+  })
 }
 </script>

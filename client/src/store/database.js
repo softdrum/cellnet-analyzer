@@ -8,9 +8,15 @@ export default {
       })
       commit('SET_MESSAGE', {message: 'Удалено', color:'success'})
       return response
-  },
-    async getDataFromDatabase(tableName) {
-      const response = await (await databaseService.getData(tableName)).data.data
+    },
+    async getDataFromDatabase({commit}, tableName) {
+      const response = (await databaseService.getData(tableName)).data.data
+      commit('')
+      return response
+    },
+    async addDataInDatabase({commit}, {tableName, data}) {
+      const response = await databaseService.addData(tableName, data)
+      commit('')
       return response
     }
   }

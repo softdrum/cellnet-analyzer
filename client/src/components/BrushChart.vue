@@ -25,7 +25,7 @@ export default {
         data: this.chartData.slice()
       }
     ]
-    }, 100);
+    }, 500);
   },
   data: () => ({
           series: [{

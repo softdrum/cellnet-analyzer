@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     long: {type: DataTypes.FLOAT},
     operator: {type: DataTypes.STRING},
     generation: {type: DataTypes.INTEGER},
+    radius: {type: DataTypes.INTEGER},
     arfcn: {type: DataTypes.INTEGER},
     rx_level: {type: DataTypes.INTEGER},
   })

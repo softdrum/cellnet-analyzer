@@ -3,8 +3,8 @@ const {BS} = require('../models')
 
 function tablePicker(tableName) {
   switch (tableName) {
-    case 'signal': return Signal
-    case 'bs': return BS
+    case 'signals': return Signal
+    case 'basestations': return BS
     default: return Signal
   }
 }
@@ -33,7 +33,7 @@ module.exports = {
     } catch (error) {
         console.log(`Error ${error}`);
         res.status(400).send({
-            error: 'This email already in use'
+            error: error
         })
     }
   },
