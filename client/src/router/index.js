@@ -27,13 +27,13 @@ const routes = [
     path: '/database',
     name: 'Database',
     meta: {layout: 'main', auth: true},
-    component: () => import('../views/Database.vue')
+    component: () => import('../views/database/Database.vue')
   }, 
   {
     path: '/database/:directory',
     name: 'Directory',
     meta: {layout: 'main', auth: true},
-    component: () => import('../views/Database/Directory.vue')
+    component: () => import('../views/database/Directory.vue')
   }, 
   {
     path: '/user-settings',
@@ -45,13 +45,13 @@ const routes = [
     path: '/login',
     name: 'login',
     meta: {layout: 'empty'},
-    component: () => import('../views/Login.vue')
+    component: () => import('../views/auth/Login.vue')
   }, 
   {
     path: '/register',
     name: 'register',
     meta: {layout: 'empty'},
-    component: () => import('../views/Register.vue')
+    component: () => import('../views/auth/Register.vue')
   }
 ]
 

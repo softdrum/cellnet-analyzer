@@ -1,6 +1,6 @@
 <template>
   <v-app style="transition: background 0.7s cubic-bezier(0.075, 0.82, 0.165, 1);">
-    <snackbar />
+    <Snackbar />
     <component class="main-container" :is="layout">
       <router-view/>
     </component>
@@ -9,12 +9,12 @@
 <script>
 import EmptyLayout from './layouts/EmptyLayout'
 import MainLayout from './layouts/MainLayout'
-import snackbar from './components/Snackbar'
+import Snackbar from './components/app/Snackbar'
 export default {
   components: {
     EmptyLayout,
     MainLayout,
-    snackbar
+    Snackbar
   },
   mounted() {
     this.$vuetify.theme.dark = this.$store.state.darkTheme

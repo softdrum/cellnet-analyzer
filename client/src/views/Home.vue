@@ -93,8 +93,9 @@ function resetData(){
   data = data.slice(data.length - 10, data.length);
 }
 // @ is an alias to /src
-import StatCard from '../components/Cards/StatCard'
-import ChartCard from '../components/Cards/ChartCard'
+import StatCard from '../components/cards/StatCard'
+import ChartCard from '../components/cards/ChartCard'
+import defaultOptions from '../components/charts/options/default.chart'
 export default {
   name: 'Home',
   components: {
@@ -103,9 +104,9 @@ export default {
   },
   mounted() {
     var me = this
+    alert(this.options.chart.theme.mode)
     setInterval(function () {
      getNewSeries()
-      
       me.$refs.chart2.updateSeries([{
         data: data
       }])
@@ -121,6 +122,7 @@ export default {
     }, 60000)
   },
   data: () => ({
+    options: defaultOptions.options,
     windowWidth: window.innerWidth,
     stats: [
       {
@@ -156,120 +158,11 @@ export default {
         },
       },
     ],
-    options: {
-        chart: {
-          id: 'realtime',
-          speed: 1000,
-          foreColor: "#ccc",
-          animations: {
-          enabled: true,
-          easing: 'linear',
-          dynamicAnimation: {
-            speed: 1000
-          }
-        },
-        },
-         xaxis: {
-          type: 'datetime',
-          range: 10000,
-        },
-        stroke: {
-          curve: 'smooth',
-          width: 3
-        },
-        grid: {
-          borderColor: "#555",
-          clipMarkers: false,
-          yaxis: {
-            lines: {
-              show: false
-            }
-          },
-          xaxis: {
-            lines: {
-              show: false
-            }
-          }
-        },
-        tooltip: {
-          theme: "dark"
-        },
-        fill: {
-          type: 'gradient',
-          gradient: {
-            type: "vertical",
-            shadeIntensity: 0.5,
-            gradientToColors: [], // optional, if not defined - uses the shades of same color in series
-            inverseColors: false,
-            opacityFrom: 0.99,
-            opacityTo: 0.1,
-            stops: [0, 90, 100],
-            colorStops: []
-          }
-        },
-    },
-    options2: {
-        chart: {
-          id: 'vuechart-example',
-          foreColor: "#ccc" 
-        },
-        xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
-        },
-        stroke: {
-          curve: 'stepline',
-          width: 3
-        },
-        grid: {
-          borderColor: "#555",
-          clipMarkers: false,
-          yaxis: {
-            lines: {
-              show: false
-            }
-          },
-          xaxis: {
-            lines: {
-              show: false
-            }
-          }
-        },
-        tooltip: {
-          theme: "dark"
-        },
-        fill: {
-          type: 'gradient',
-          gradient: {
-            type: "vertical",
-            shadeIntensity: 0.5,
-            gradientToColors: [], // optional, if not defined - uses the shades of same color in series
-            inverseColors: false,
-            opacityFrom: 0.99,
-            opacityTo: 0.1,
-            stops: [0, 90, 100],
-            colorStops: []
-          }
-        },
-        animations: {
-        enabled: true,
-        easing: 'easeinout',
-        speed: 800,
-        animateGradually: {
-            enabled: true,
-            delay: 150
-        },
-        dynamicAnimation: {
-            enabled: true,
-            speed: 350
-        }
-    }
-      },
-      
-      series: [{
-        name: 'series-1',
-        type: 'area',
-        data: data.slice()
-      }]
+    series: [{
+      name: 'series-1',
+      type: 'area',
+      data: data.slice()
+    }]
   }),
 }
 </script>

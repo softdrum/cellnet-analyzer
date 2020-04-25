@@ -19,10 +19,10 @@
 
 <script>
 // @ is an alias to /src
-import DataTable from '@/components/DataTable'
-import BrushChart from '@/components/BrushChart'
-import tableHeaders from '@/components/table.headers'
-import ChartCard from '@/components/Cards/ChartCard'
+import DataTable from '@/components/tables/DataTable'
+import BrushChart from '@/components/charts/BrushChart'
+import tableHeaders from '@/components/tables/table.headers'
+import ChartCard from '@/components/cards/ChartCard'
 
 import dateFilter from '@/utils/filters/date.filter'
 export default {

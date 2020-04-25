@@ -17,7 +17,7 @@
   </div>
 </template>
 <script>
-import Battery from '@/components/Battery'
+import Battery from '@/components/appbar/Battery'
 import { mapGetters } from 'vuex'
 export default {
   name: 'Navbar',

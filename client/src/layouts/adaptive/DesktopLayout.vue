@@ -4,7 +4,7 @@
     <div class="d-flex">
       <div class="ghostSidebar" :class="{sideOpened: opened}"></div>
       <div class="content">
-        <Navbar class="side-animation"/>
+        <Appbar class="side-animation"/>
           <v-container fluid class="pl-8 pr-6">
             <transition name="fade" mode="out-in">
               <router-view />
@@ -15,12 +15,12 @@
   </div>
 </template>
 <script>
-import Sidebar from '@/components/Sidebar'
-import Navbar from '@/components/Navbar'
+import Sidebar from '@/components/navigation/Sidebar'
+import Appbar from '@/components/appbar/Appbar'
 export default {
   components: {
     Sidebar,
-    Navbar
+    Appbar
   },
   data: () => ({
     opened: true

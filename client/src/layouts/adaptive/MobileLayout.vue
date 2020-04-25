@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar />
+    <Appbar />
     <div class="px-7">
       <transition name="fade" mode="out-in">
         <router-view/>
@@ -10,13 +10,13 @@
   </div>
 </template>
 <script>
-import BottomNavigation from '@/components/BottomNavigation'
-import Navbar from '@/components/Navbar'
+import BottomNavigation from '@/components/navigation/BottomNavigation'
+import Appbar from '@/components/appbar/Appbar'
 
 export default {
   components: {
     BottomNavigation,
-    Navbar
+    Appbar
   },
 }
 </script>
