@@ -10,7 +10,7 @@
         xs="12"
       >
         <ChartCard :title="'Signal level'">
-          <apexchart slot="chart" type="line" ref="chart2" :options="options" :series="series"></apexchart>
+          <apexchart slot="chart" type="line" ref="chart1" :options="options" :series="series"></apexchart>
        </ChartCard>
       </v-col>
       <v-col
@@ -23,7 +23,7 @@
         xs="12"
       >
         <ChartCard :title="'Bit Error Rate'">
-          <apexchart slot="chart" type="line" :options="options" :series="series"></apexchart>
+          <apexchart slot="chart" ref="chart2" type="line" :options="options2" :series="series2"></apexchart>
        </ChartCard>
       </v-col>
       <v-col
@@ -65,8 +65,8 @@
         </v-card>
       </v-col>
       <v-col
-        v-for="stat in stats"
-        :key="stat"
+        v-for="(stat, i) in stats"
+        :key="i"
         cols="12"
         xl="3"
         lg="3"
@@ -82,7 +82,12 @@
 
 <script>
 let data = []
+let data2 = []
 function getNewSeries() {
+  data2.push({
+    x: new Date().getTime(),
+    y: Math.floor(Math.random() * (90 - 60 + 1)) + 10
+  })
   data.push({
     x: new Date().getTime(),
     y: Math.floor(Math.random() * (90 - 30 + 1)) + 30
@@ -91,6 +96,7 @@ function getNewSeries() {
 function resetData(){
 // Alternatively, you can also reset the data at certain intervals to prevent creating a huge series 
   data = data.slice(data.length - 10, data.length);
+  data2 = data2.slice(data2.length - 10, data2.length);
 }
 // @ is an alias to /src
 import StatCard from '../components/cards/StatCard'
@@ -104,11 +110,13 @@ export default {
   },
   mounted() {
     var me = this
-    alert(this.options.chart.theme.mode)
     setInterval(function () {
      getNewSeries()
-      me.$refs.chart2.updateSeries([{
+      me.$refs.chart1.updateSeries([{
         data: data
+      }])
+      me.$refs.chart2.updateSeries([{
+        data: data2
       }])
     }, 1000)
   
@@ -116,13 +124,17 @@ export default {
     setInterval(function () {
       resetData()
       
-      me.$refs.chart2.updateSeries([{
+      me.$refs.chart1.updateSeries([{
         data: me.data
+      }], false, true)
+      me.$refs.chart2.updateSeries([{
+        data: me.data2
       }], false, true)
     }, 60000)
   },
   data: () => ({
-    options: defaultOptions.options,
+    options: defaultOptions.getOptions(['#0f80a9']),
+    options2: defaultOptions.getOptions(['#c92f55']),
     windowWidth: window.innerWidth,
     stats: [
       {
@@ -160,8 +172,13 @@ export default {
     ],
     series: [{
       name: 'series-1',
-      type: 'area',
+      type: 'line',
       data: data.slice()
+    }],
+    series2: [{
+      name: 'series-2',
+      type: 'line',
+      data: data2.slice()
     }]
   }),
 }

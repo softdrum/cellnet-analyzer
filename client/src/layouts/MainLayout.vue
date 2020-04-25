@@ -25,10 +25,6 @@ export default {
     //   this.$store.dispatch('getData')
     // }
   },
-  mounted() {
-    
-  }
-  
 }
 </script>
 

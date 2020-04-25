@@ -1,17 +1,27 @@
 <template>
   <div id="wrapper">
-    <div id="chart-line2">
-      <apexchart type="area" height="230" :options="chartOptions" :series="series"></apexchart>
-    </div>
-    <div id="chart-line">
-      <apexchart type="area" height="130" :options="chartOptionsLine" :series="seriesLine"></apexchart>
-    </div>
+    <ChartCard :title="title" :loading="loading" >
+      <div slot="chart">
+        <div id="chart-line2">
+          <apexchart type="area" height="230" :options="chartOptions" :series="series"></apexchart>
+        </div>
+        <div id="chart-line">
+          <apexchart type="area" height="130" :options="chartOptionsLine" :series="seriesLine"></apexchart>
+        </div>
+      </div>
+    </ChartCard>
   </div>
 </template>
 <script>
+import ChartCard from '@/components/cards/ChartCard'
 export default {
   props: {
-    chartData: Array
+    chartData: Array,
+    title: String,
+    loading: Boolean
+  },
+  components: {
+    ChartCard
   },
   mounted() {
     setTimeout(() => {
@@ -25,7 +35,7 @@ export default {
         data: this.chartData.slice()
       }
     ]
-    }, 500);
+    }, 100);
   },
   data: () => ({
           series: [{
@@ -35,12 +45,15 @@ export default {
             chart: {
               id: 'chart2',
               type: 'line',
-              height: 230,
+              foreColor: '#ddd',
               toolbar: {
                 autoSelected: 'pan',
                 show: false
               }
             },
+            grid: {
+                borderColor: '#242e3e',
+              },
             stroke: {
               width: 2,
               curve: 'smooth'
@@ -73,6 +86,10 @@ export default {
           chartOptionsLine: {
             chart: {
               id: 'chart1',
+              foreColor: '#ddd',
+              grid: {
+                borderColor: '#242e3e',
+              },
               height: 130,
               type: 'area',
               brush:{

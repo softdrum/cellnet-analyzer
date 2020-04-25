@@ -1,21 +1,47 @@
-import modemService from '../services/modemService'
 export default {
   state: {
-    signalLevel: 0
+    signal_level: {
+      value: 22 ,
+      last_update: 22
+    },
+    bit_error_rate: {
+      value: 0,
+      last_update: null
+    },
+    snr: {
+      value: 0,
+      last_update: null
+    }
   },
   mutations: {
-    SET_SIGNAL_LEVEL(state, data) {
-      if (data) {
-        state.signalLevel = data.data
-      } else {
-        state.signalLevel = 0
+    SET_SIGNAL_LVL(state, value) {
+      state.signal_level = {
+        value: value,
+        last_update: new Date()
       }
-    }
+    },
+    SET_BER(state, value) {
+      state.bit_error_rate = {
+        value: value,
+        last_update: new Date()
+      }
+    },
+    SET_SNR(state, value) {
+      state.snr = {
+        value: value,
+        last_update: new Date()
+      }
+    },
   },
   actions: {
-    async getData({commit}) {
-        const response = await modemService.getData()
-        commit('SET_SIGNAL_LEVEL', response.data)
-    }
+    setSignalLevel({commit}, value) {
+      commit('SET_SIGNAL_LVL', value)
+    },
+    setBitErrorRate({commit}, value) {
+      commit('SET_BER', value)
+    },
+    setSNR({commit}, value) {
+      commit('SET_SNR', value)
+    },
   }
 }

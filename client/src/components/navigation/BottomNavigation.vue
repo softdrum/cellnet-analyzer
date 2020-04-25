@@ -2,9 +2,6 @@
   <v-bottom-navigation
     :value="activeBtn"
     grow
-    style="background-color: #0C1B26;"
-    color="teal"
-    dark
     fixed
   >
     <v-btn to="/database">

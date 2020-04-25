@@ -5,8 +5,8 @@
     class="mynav px-4"
     :class="{fullNav: fullMode}"
     >
-      <div><h2 class="font-weight-light">Main dashboard</h2></div>
-      <Battery :level="100" />
+      <div><h2 class="font-weight-light">{{ pageName }}</h2></div>
+      <Battery :level="100" v-if="2 < 1"/>
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>mdi-account</v-icon>
@@ -34,8 +34,19 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['username'])
-  }
+    ...mapGetters(['username']),
+    pageName() {
+      const path = this.$route.fullPath
+      switch (path) {
+        case '/database': return 'Database'
+        case '/database/basestations': return 'Basestations'
+        case '/database/signals': return 'Signals'
+        case '/charts': return 'Charts'
+        case '/map': return 'Map'
+        default: return 'Main dashboard'
+      }
+    }
+  },
 }
 </script>
 <style scoped>

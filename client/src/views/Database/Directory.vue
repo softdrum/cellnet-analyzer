@@ -1,14 +1,17 @@
 <template>
   <div>
-    <v-btn to="/database" text>
+    <v-btn text to="/database" light style="color: #fff">
       <v-icon>mdi-arrow-left</v-icon>
       Back
     </v-btn>
     <v-row :justify="'center'">
       <v-col cols="12" v-if="directory === 'signals'">
-        <ChartCard :loading="loading">
-          <BrushChart slot="chart" :chartData="chartData" />
-        </ChartCard>
+        <BrushChart
+          slot="chart"
+          :title="'Signal level, dBm'"
+          :chartData="chartData"
+          :loading="dataLoading"
+        />
       </v-col>
       <v-col cols="12">
         <DataTable :headers="headers" :data="data"/>
@@ -22,18 +25,16 @@
 import DataTable from '@/components/tables/DataTable'
 import BrushChart from '@/components/charts/BrushChart'
 import tableHeaders from '@/components/tables/table.headers'
-import ChartCard from '@/components/cards/ChartCard'
 
 import dateFilter from '@/utils/filters/date.filter'
 export default {
   name: 'Directory',
   components: {
     BrushChart,
-    DataTable,
-    ChartCard
+    DataTable
   },
   data: () => ({
-    loading: true,
+    dataLoading: true,
     data: [],
     chartData: [],
     date: null,
@@ -75,6 +76,7 @@ export default {
     this.headers = this.setupTable(this.directory)
     // this.addToDB()
     try {
+      this.dataLoading = true
       this.data = await this.$store.dispatch('getDataFromDatabase', this.directory)
       this.data.forEach(element => {
         this.chartData.push({
@@ -88,6 +90,7 @@ export default {
       console.log(error);
       this.$error('Не удалось загрузить данные')
     }
+    this.dataLoading = false
   }
 }
 </script>

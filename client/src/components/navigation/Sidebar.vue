@@ -13,10 +13,10 @@
           @click.stop="sidebarHandler"
           style="cursor: pointer"
         >
-          <v-icon>mdi-radar</v-icon>
+          <v-icon color="green">mdi-arch</v-icon>
         </v-list-item-avatar>
 
-        <v-list-item-title>Cellnet Anal</v-list-item-title>
+        <v-list-item-title>Mobile Tester</v-list-item-title>
 
         <v-btn
           icon
