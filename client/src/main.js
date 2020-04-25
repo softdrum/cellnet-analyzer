@@ -6,7 +6,8 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import messagePlugin from './plugins/message.plugin'
 import dateFilter from './utils/filters/date.filter'
-
+import { L } from 'vue2-leaflet'
+import { L } from 'vue2-leaflet'
 import VueApexCharts from 'vue-apexcharts'
 Vue.config.productionTip = false
 
