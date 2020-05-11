@@ -3,10 +3,10 @@
     <ChartCard :title="title" :loading="loading" >
       <div slot="chart">
         <div id="chart-line2">
-          <apexchart type="area" height="230" :options="chartOptions" :series="series"></apexchart>
+          <apexchart type="area" height="200" :options="chartOptions" :series="series"></apexchart>
         </div>
         <div id="chart-line">
-          <apexchart type="area" height="130" :options="chartOptionsLine" :series="seriesLine"></apexchart>
+          <apexchart type="area" height="110" :options="chartOptionsLine" :series="seriesLine"></apexchart>
         </div>
       </div>
     </ChartCard>
@@ -35,7 +35,7 @@ export default {
         data: this.chartData.slice()
       }
     ]
-    }, 100);
+    }, 150);
   },
   data: () => ({
           series: [{

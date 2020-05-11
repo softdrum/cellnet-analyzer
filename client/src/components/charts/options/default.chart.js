@@ -3,9 +3,15 @@ export default {
     const options = {
       chart: {
         type: 'line',
-        height: 100,
-        width: 200,
         foreColor: darkTheme ? '#476876': '#666',
+        dropShadow: {
+          color: colors[0],
+          enabled: darkTheme,
+          top: 7,
+          left: 0,
+          blur: 7,
+          opacity: 0.12
+        },
         animations: {
           enabled: true,
           easing: 'linear',
@@ -56,6 +62,7 @@ export default {
         },
       },
       stroke: {
+        width: 3,
         curve: 'smooth'
       },
       fill: {

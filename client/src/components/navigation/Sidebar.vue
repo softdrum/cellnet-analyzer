@@ -13,7 +13,7 @@
           @click.stop="sidebarHandler"
           style="cursor: pointer"
         >
-          <v-icon color="green">mdi-arch</v-icon>
+          <v-icon color="cyan">mdi-arch</v-icon>
         </v-list-item-avatar>
 
         <v-list-item-title>Mobile Tester</v-list-item-title>

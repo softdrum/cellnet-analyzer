@@ -133,8 +133,8 @@ export default {
     }, 60000)
   },
   data: () => ({
-    options: defaultOptions.getOptions(['#0f80a9']),
-    options2: defaultOptions.getOptions(['#c92f55']),
+    options: defaultOptions.getOptions(['#00d0ea']),
+    options2: defaultOptions.getOptions(['#fba500']),
     windowWidth: window.innerWidth,
     stats: [
       {
