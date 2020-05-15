@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import 
 // '../maps/SaintPetersburg.mbtiles'
 import L from 'leaflet'
 export default {
