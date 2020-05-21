@@ -73,16 +73,7 @@ class Modem{
     })
   }
   executeAtCommand (command, modem) {
-    return modem.executeCommand(command, priority='adasd')
-    return new Promise(function(resolve, reject) {
-      modem.executeCommand(command, (result, err) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(result)
-        }
-      });
-    })
+    return modem.executeCommand(command)
   }
   getSignalQuality () {
     return this.executeAtCommand('AT+CSQ', this.modem)
