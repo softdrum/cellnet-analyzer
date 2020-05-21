@@ -1,5 +1,7 @@
 const os = require('os-utils')
 const fs = require('fs')
+const checkDiskSpace = require('check-disk-space')
+
 module.exports = {
   cpuUsage() {
     return new Promise((resolve, reject) => {
@@ -30,5 +32,8 @@ module.exports = {
         reject(error)
       }
     })
+  },
+  checkDiskSpace() {
+    return checkDiskSpace('/')
   }
 }
