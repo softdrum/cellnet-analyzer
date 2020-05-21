@@ -17,7 +17,10 @@ setInterval(() => {
   // raspberry.cpuUsage().then(response => {
   //   console.log(response);
   // })
-  raspberry.cpuTemp().then(response => {
+  // raspberry.cpuTemp().then(response => {
+  //   console.log(response);
+  // })
+  raspberry.checkDiskSpace().then(response => {
     console.log(response);
   })
   // raspberry.freeMemory().then(response => {
