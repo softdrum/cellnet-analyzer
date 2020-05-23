@@ -7,10 +7,10 @@ module.exports = {
     return new Promise((resolve, reject) => {
       try {
         os.cpuUsage(value => {
-          resolve(value)
+          resolve(Math.round(value*100))
         })
       } catch (error) {
-        reject(error)
+        reject(0)
       }
     })
   },
@@ -27,7 +27,8 @@ module.exports = {
   freeMemory() {
     return new Promise((resolve, reject) => {
       try {
-        resolve(os.freemem())
+        resolve(os.freememPercentage()*100)
+        // resolve(os.freemem())
       } catch (error) {
         reject(error)
       }

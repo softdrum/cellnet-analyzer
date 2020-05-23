@@ -1,35 +1,74 @@
 const app = require('express')()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
-const Modem = require('./utils/modem')
+const Modem = require('./utils/modem/modem')
 const sim7600 = new Modem('/dev/ttyUSB2', 115200)
 const raspberry = require('./utils/raspberry')
 sim7600.openModemConnection()
+function sleep (ms) {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(), ms)
+  })
+}
+
 setInterval(() => {
-  // sim7600.getSignalQuality().then(response => {
-  //   console.log(response);
-  //   // socket.emit(response.topic, response.data)
-  // })
+  
+  if (!sim7600.settingsMode) {
+    sim7600.getBasestationInfo().then(response => {
+      console.log(response);
+      io.emit('basestation', response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
   // sim7600.getAvailableOperators().then(response => {
   //   console.log(response);
   //   // socket.emit(response.topic, response.data)
   // })
-  // raspberry.cpuUsage().then(response => {
-  //   console.log(response);
-  // })
-  // raspberry.cpuTemp().then(response => {
-  //   console.log(response);
-  // })
+  sim7600.getSignalQuality().then(response => {
+    console.log(response);
+    io.emit(response.topic, response.data)
+  })
+  .catch(error => {
+    console.log(error);
+  })
+  raspberry.cpuUsage().then(response => {
+    console.log(response);
+    io.emit('cpu_usage', response)
+  })
+  raspberry.cpuTemp().then(response => {
+    io.emit('cpu_temp', response)
+
+  })
   raspberry.checkDiskSpace().then(response => {
     console.log(response);
+    io.emit('disk_space', response)
   })
-  // raspberry.freeMemory().then(response => {
-  //   console.log(response);
-  // })
+  raspberry.freeMemory().then(response => {
+    io.emit('freemem_percentage', response)
+    console.log(response);
+  })
 }, 1000)
 io.on('connection', (socket) => {
   console.log('IO CONNECTED');
-  
+  socket.on('changeMode', (mode) => {
+    if (!sim7600.settingsMode) {
+      sim7600.settingsMode = true
+      sleep(5000).then(() => {
+        sim7600.changeMode(mode)
+        .then(response => {
+          console.log(response)
+          sim7600.settingsMode = false
+        })
+        .catch(error => {
+          socket.emit('modemError', {msg: error})
+        })
+      })
+    } else {
+      socket.emit('modemError', {msg:'modem is busy'})
+    }
+  })
 })
 module.exports = {
   app, server

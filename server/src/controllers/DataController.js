@@ -11,6 +11,7 @@ function tablePicker(tableName) {
 module.exports = {
   async getData(req, res) {
     try {
+      console.log(req.body);
       const table = tablePicker(req.body.tableName)
       const data = await table.findAll()
       res.send({
