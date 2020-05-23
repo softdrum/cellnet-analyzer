@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-4 elevation-2">
+  <v-card class="pa-4 elevation-2" style="height: 100%;">
     <div class="header text--black text--darken-4 px-3">{{ title }}</div>
     <Loader :overlay="true" v-if="loading" />
     <slot name="chart" />

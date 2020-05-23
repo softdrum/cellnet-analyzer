@@ -60,6 +60,7 @@ export default {
           { title: 'Charts', icon: 'mdi-chart-line', link: '/charts'},
           { title: 'Map', icon: 'mdi-map', link: '/map'},
           { title: 'Database', icon: 'mdi-database', link: '/database'},
+          { title: 'System', icon: 'mdi-system', link: '/system'},
           { title: 'Settings', icon: 'mdi-cog-outline', link: '/user-settings'},
         ],
       mini: false

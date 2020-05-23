@@ -14,6 +14,13 @@ export default {
     }
   },
   mutations: {
+    SOCKET_SIGNAL_QUALITY(state, msg) {
+      console.log(msg);
+      state.signal_level = {
+        value: msg,
+        last_update: new Date()
+      }
+    },
     SET_SIGNAL_LVL(state, value) {
       state.signal_level = {
         value: value,
@@ -43,5 +50,8 @@ export default {
     setSNR({commit}, value) {
       commit('SET_SNR', value)
     },
+    socket_modemError({commit}, error) {
+      commit('SET_MESSAGE', {message: error.msg, color:'red'})
+    }
   }
 }
