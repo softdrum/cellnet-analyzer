@@ -7,6 +7,23 @@ import vuetify from './plugins/vuetify';
 import messagePlugin from './plugins/message.plugin'
 import dateFilter from './utils/filters/date.filter'
 import VueApexCharts from 'vue-apexcharts'
+// import VueSocketIO from 'vue-socket.io'
+
+// Vue.use(new VueSocketIO({
+//   debug: false,
+//   connection: 'http://192.168.0.243:8081',
+//   vuex: {
+//     store,
+//     actionPrefix: 'SOCKET_',
+//     mutationPrefix: 'SOCKET_'
+//   }
+// }))
+import VueSocketIOExt from 'vue-socket.io-extended';
+import io from 'socket.io-client';
+ 
+const socket = io('http://192.168.0.243:8081');
+ 
+Vue.use(VueSocketIOExt, socket, { store });
 Vue.config.productionTip = false
 import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';

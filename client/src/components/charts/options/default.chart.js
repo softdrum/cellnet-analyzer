@@ -83,8 +83,8 @@ export default {
           }
       },
       yaxis: {
-          max: 100,
-          min: 0
+          max: 0,
+          min: -120
       }
     }
     return options

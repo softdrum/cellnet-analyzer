@@ -1,5 +1,4 @@
 <template>
-
   <div style="height: 500px; width: 100%">
     <div ref="map" class="map"></div>
   </div>
