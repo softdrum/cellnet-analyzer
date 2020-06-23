@@ -30,7 +30,15 @@ export default {
 <style>
 @import './styles/animation.css';
 @import './styles/scrollbar.scss';
-.v-card {
-   border: none !important;
-}
+  .v-card {
+    border: none !important;
+  }
+  html {
+    font-size: calc(14px + 2 * (100vw / 1280)) !important;
+  }
+  @media (max-width: 767px) {
+    html {
+      font-size: calc(14px + (2 + 2*0.7) * ((100vw - 320px) / 1280)) !important;;
+    }
+  }
 </style>

@@ -32,39 +32,8 @@
         xl="6"
         lg="6"
         md="6"
-        sm="12"
-        xs="12"
-      >
-        <InfoCard v-if="0 < 1" :info="bsInfo" />
-        <InfoCardCollapsible v-else :info="bsInfo" />
-      </v-col>
-      <v-col
-        cols="12"
-        xl="3"
-        lg="3"
-        md="3"
         sm="6"
-        xs="12"
-      >
-        <StatCard :stat="diskSpace"/>
-      </v-col>
-      <v-col
-        cols="12"
-        xl="3"
-        lg="3"
-        md="3"
-        sm="6"
-        xs="12"
-      >
-        <StatCard :stat="cpuTemp"/>
-      </v-col>
-      <v-col
-        cols="12"
-        xl="6"
-        lg="6"
-        md="6"
-        sm="12"
-        xs="12"
+        xs="6"
       >
         <InfoCard v-if="2 < 1" :info="bsInfo" />
         <InfoCardCollapsible v-else :info="bsInfo" />
@@ -75,7 +44,7 @@
         lg="3"
         md="3"
         sm="6"
-        xs="12"
+        xs="6"
       >
         <StatCard :stat="diskSpace"/>
       </v-col>
@@ -85,7 +54,7 @@
         lg="3"
         md="3"
         sm="6"
-        xs="12"
+        xs="6"
       >
         <StatCard :stat="cpuTemp"/>
       </v-col>
@@ -153,8 +122,8 @@ export default {
       }
      }
     },
-    cpu_temp: function (data) {
-     const temp = Math.round(data)
+    cpu_info: function (data) {
+     const temp = Math.round(data.cpuTemp)
      this.cpuTemp = {
        title: 'CPU temp.',
        subtitle: `${temp}°C`,

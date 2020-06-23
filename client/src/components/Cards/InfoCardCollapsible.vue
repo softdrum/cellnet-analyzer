@@ -2,33 +2,34 @@
   <v-card
     class="mx-auto"
     :class="{closed: isCollapsed}"
+    v-resize="onResize"
   >
     <div
       @click="activateAccordion"
       class="d-flex align-center justify-space-around py-5 px-6 card-header"
     >
-      <div>
-        <v-icon :class="{loading: !this.infoTitles.length}" style="font-size: 67px; color: #141926;">mdi-antenna</v-icon>
+      <div v-if="desktop">
+        <v-icon :class="{loading: !this.infoTitles.length}" style="font-size: 4.1rem; color: #141926;">mdi-antenna</v-icon>
       </div>
       <div
         v-for="(item, i) of infoTitles.slice(0,4)"
         :key="i">
-        <div class="text-uppercase mb-2" style="font-size: 13px; color: #616D83;">{{ item }}:</div>
-        <div :style="{color: item === 'status' ? '#40B64C':'white'}" style="font-size: 22px">{{ info[item] }}</div>
+        <div class="text-uppercase mb-2" style="font-size: 0.8rem; color: #616D83;">{{ item }}:</div>
+        <div :style="{color: item === 'status' ? '#40B64C':'white'}" style="font-size: 1.37rem">{{ info[item] }}</div>
       </div>
     </div>
     <div class="card-body">
       <div class="card-content">
         <div
-          v-for="n in 3"
+          v-for="n in 1"
           :key="n"
           class="d-flex align-center justify-space-around py-5 px-6"
         >
           <div
             v-for="(item, i) of infoTitles.slice(5,9)"
             :key="i">
-            <div class="text-uppercase mb-2" style="font-size: 12px; color: #616D83;">{{ item }}:</div>
-            <div :style="{color: item === 'status' ? '#40B64C':'white'}" style="font-size: 20px">{{ info[item] }}</div>
+            <div class="text-uppercase mb-2" style="font-size: 0.75rem; color: #616D83;">{{ item }}:</div>
+            <div :style="{color: item === 'status' ? '#40B64C':'white'}" style="font-size: 1rem">{{ info[item] }}</div>
           </div>
         </div>
         
@@ -43,7 +44,8 @@ export default {
     info: Object
   },
   data: () => ({
-    isCollapsed: true
+    isCollapsed: true,
+    desktop: true
   }),
   computed: {
     infoTitles () {
@@ -54,6 +56,9 @@ export default {
   methods: {
     activateAccordion () {
       this.isCollapsed = !this.isCollapsed
+    },
+    onResize () {
+      this.desktop = window.innerWidth > 500 ? true : false
     }
   }
 }
@@ -87,7 +92,7 @@ export default {
     max-height: 0 !important;
     padding-bottom: 0px;
   }
-  .loading {
+.loading {
    animation: mymove 1.5s infinite ease;
 }
 

@@ -18,20 +18,22 @@ export default {
   ],
   bs: [
     {
+      text: 'Longitude',
+      align: 'start', 
+      sortable: false,
+      value: 'lon',
+    },
+    {
       text: 'Latitude',
-      align: 'start',
       sortable: false,
       value: 'lat',
     },
-    {
-      text: 'Longitude',
-      sortable: false,
-      value: 'long',
-    },
-    { text: 'Radius', value: 'radius' },
+    { text: 'Range', value: 'range' },
     { text: 'Operator', value: 'operator'},
-    { text: 'Generation', value: 'generation'},
-    { text: 'ARFCN', value: 'arfcn' },
+    { text: 'MCC', value: 'mcc'},
+    { text: 'Radio', value: 'radio'},
+    { text: 'Unit', value: 'unit'},
+    { text: 'Unit', value: 'unit'},
     { text: 'RX level, dBm', value: 'rx_level' },
   ]
 }

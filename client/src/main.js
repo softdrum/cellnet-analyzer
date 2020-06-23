@@ -8,6 +8,8 @@ import messagePlugin from './plugins/message.plugin'
 import dateFilter from './utils/filters/date.filter'
 import VueApexCharts from 'vue-apexcharts'
 import VueSocketIOExt from 'vue-socket.io-extended';
+import VueMapbox from "vue-mapbox";
+import Mapbox from "mapbox-gl";
 
 import io from 'socket.io-client'; 
 const socket = io('http://192.168.0.243:8081');
@@ -18,7 +20,7 @@ Vue.use(Vuelidate)
 Vue.use(messagePlugin)
 Vue.filter('date', dateFilter)
 Vue.component('apexchart', VueApexCharts)
-
+Vue.use(VueMapbox, { mapboxgl: Mapbox });
 new Vue({
   router,
   store,

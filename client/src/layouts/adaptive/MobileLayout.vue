@@ -3,7 +3,9 @@
     <Appbar />
     <div class="px-7">
       <transition name="fade" mode="out-in">
-        <router-view/>
+        <v-container fluid class="px-0">
+          <router-view/>
+        </v-container>
       </transition>
     </div>
     <BottomNavigation />

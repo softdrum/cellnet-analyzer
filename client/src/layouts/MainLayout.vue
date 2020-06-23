@@ -1,6 +1,6 @@
 <template>
-    <div>
-      <div v-if="windowWidth > 700"> 
+    <div v-resize="onResize">
+      <div v-if="desktop"> 
         <DesktopLayout />
       </div>
       <div v-else>
@@ -18,12 +18,12 @@ export default {
     MobileLayout
   },
   data: () => ({
-    windowWidth: window.innerWidth
+    desktop: true
   }),
   methods: {
-    // getData() {
-    //   this.$store.dispatch('getData')
-    // }
+    onResize () {
+      this.desktop = window.innerWidth > 900 ? true : false
+    }
   },
 }
 </script>

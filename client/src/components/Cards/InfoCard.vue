@@ -1,46 +1,42 @@
 <template>
-  <v-hover style="height: 100%;">
-    <template v-slot:default="{ hover }">
-      <v-card
-        class="mx-auto"
-      >
-        <div class="d-flex align-center justify-space-around py-5 px-6"
-        style="height: 100%;"
-        >
-          <div>
-            <v-icon style="font-size: 67px; color: #141926;">mdi-antenna</v-icon>
-          </div>
-          <div
-            v-for="(item, i) of infoTitles"
-            :key="i">
-            <div class="text-uppercase mb-2" style="font-size: 13px; color: #616D83;">{{ item }}:</div>
-            <div :style="{color: item === 'status' ? '#40B64C':'white'}" style="font-size: 22px">{{ info[item] }}</div>
+  <v-card class="px-8 py-5">
+    <transition name="fade" mode="out-in">
+      <div class="d-flex align-center justify-space-between"  v-if="data.length">
+        <div>
+          <div v-for="(item, i) in data" :key="i" class="mb-1 ">
+            <div class="font-weight-regular" style="font-family: roboto;color: #404C5C; font-size: 1rem">{{ item.title }}</div>
+            <div class="font-weight-regular" style="font-size: 32px;font-size: 1.3rem">{{ item.value }} {{ item.measure }}</div>
           </div>
         </div>
-
-        <v-fade-transition>
-          <v-overlay
-            v-if="hover"
-            absolute
-            color="#3D5564"
-          >
-            <v-btn>See more info</v-btn>
-          </v-overlay>
-        </v-fade-transition>
-      </v-card>
-    </template>
-  </v-hover>
+        <v-icon :class="{loading: !data.length}" :color="icon.color" style="font-size: 7rem;">{{icon.name}}</v-icon>
+      </div>
+      <div class="d-flex align-center justify-space-between" v-else>
+        <div style="font-family: roboto;color: #404C5C; font-size: 1rem">Loading data...</div>
+        <v-icon :class="{loading: !data.length}" style="font-size: 7rem;">{{icon.name}}</v-icon>
+      </div>
+    </transition>
+  </v-card>
 </template>
 <script>
 export default {
   props: {
-    info: Object
+    data: {
+      type: Array,
+      default: () => ([])
+    },
+    icon: Object
   },
   computed: {
-    infoTitles () {
-      if (!this.info) return []
-      return Object.keys(this.info).slice(0,4)
-    }
   }
 }
 </script>
+<style scoped>
+  .loading {
+    animation: mymove 5.5s infinite ease;
+  }
+  @keyframes mymove {
+    0% {color: cyan;}
+    50% {color: rgb(0, 83, 83);}
+    100% {color: cyan;}
+  }
+</style>

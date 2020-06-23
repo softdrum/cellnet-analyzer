@@ -2,6 +2,7 @@
   <v-data-table
     :dense="false"
     v-model="selected"
+    :loading="loading"
     :items="data"
     :headers="headers"
     show-select
@@ -25,6 +26,10 @@
     props: {
       data: Array,
       headers: Array,
+      loading: {
+        type: Boolean,
+        default: false
+      }
     },
     data: () => ({
       selected: []

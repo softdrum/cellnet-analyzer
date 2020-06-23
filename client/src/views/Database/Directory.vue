@@ -14,7 +14,7 @@
         />
       </v-col>
       <v-col cols="12">
-        <DataTable :headers="headers" :data="data"/>
+        <DataTable :headers="headers" :data="data" :loading="dataLoading"/>
       </v-col>
     </v-row>
   </div>
@@ -34,12 +34,12 @@ export default {
     DataTable
   },
   data: () => ({
-    dataLoading: true,
+    dataLoading: false,
     data: [],
     chartData: [],
     date: null,
     headers: tableHeaders.signal,
-    directory: 'signal'
+    directory: 'signal',
   }),
   methods: {
     setupTable(directory) {
@@ -78,14 +78,15 @@ export default {
     try {
       this.dataLoading = true
       this.data = await this.$store.dispatch('getDataFromDatabase', this.directory)
-      this.data.forEach(element => {
+      if (this.directory === 'signals') {
+        this.data.forEach(element => {
         this.chartData.push({
           x: new Date(element.createdAt),
           y: element.signal_level
         })
         element.createdAt = dateFilter(new Date(element.createdAt), 'datetime')
-        this.loading = false
       })
+      }
     } catch (error) {
       console.log(error);
       this.$error('Не удалось загрузить данные')

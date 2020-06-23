@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col
+    <!-- <v-col
       cols="12"
       xl="6"
       lg="6"
@@ -14,6 +14,26 @@
           <RadialChart :title="'CPU Usage'" :value="cpuUsage"/>
         </div>
       </v-card>
+    </v-col> -->
+    <v-col
+      cols="12"
+      xl="4"
+      lg="4"
+      md="6"
+      sm="6"
+      xs="12"
+    >
+      <InfoCard :data="cpuInfo.data" :icon="cpuInfo.icon"/>
+    </v-col>
+     <v-col
+      cols="12"
+      xl="4"
+      lg="4"
+      md="6"
+      sm="6"
+      xs="12"
+    >
+      <InfoCard :data="memoryInfo.data" :icon="memoryInfo.icon"/>
     </v-col>
     <v-col
       cols="12"
@@ -27,31 +47,10 @@
         <div class="d-flex align-center justify-space-between">
           
           <div>
-            <div class="font-weight-light body-1" style="color: #404C5C;">Free</div>
-            <div class="font-weight-light" style="font-size: 32px">{{ Math.round(freeMem) }} MB</div>
-            <div class="font-weight-light body-1" style="color: #404C5C;">Usage</div>
-            <div class="font-weight-light" style="font-size: 32px">{{ Math.round(freeMem) }} %</div>
-          </div>
-          <v-icon style="font-size: 110px" color="primary">mdi-harddisk</v-icon>
-        </div>
-      </v-card>
-    </v-col>
-    <v-col
-      cols="12"
-      xl="6"
-      lg="6"
-      md="6"
-      sm="6"
-      xs="12"
-    >
-      <v-card class="py-7 px-12" style="border-radius: 10px">
-        <div class="d-flex align-center justify-space-between">
-          
-          <div>
-            <div class="font-weight-light body-1" style="color: #404C5C;">Battery capacity</div>
-            <div class="font-weight-light" style="font-size: 32px">{{cpuTemp}}%</div>
+            <div class="font-weight-light" style="color: #404C5C; font-size: 1rem">Battery capacity</div>
+            <div class="font-weight-light" style="font-size: 1.8rem">{{cpuTemp}}%</div>
             <div class="font-weight-light body-1" style="color: #404C5C;">Standalone</div>
-            <div class="font-weight-light" style="font-size: 32px">2 hours</div>
+            <div class="font-weight-light" style="font-size: 1.8rem">2 hours</div>
           </div>
           <Battery class="mr-5" :value="cpuTemp"/>
         </div>
@@ -75,50 +74,95 @@
   </v-row>
 </template>
 <script>
-import RadialChart from '@/components/charts/RadialChart'
+// import RadialChart from '@/components/charts/RadialChart'
 import DiskSpaceChart from '@/components/charts/DiskSpaceChart'
-import Temperature from '@/components/charts/Temperature'
+// import Temperature from '@/components/charts/Temperature'
 import Battery from '@/components/charts/Battery'
+import InfoCard from '@/components/cards/InfoCard'
 
 export default {
- components: {
-   RadialChart,
-   DiskSpaceChart,
-   Temperature,
-   Battery,
- },
- data: () => ({
-   cpuUsage: 0,
-   cpuTemp: 0,
-   freeMem: 0,
-   diskSpace: {}
- }),
- mounted() {
-   this.change()
- },
- methods: {
-   change() {
-     this.$socket.client.emit('changeMode', 'GSM');
-   }
- },
- sockets: {
+  components: {
+  //  RadialChart,
+    DiskSpaceChart,
+  //  Temperature,
+    Battery,
+    InfoCard
+  },
+  data: () => ({
+    cpuTemp: 0,
+    memoryInfo: {
+      icon: {
+        name: 'mdi-cpu-32-bit',
+        color: '',
+      }
+    },
+    diskSpace: {},
+    cpuInfo: {
+      icon: {
+        name: 'mdi-cpu-32-bit',
+        color: '',
+      }
+    }
+  }),
+  mounted() {
+    // this.change()
+  },
+
+  methods: {
+    change() {
+      this.$socket.client.emit('changeMode', 'GSM');
+    }
+  },
+  sockets: {
     connect() {
         console.log('socket connected')
     },
-    cpu_usage: function (data) {
-     this.cpuUsage = data
-    },
-    cpu_temp: function (data) {
-     this.cpuTemp = Math.round(data)
+    cpu_info: function (data) {
+      this.cpuInfo = {
+        data: [
+          {
+            title: 'CPU Temp',
+            value: data.cpuTemp,
+            measure: '°C'
+          },
+          {
+            title: 'Usage',
+            value: data.cpuUsage,
+            measure: '%'
+          }
+        ],
+        icon: {
+          name: 'mdi-cpu-32-bit',
+          color: '#3f8bb5'
+        }
+      }
     },
     disk_space: function (data) {
-     this.diskSpace = data
+      this.diskSpace = data
     },
     freemem_percentage: function (data) {
-     this.freeMem = 100 - data
+      let freeMem = Math.round(100 - data)
+      this.memoryInfo = {
+        data: [
+          {
+            title: 'Free',
+            value: freeMem,
+            measure: 'MB'
+          },
+          {
+            title: 'Usage',
+            value: freeMem,
+            measure: '%'
+          }
+        ],
+        icon: {
+          name: 'mdi-memory',
+          color: '#3FB58B'
+        }
+      }
     }
-  },
-}
+    },
+  }
 </script>
 <style scoped>
   .inner-shadow {

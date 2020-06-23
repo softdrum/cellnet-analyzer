@@ -87,7 +87,7 @@ export default {
     height: 110px;
     width: 65px;
     border-radius: 10px;
-    background: rgba(20, 25, 38, 0.7);
+    background: rgba(20, 25, 38, 0.1);
     position: relative;
     z-index: 0;
     overflow: hidden;

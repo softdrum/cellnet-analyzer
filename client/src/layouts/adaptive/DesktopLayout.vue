@@ -5,11 +5,11 @@
       <div class="ghostSidebar" :class="{sideOpened: opened}"></div>
       <div class="content">
         <Appbar class="side-animation"/>
-          <v-container fluid class="pl-8 pr-6">
-            <transition name="fade" mode="out-in">
-              <router-view />
-            </transition>
-          </v-container>
+        <v-container fluid class="pl-8 pr-6">
+          <transition name="fade" mode="out-in">
+            <router-view />
+          </transition>
+        </v-container>
     </div>
     </div>
   </div>

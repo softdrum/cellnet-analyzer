@@ -5,7 +5,7 @@
     class="mynav px-4"
     :class="{fullNav: fullMode}"
     >
-      <div><h2 class="font-weight-light">{{ pageName }}</h2></div>
+      <div><div class="font-weight-light" style="font-size: 1.25rem;">{{ pageName }}</div></div>
       <Battery :level="100" v-if="2 < 1"/>
       <v-spacer></v-spacer>
       <v-btn icon>

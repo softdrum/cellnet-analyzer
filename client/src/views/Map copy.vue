@@ -1,117 +1,139 @@
 <template>
-
-  <div style="height: 500px; width: 100%">
-    <div id="map" class="map"></div>
-    <div style="height: 200px overflow: auto;">
-      <p>First marker is placed at {{ withPopup.lat }}, {{ withPopup.lng }}</p>
-      <p>Center is at {{ currentCenter }} and the zoom is: {{ currentZoom }}</p>
-      <button @click="showLongText">
-        Toggle long popup
-      </button>
-      <button @click="showMap = !showMap">
-        Toggle map
-      </button>
-    </div>
-    <l-map
-      v-if="showMap"
-      :zoom="zoom"
-      :center="center"
-      :options="mapOptions"
-      class="elevation-10"
-      style="border-radius: 5px; height: 80%"
-      @update:center="centerUpdate"
-      @update:zoom="zoomUpdate"
-    >
-    <l-tile-layer
-        :url="url"
-        :attribution="attribution"
-      />
-      <div
-        v-for="(circle, id) in circles"
-        :key="id"
-      >
-        <l-circle
-            :lat-lng="circle.center"
-            :radius="circle.radius"
-          />
-      </div>
-    </l-map>
+  <div style="height: 600px; width: 100%" class="elevation-0">
+    <MglMap :accessToken="accessToken" :center="coordinates" :mapStyle="mapStyle" >
+      <MglMarker :coordinates="coordinates" color="blue" >
+        <div slot="marker"><div style="width: 5px; height: 50px;background: red"></div></div>
+        <MglPopup style="height: 100px">
+        <div style="color: black">
+          <div>Hello, I'm popup!</div>
+          <div>Hello, I'm popup!</div>
+          <div>Hello, I'm popup!</div>
+          <div>Hello, I'm popup!</div>
+          <div>Hello, I'm popup!</div>
+        </div>
+      </MglPopup>
+      </MglMarker>
+      <MglGeojsonLayer
+          :sourceId="'xueta'"
+          :source="clustersSource"
+          layerId="clustersLayer"
+          :layer="clustersLayer"
+        />
+        <MglGeojsonLayer
+          :sourceId="'xueta'"
+          :source="clustersSource"
+          layerId="clustersLayer2"
+          :layer="clustersLayer2"
+        />
+        <MglGeojsonLayer
+          :sourceId="'xueta'"
+          :source="clustersSource"
+          layerId="unclusteredLayer"
+          :layer="unclusteredLayer"
+        />
+    </MglMap>
   </div>
 </template>
 
 <script>
-import { latLng } from "leaflet";
-import { LMap, LTileLayer, LCircle} from "vue2-leaflet";
-import { L } from 'leaflet'
+
+import {
+  MglMap,
+  MglMarker,
+  MglPopup,
+  MglGeojsonLayer
+} from "vue-mapbox";
+import Mapbox from "mapbox-gl";
+const geojson = {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [-1.5518674999999575,47.2451248]
+            },
+            properties: {
+              'marker-color': '#3bb2d0',
+              'marker-size': 'large',
+              'marker-symbol': 'rocket'
+            }
+          },
+          {
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+              coordinates: [2.3412468999999874,48.8233099]
+            },
+            properties: {
+              'marker-color': '#3bb2d0',
+              'marker-size': 'large',
+              'marker-symbol': 'rocket'
+            }
+          }
+        ]
+        
+      }
 export default {
-  name: "Example",
   components: {
-    LMap,
-    LTileLayer,
-    LCircle
+    MglMap,
+    MglMarker,
+    MglPopup,
+    MglGeojsonLayer
   },
   data() {
     return {
-      map: null,
-      tileLayer: null,
-      layers: [],
-      // url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      url: 'C:/Users/Daniel/Downloads/2017-07-03_russia_saint-petersburg.mbtiles',
-      circles: [
-        {
-          center: latLng(59.925783, 30.331176),
-          radius: 10,
-          weight: 10
-        },
-        {
-          center: latLng(59.92591, 30.331052),
-          radius: 10
-        },
-        {
-          center: latLng(59.92599, 30.330684),
-          radius: 10
-        },
-      ],
-      zoom: 13,
-      center: latLng(59.925377, 30.329817),
-      attribution:
-        '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      withPopup: latLng(47.41322, -1.219482),
-      withTooltip: latLng(47.41422, -1.250482),
-      currentZoom: 5.5,
-      currentCenter: latLng(47.41322, -1.219482),
-      showParagraph: false,
-      mapOptions: {
-        zoomSnap: 0.5
+      coordinates: [5.446910099999968,43.286126],
+      accessToken: 'pk.eyJ1IjoiZHJld3plcmciLCJhIjoiY2thdHAyZHB6MHZtbjM3b2NpdmFhMzBjbiJ9.FitsZxcjiZzIx9_4VddY3g', // your access token. Needed if you using Mapbox maps
+      mapStyle: 'mapbox://styles/mapbox/streets-v11',
+      clustersSource: {
+        type: Object,
+        data: geojson, //"https://gist.githubusercontent.com/Duermael/fd62c5ef80eceaf3b1a71a0f15aec60f/raw/1c01a3a80273e8d1d7e8d70385a2d6616d203e0f/map.geojson"
+        cluster: true,
+        clusterMaxZoom: 14, // Max zoom to cluster points on
+        clusterRadius: 40 // Radius of each cluster when clustering points (defaults to 50)
       },
-      showMap: true
+      clustersLayer: {
+        id: 'clustersLayer',
+        type: "circle",
+        paint: { "circle-color": 'rgba(130,25,200, 0.3)', "circle-radius": 18 },
+        filter: ["has", "point_count"],
+        source: 'xueta'
+      },
+      clustersLayer2: {
+        "id": "cluster-count",
+        "type": "symbol",
+        "source": "xueta",
+        "layout": {
+            "text-field": "{point_count}",
+            "text-font": [
+                "DIN Offc Pro Medium",
+                "Arial Unicode MS Bold"
+            ],
+            "text-size": 12
+        }
+      },
+      unclusteredLayer: {
+        "id": "unclustered-points",
+        "type": "symbol",
+        "source": "xueta",
+        "filter": ["!has", "point_count"],
+        "layout": {
+            "icon-image":  "marker-15",
+            'icon-size': 1.25
+        }
+      },
     };
   },
-  methods: {
-    initLayers() {},
-    initMap() {
-      this.map = L.map('map').setView([38.63, -90.23], 12);
-      this.tileLayer = L.tileLayer(
-        'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png',
-        {
-          maxZoom: 18,
-          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>',
-        }
-      );
-      this.tileLayer.addTo(this.map);
-    },
-    zoomUpdate(zoom) {
-      this.currentZoom = zoom;
-    },
-    centerUpdate(center) {
-      this.currentCenter = center;
-    },
-    showLongText() {
-      this.showParagraph = !this.showParagraph;
-    },
-    innerClick() {
-      alert("Click!");
-    }
+
+  created() {
+    // We need to set mapbox-gl library here in order to use it in template
+    this.mapbox = Mapbox;
   }
 };
 </script>
+<style scoped>
+  .map {
+    height: 500px
+  }
+</style>
