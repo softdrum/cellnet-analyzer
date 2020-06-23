@@ -39,6 +39,7 @@ export default {
         commit('SET_USER', response.data.user)
     },
     logout({commit}) {
+      alert()
       commit('SET_TOKEN', null)
       commit('SET_USER', null)
     }

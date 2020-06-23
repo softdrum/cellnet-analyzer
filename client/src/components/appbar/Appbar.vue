@@ -5,13 +5,32 @@
     class="mynav px-4"
     :class="{fullNav: fullMode}"
     >
-      <div><div class="font-weight-light" style="font-size: 1.25rem;">{{ pageName }}</div></div>
-      <Battery :level="100" v-if="2 < 1"/>
-      <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>mdi-account</v-icon>
-        {{username}}
-      </v-btn>
+      <div class="d-flex align-center justify-space-between" style="width: 100%;">
+        <div><div class="font-weight-light" style="font-size: 1.25rem;">{{ pageName }}</div></div>
+        <Battery :level="100" v-if="2 < 1"/>
+        <span class="black-text">{{date | date('time')}}</span>
+        <v-menu
+          transition="slide-y-transition"
+          bottom
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <div
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-account</v-icon>
+              {{username}}
+            </div>
+          </template>
+          <v-list>
+            <v-list-item
+              @click="logout()"
+            >
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
     </v-app-bar>
     <v-divider></v-divider>
   </div>
@@ -27,6 +46,14 @@ export default {
   props: {
     fullMode: Boolean
   },
+  data: () => ({
+    date: new Date(),
+    interval: null,
+    items: [
+      { title: 'Profile' },
+      { title: 'Logout' },
+    ],
+  }),
   methods: {
     logout() {
       this.$store.dispatch('logout')
@@ -46,6 +73,11 @@ export default {
         default: return 'Main dashboard'
       }
     }
+  },
+  mounted() {
+    this.interval = setInterval(() => {
+      this.date = new Date()
+    }, 1000)
   },
 }
 </script>
