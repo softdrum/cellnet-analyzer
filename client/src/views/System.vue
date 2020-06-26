@@ -109,9 +109,6 @@ export default {
   },
 
   methods: {
-    change() {
-      this.$socket.client.emit('changeMode', 'GSM');
-    }
   },
   sockets: {
     connect() {
@@ -141,17 +138,16 @@ export default {
       this.diskSpace = data
     },
     freemem_percentage: function (data) {
-      let freeMem = Math.round(100 - data)
       this.memoryInfo = {
         data: [
           {
             title: 'Free',
-            value: freeMem,
+            value: data.freemem,
             measure: 'MB'
           },
           {
             title: 'Usage',
-            value: freeMem,
+            value: data.freememPercent,
             measure: '%'
           }
         ],
