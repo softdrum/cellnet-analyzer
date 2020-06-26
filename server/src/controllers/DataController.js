@@ -1,5 +1,7 @@
 const {Signal} = require('../models')
-const {BS} = require('../models')
+// const {BS} = require('../models')
+const csvDatabase = require('../csv/csvDatabase')
+const BS = new csvDatabase('saint_petersburg_celltowers')
 
 function tablePicker(tableName) {
   switch (tableName) {
@@ -14,6 +16,7 @@ module.exports = {
       console.log(req.body);
       const table = tablePicker(req.body.tableName)
       const data = await table.findAll()
+      console.log(data.length);
       res.send({
           data: data,
       })

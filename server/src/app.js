@@ -24,7 +24,7 @@ setInterval(() => {
   }
   // sim7600.getAvailableOperators().then(response => {
   //   console.log(response);
-  //   // socket.emit(response.topic, response.data)
+  //   socket.emit(response.topic, response.data)
   // })
   sim7600.getSignalQuality().then(response => {
     console.log(response);
@@ -33,16 +33,15 @@ setInterval(() => {
   .catch(error => {
     console.log(error);
   })
-  raspberry.cpuUsage().then(response => {
-    console.log(response);
-    io.emit('cpu_usage', response)
+  .catch(error => {
+    console.log(error);
   })
-  raspberry.cpuTemp().then(response => {
-    io.emit('cpu_temp', response)
-
+  raspberry.cpuInfo().then(response => {
+    // console.log('INFO', response);
+    io.emit('cpu_info', response)
   })
   raspberry.checkDiskSpace().then(response => {
-    console.log(response);
+    // console.log(response);
     io.emit('disk_space', response)
   })
   raspberry.freeMemory().then(response => {
@@ -52,7 +51,7 @@ setInterval(() => {
 }, 1000)
 io.on('connection', (socket) => {
   console.log('IO CONNECTED');
-  socket.on('changeMode', (mode) => {
+  socket.on('changeMode', (mode, callback) => {
     if (!sim7600.settingsMode) {
       sim7600.settingsMode = true
       sleep(5000).then(() => {
@@ -60,13 +59,18 @@ io.on('connection', (socket) => {
         .then(response => {
           console.log(response)
           sim7600.settingsMode = false
+          callback({msg: 'success'})
         })
         .catch(error => {
-          socket.emit('modemError', {msg: error})
+          sim7600.settingsMode = false
+          callback({msg: error})
+          // socket.emit('modemError', {msg: error})
         })
       })
     } else {
-      socket.emit('modemError', {msg:'modem is busy'})
+      sim7600.settingsMode = false
+      callback({msg: 'modem is busy'})
+      // socket.emit('modemError', {msg:'modem is busy'})
     }
   })
 })

@@ -51,9 +51,10 @@ class Modem{
   getBasestationInfo () {
     return this.modem.executeCommand('AT+CPSI?')
       .then(response => {
-        if (response.status === 'ERROR') throw 'Error: Can not get BS Info'
+        if (response.status === 'ERROR') throw 'Can not get BS Info'
+        if (response.data.result.trim() === 'NO SERVICE,Online') throw 'No service'
         const info = modemHelpers.extractBasestationInfo(response.data.result)
-        if (!info) throw `Error: Unknown data: ${response}`
+        if (!info) throw `Unknown data: ${response}`
         return info.groups
       })
   }

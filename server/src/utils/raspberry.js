@@ -3,7 +3,7 @@ const fs = require('fs')
 const checkDiskSpace = require('check-disk-space')
 
 module.exports = {
-  cpuUsage() {
+  cpuUsage () {
     return new Promise((resolve, reject) => {
       try {
         os.cpuUsage(value => {
@@ -24,11 +24,35 @@ module.exports = {
       })
     })
   },
+  cpuInfo () {
+    return new Promise((resolve, reject) => {
+      let cpuUsage
+      let cpuTemp
+      this.cpuUsage().then(response => {
+        cpuUsage = Math.round(response)
+        return this.cpuTemp()
+      })
+      .then(response => {
+        cpuTemp = Math.round(response)
+        resolve ({
+          cpuUsage,
+          cpuTemp
+        })
+      })
+      .catch(error => {
+        reject(error)
+      })
+    })
+  },
+  
   freeMemory() {
     return new Promise((resolve, reject) => {
       try {
-        resolve(os.freememPercentage()*100)
-        // resolve(os.freemem())
+        const data = {
+          freemem: Math.round(os.freemem()),
+          freememPercent: Math.round((1 - os.freememPercentage())*100)
+        }
+        resolve(data)
       } catch (error) {
         reject(error)
       }

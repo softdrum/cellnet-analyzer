@@ -3,6 +3,7 @@ client/node_modules/
 client/dist/
 server/node_modules/
 server/*.sqlite
+
 # local env files
 .env.local
 .env.*.local
@@ -10,7 +11,9 @@ server/*.sqlite
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+# SCV Files
+*.scv
+*.sqlite
 # Editor directories and files
 .idea
 .vscode
