@@ -10,10 +10,10 @@ require('./router/routes')(app)
 
 sequelize.sync() //{force: true}
   .then(() => {
+      server.listen(config.port)
       console.log(`Server started on port ${config.port}`);
       modem.initModem()
       const io = sockets.init(server, modem)
-      mainloop.init(modem, io)
-      server.listen(config.port)
+      mainloop.start(modem, io)
   })
   

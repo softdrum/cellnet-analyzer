@@ -19,10 +19,13 @@ class Modem{
   }
   initModem() {
     this.modem.open(this.port, this.options)
-    // this.modem.on('open', data => {
-    //   console.log(data);
-    //   this.modem.initializeModem()
-    // })
+      .then(result => {
+        console.log(result);
+        console.log('Modem connection is opened');
+      })
+      .catch(error => {
+        console.log(error);
+      })
   }
   getSignalQuality () {
     return this.modem.executeCommand('AT+CSQ')
@@ -31,11 +34,8 @@ class Modem{
       let data = result.data.result.match(modemRegExp.signalQuality)
       if (!data) throw 'Error: Can not get signal quality'
       return {
-        topic: 'signal_quality',
-        data: {
-          s_lvl: modemHelpers.calculateSignalLevel(data.groups.s_lvl),
-          ber: modemHelpers.calculateBitErrorRate(data.groups.ber)
-        }
+        s_lvl: modemHelpers.calculateSignalLevel(data.groups.s_lvl),
+        ber: modemHelpers.calculateBitErrorRate(data.groups.ber)
       }
     })
   }

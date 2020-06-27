@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     signal_level: {type: DataTypes.INTEGER},
     ber: {type: DataTypes.INTEGER},
     operator: {type: DataTypes.STRING},
-    generation: {type: DataTypes.INTEGER}
+    generation: {type: DataTypes.INTEGER},
+    
   })
 
   return Signal

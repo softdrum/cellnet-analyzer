@@ -12,6 +12,12 @@ function pickTable(tableName) {
 }
 
 module.exports = {
+  async getGeoJSON (tableName) {
+    console.log(tableName);
+    const table = pickTable(tableName)
+    const data = await table.createGeoJSON()
+    return data
+  },
   async getDataFromDatabaseTable (tableName) {
     const table = pickTable(tableName)
     const data = await table.findAll()

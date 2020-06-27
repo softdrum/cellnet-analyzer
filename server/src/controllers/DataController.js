@@ -1,13 +1,27 @@
 const dbService = require('../services/databaseService')
+const fs = require('fs');
 
-function tablePicker(tableName) {
-  switch (tableName) {
-    case 'signals': return Signal
-    case 'basestations': return BS
-    default: return Signal
-  }
-}
 module.exports = {
+  async updateGeoJSON (req, res) {
+    try {
+      console.log('updating');
+      const data = await dbService.getGeoJSON(req.body.tableName)
+      console.log('writing geojson');
+      fs.writeFile("geojson.json", data, function(err) {
+          if (err) {
+              console.log(err);
+          }
+      });
+      res.send({
+          data: data,
+      })
+    } catch (error) {
+        console.log(`Error ${error}`);
+        res.status(400).send({
+            error
+        })
+    }
+  },
   async getData(req, res) {
     try {
       const data = await dbService.getDataFromDatabaseTable(req.body.tableName)
@@ -23,7 +37,7 @@ module.exports = {
   },
   async addData(req, res) {
     try {
-      await dbService.addDataInDatabaseTable(req.body.tableName, req.body.data)]
+      await dbService.addDataInDatabaseTable(req.body.tableName, req.body.data)
       res.send({
           success: "true",
       })
