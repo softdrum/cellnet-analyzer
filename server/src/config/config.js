@@ -13,5 +13,10 @@ module.exports = {
     auth: {
         jwtSecret: process.env.JWT_SECRET || 'secret',
         expiresIn: process.env.EXPIRES_IN || 60 * 60 * 24 * 7
+    },
+    modem: {
+      port: process.env.MODEM_PORT || '/dev/ttyUSB2',
+      baudRate: process.env.BAUDRATE || 115200,
+      debug: process.env.MODEM_DEBUG_MODE || false,
     }
 }

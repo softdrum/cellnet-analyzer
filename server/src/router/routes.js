@@ -1,5 +1,5 @@
-const authController = require('./controllers/AuthController')
-const dataController = require('./controllers/DataController')
+const authController = require('../controllers/AuthController')
+const dataController = require('../controllers/DataController')
 
 module.exports = (app) => {
   app.post('/api/register', authController.register)

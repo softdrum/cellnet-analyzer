@@ -1,7 +1,7 @@
 const serialPortGSM = require('serialport-gsm')
-const modemOptions = require('./modem.options')
-const modemRegExp = require('./modem.regexp')
-const modemHelpers = require('./modem.helpers')
+const modemOptions = require('./modemOptions')
+const modemRegExp = require('./modemRegexp')
+const modemHelpers = require('./modemHelpers')
 
 function sleep (ms) {return new Promise(resolve => {setTimeout(() => resolve(), ms)})}
 
@@ -10,9 +10,14 @@ class Modem{
     this.port = port
     this.options = modemOptions.generate(baudRate, logger)
     this.modem = serialPortGSM.Modem()
-    this.settingsMode = false
+    this.isBusy = false
+    this.logMode = false
   }
-  openModemConnection() {
+  setLogMode (value) {
+    console.log('setting log mode');
+    this.logMode = value
+  }
+  initModem() {
     this.modem.open(this.port, this.options)
     // this.modem.on('open', data => {
     //   console.log(data);
@@ -61,18 +66,22 @@ class Modem{
   setPrefferedSystemMode(mode) {
     return this.modem.executeCommand(`AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`)
   }
-  changeMode (mode) {
+  changeNetMode (mode) {
     return this.modem.executeCommand(`AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`)
     .then (response => {
       if (response.data.result === 'ERROR')  throw 'Unable to set preffered system mode'
       return sleep(5000).then(() => {
         return this.getBasestationInfo()
       })
-      
     })
     .then (response => {
+      this.modemBusy = false
       if (response.mode === mode || mode === 'auto') return 'SUCCESS'
       else throw 'Preffered mode was changed but modem is not connected to suitable base station'
+    })
+    .catch (error => {
+      this.modemBusy = false
+      throw error
     })
   }
 }
