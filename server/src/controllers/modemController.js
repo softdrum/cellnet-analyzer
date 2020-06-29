@@ -1,25 +1,56 @@
+
+
 module.exports = (modem) => {
+
+  const modemService = require('../services/modemService')(modem)
+
   return {
     changeNetworkMode (mode, callback) {
-      if (modem.isBusy) callback({msg: 'modem is busy'})
-      else {
-        modem.isBusy = true
-        modem.changeNetMode(mode)
+      modemService.setModemBusyMode(true)
+      modem.changeNetMode(mode)
         .then(response => {
           console.log(response)
-          callback({msg: 'success'})
+          callback({status: 'SUCCESS', data: response})
         })
         .catch(error => {
-          callback({msg: error})
+          callback({status: 'ERROR', data: error})
         })
         .finally(() => {
-          modem.isBusy = false
+          modemService.setModemBusyMode(false)
         })
-      }
+    },
+    getSignalQuality (callback) {
+      modemService.setModemBusyMode(true)
+      modemService.getSignalQuality()
+      .then(response => {
+        callback({status: 'SUCCESS', data: response})
+      })
+      .catch(error => {
+        callback({status: 'ERROR', data: error})
+      })
+      .finally(() => {
+        modemService.setModemBusyMode(false)
+      })
+    },
+    getGeoLocation (callback) {
+      modemService.setModemBusyMode(true)
+      modemService.getGeoLocation()
+      .then(response => {
+        callback({status: 'SUCCESS', data: response})
+      })
+      .catch(error => {
+        callback({status: 'ERROR', data: error})
+      })
+      .finally(() => {
+        modemService.setModemBusyMode(false)
+      })
     },
     setLogMode (mode, callback) {
-      modem.setLogMode(mode)
-      callback({msg: modem.logMode})
+      if (!modem.getModemConnectionStatus()) callback({status: 'ERROR', data: 'modem is not connected'})
+      else {
+        modemService.setModemLogMode(mode)
+        callback({status: 'SUCCESS', data: modemService.isModemInLogMode()})
+      }
     }
   }
 

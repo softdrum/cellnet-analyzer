@@ -1,20 +1,13 @@
 const dbService = require('../services/databaseService')
-const fs = require('fs');
 
 module.exports = {
-  async updateGeoJSON (req, res) {
+  async getGeoJSONData (req, res) {
     try {
-      console.log('updating');
-      const data = await dbService.getGeoJSON(req.body.tableName)
-      console.log('writing geojson');
-      fs.writeFile("geojson.json", data, function(err) {
-          if (err) {
-              console.log(err);
-          }
-      });
-      res.send({
-          data: data,
-      })
+      console.log('Getting geojson slice...');
+      console.log(req.body);
+      const data = await dbService.getGeoJSONSlice(req.body.coordinates, req.body.radius);
+      console.log('sending data...');
+      res.send(data);
     } catch (error) {
         console.log(`Error ${error}`);
         res.status(400).send({

@@ -31,13 +31,14 @@ class csvDatabase {
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: [element.lat, element.lon],
+          coordinates: [element.lon, element.lat],
         },
         properties: {
           mcc: element.mcc,
           mnc: element.net,
           radio: element.radio,
           lac: element.area,
+          cid: element.cell,
           range: element.range,
           createdAt: element.created,
           updatedAt: element.updated,
@@ -46,14 +47,11 @@ class csvDatabase {
       }
     });
     const geodata = {
-      type: 'geojson',
-      data: {
         type: 'FeatureCollection',
         features: features
-      }
     }
 
-    return JSON.stringify(geodata)
+    return geodata
   }
 }
 

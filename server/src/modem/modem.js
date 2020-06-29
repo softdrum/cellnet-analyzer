@@ -10,25 +10,67 @@ class Modem{
     this.port = port
     this.options = modemOptions.generate(baudRate, logger)
     this.modem = serialPortGSM.Modem()
+    this.connected = false
     this.isBusy = false
     this.logMode = false
+  }
+  setModemConnectionStatus (value) {
+    this.connected = value
+  }
+  setBusyMode (value) {
+    this.isBusy = value
   }
   setLogMode (value) {
     console.log('setting log mode');
     this.logMode = value
   }
+  getModemConnectionStatus () {
+    return this.connected
+  }
+  getBusyMode () {
+    return this.isBusy
+  }
+  getLogMode () {
+    return this.logMode
+  }
+  
   initModem() {
     this.modem.open(this.port, this.options)
       .then(result => {
         console.log(result);
         console.log('Modem connection is opened');
+        this.setModemConnectionStatus(true)
       })
       .catch(error => {
         console.log(error);
+        this.setModemConnectionStatus(false)
       })
   }
+  executeAtCommand (command) {
+    return new Promise ((resolve, reject) => {
+      if (!this.getModemConnectionStatus()) reject('modem is not connected')
+      else if (this.getBusyMode()) reject('modem is busy')
+      this.modem.executeCommand(command)
+        .then( result => {
+          resolve(result)
+        })
+      
+    }) 
+  }
   getSignalQuality () {
-    return this.modem.executeCommand('AT+CSQ')
+    return this.executeAtCommand('AT+CSQ')
+    .then( (result) => {
+      if (result.status === 'ERROR') throw 'Error: Can not get signal quality'
+      let data = result.data.result.match(modemRegExp.signalQuality)
+      if (!data) throw 'Error: Can not get signal quality'
+      return {
+        s_lvl: modemHelpers.calculateSignalLevel(data.groups.s_lvl),
+        ber: modemHelpers.calculateBitErrorRate(data.groups.ber)
+      }
+    })
+  }
+  getGPSCoordinates () {
+    return this.executeAtCommand('AT+CGPSINFO')
     .then( (result) => {
       if (result.status === 'ERROR') throw 'Error: Can not get signal quality'
       let data = result.data.result.match(modemRegExp.signalQuality)
@@ -40,7 +82,7 @@ class Modem{
     })
   }
   getAvailableOperators () {
-    return this.modem.executeCommand('AT+COPS=?')
+    return this.executeAtCommand('AT+COPS=?')
     .then(response => {
       if (response.status === 'ERROR') throw 'Error: Can not get available operators'
       let data = response.data.result.matchAll(modemRegExp.availableOperators)
@@ -54,7 +96,7 @@ class Modem{
     })
   }
   getBasestationInfo () {
-    return this.modem.executeCommand('AT+CPSI?')
+    return this.executeAtCommand('AT+CPSI?')
       .then(response => {
         if (response.status === 'ERROR') throw 'Can not get BS Info'
         if (response.data.result.trim() === 'NO SERVICE,Online') throw 'No service'
@@ -64,10 +106,10 @@ class Modem{
       })
   }
   setPrefferedSystemMode(mode) {
-    return this.modem.executeCommand(`AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`)
+    return this.executeAtCommand(`AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`)
   }
   changeNetMode (mode) {
-    return this.modem.executeCommand(`AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`)
+    return this.executeAtCommand(`AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`)
     .then (response => {
       if (response.data.result === 'ERROR')  throw 'Unable to set preffered system mode'
       return sleep(5000).then(() => {
