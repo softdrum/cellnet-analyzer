@@ -7,5 +7,4 @@ module.exports = (app) => {
   app.post('/api/remove', dataController.removeData)
   app.post('/api/addData', dataController.addData)
   app.post('/api/getData', dataController.getData)
-  app.get('/api/signal', dataController.getSignalLevelData)
 }
