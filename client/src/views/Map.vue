@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 600px; width: 100%" class="elevation-0">
+  <div style="height: 100vh; width: 100%;" class="elevation-0">
     <MglMap :accessToken="accessToken" :center="coordinates" :mapStyle="mapStyle" >
       <MglMarker :coordinates="coordinates" color="blue" >
         <div slot="marker"><div class="loading" style="width: 5px; height: 50px;background: red"></div></div>
@@ -56,7 +56,7 @@ export default {
     return {
       coordinates: [5.446910099999968,43.286126],
       accessToken: 'pk.eyJ1IjoiZHJld3plcmciLCJhIjoiY2thdHAyZHB6MHZtbjM3b2NpdmFhMzBjbiJ9.FitsZxcjiZzIx9_4VddY3g', // your access token. Needed if you using Mapbox maps
-      mapStyle: 'mapbox://styles/mapbox/dark-v9',
+      mapStyle: 'mapbox://styles/drewzerg/ckbwf6ak2128w1imx72cyxk7v',
       clustersSource: {
         type: 'geojson',
         data: "https://gist.githubusercontent.com/Duermael/fd62c5ef80eceaf3b1a71a0f15aec60f/raw/1c01a3a80273e8d1d7e8d70385a2d6616d203e0f/map.geojson",

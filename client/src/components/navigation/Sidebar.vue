@@ -3,7 +3,7 @@
       :mini-variant="mini"
       floating
       style="height: 100vh;"
-      class="elevation-4"
+      class="elevation-6"
       dark
       permanent
       fixed

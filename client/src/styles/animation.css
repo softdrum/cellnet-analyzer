@@ -27,3 +27,11 @@
   width: 100%;
   transition: width 0.15s ease-in-out;
 }
+.loading {
+  animation: mymove 2.5s infinite ease;
+}
+@keyframes mymove {
+  0% {color: cyan;}
+  50% {color:  rgba(0, 104, 104, 0.95);}
+  100% {color: cyan;}
+}

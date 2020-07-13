@@ -4,12 +4,15 @@
     <div class="d-flex">
       <div class="ghostSidebar" :class="{sideOpened: opened}"></div>
       <div class="content">
-        <Appbar class="side-animation"/>
-        <v-container fluid class="pl-8 pr-6">
+        <Appbar class="side-animation" v-if="!wide"/>
+        <v-container fluid class="pl-8 pr-6" v-if="!wide">
           <transition name="fade" mode="out-in">
             <router-view />
           </transition>
         </v-container>
+        <transition name="fade" mode="out-in" v-else>
+            <router-view />
+        </transition>
     </div>
     </div>
   </div>
@@ -25,6 +28,12 @@ export default {
   data: () => ({
     opened: true
   }),
+  computed: {
+    wide () {
+      if (this.$route.fullPath === '/map') return true
+      else return false
+    }
+  }
 }
 </script>
 <style scoped>
@@ -40,5 +49,9 @@ export default {
   }
   .full {
     padding-left: 260px !important;
+  }
+  .wide {
+    padding-left: 0px !important;
+    padding-right: 100px !important;
   }
 </style>

@@ -1,6 +1,15 @@
 <template>
   <v-card class="px-7 py-5">
-    <div class="d-flex justify-space-between align-center"  style="height: 100%">
+    <div
+      v-if="stat.title === 'No data'"
+      class="d-flex justify-center align-center"  style="height: 100%"
+    >
+      <v-icon class="loading d-flex align-self-center" style="font-size: 4.1rem; color: #141926;">{{ stat.icon.name }}</v-icon>
+    </div>
+    <div v-else
+      class="d-flex justify-space-between align-center"
+      style="height: 100%"
+    >
       <div class="text-left">
         <span class="font-weight-regular" style="font-size: 1rem; color: #616D83;">{{ stat.title }}</span>
         <br>
@@ -17,6 +26,13 @@
 </template>
 <script>
 export default {
-  props: ['stat']
+  props: {
+    stat: {
+      type: Object,
+      default: () => ({
+        title: 'No data'
+      })
+    },
+  }
 }
 </script>

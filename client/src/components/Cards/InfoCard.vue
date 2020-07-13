@@ -30,13 +30,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-  .loading {
-    animation: mymove 5.5s infinite ease;
-  }
-  @keyframes mymove {
-    0% {color: cyan;}
-    50% {color: rgb(0, 83, 83);}
-    100% {color: cyan;}
-  }
-</style>

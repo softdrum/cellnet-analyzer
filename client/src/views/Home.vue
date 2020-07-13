@@ -135,7 +135,15 @@ export default {
     },
   },
   mounted() {
+    console.log(this.cpuTemp);
     var me = this
+    this.$socket.client.emit('setLogMode', true, (response) => {
+      if (response.msg === 'success') this.$success('Log mode successfully changed')
+      else {
+        this.$error(response.msg)
+      }
+      this.loading = false
+    });
     // setInterval(function () {
     //  getNewSeries(Math.random()*100)
     //   me.$refs.chart1.updateSeries([{
@@ -160,8 +168,8 @@ export default {
   data: () => ({
     s_lvl: '',
     bsInfo: {},
-    diskSpace: {},
-    cpuTemp: {},
+    diskSpace: {title: 'No data', icon: {name: 'mdi-harddisk'}},
+    cpuTemp: {title: 'No data', icon: {name: 'mdi-coolant-temperature'}},
     options: defaultOptions.getOptions(['#00d0ea']),
     options2: defaultOptions.getOptions(['#fba500']),
     windowWidth: window.innerWidth,

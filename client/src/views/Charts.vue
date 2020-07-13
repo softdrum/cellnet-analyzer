@@ -52,6 +52,24 @@
   </v-row>
 </template>
 <script>
+let data1 = []
+let data2 = []
+function getNewSeries(s_lvl, ber) {
+  data1.push({
+    x: new Date().getTime(),
+    y: s_lvl
+  })
+  data2.push({
+    x: new Date().getTime(),
+    y: ber
+  })
+  
+}
+function resetData(){
+// Alternatively, you can also reset the data at certain intervals to prevent creating a huge series 
+  data1 = data1.slice(data1.length - 10, data1.length);
+  data2 = data2.slice(data2.length - 10, data2.length);
+}
 import ChartCard from '../components/cards/ChartCard'
 import defaultOptions from '../components/charts/options/default.chart'
 
@@ -62,6 +80,33 @@ export default {
   data: () => ({
     options: defaultOptions.getOptions(['#00d0ea']),
     options2: defaultOptions.getOptions(['#fba500']),
-  })
+  }),
+  mounted () {
+    var me = this
+    setInterval(function () {
+      resetData()
+      me.$refs.chart1.updateSeries([{
+        data: me.data1
+      }], false, true)
+      me.$refs.chart2.updateSeries([{
+        data: me.data2
+      }], false, true)
+    }, 60000)
+  },
+  sockets: {
+    connect() {
+        console.log('socket connected')
+    },
+    signal_quality: function (data) {
+      var me = this
+      getNewSeries(data.s_lvl, data.ber)
+      me.$refs.chart1.updateSeries([{
+        data: data1
+      }])
+      me.$refs.chart2.updateSeries([{
+        data: data2
+      }])
+    }
+  },
 }
 </script>

@@ -8,7 +8,7 @@
       @click="activateAccordion"
       class="d-flex align-center justify-space-around py-5 px-6 card-header"
     >
-      <div v-if="desktop">
+      <div v-if="desktop || !this.infoTitles.length">
         <v-icon :class="{loading: !this.infoTitles.length}" style="font-size: 4.1rem; color: #141926;">mdi-antenna</v-icon>
       </div>
       <div
@@ -92,13 +92,4 @@ export default {
     max-height: 0 !important;
     padding-bottom: 0px;
   }
-.loading {
-   animation: mymove 1.5s infinite ease;
-}
-
-@keyframes mymove {
-  0% {color: cyan;}
-  50% {color: #141926;}
-  100% {color: cyan;}
-}
 </style>
