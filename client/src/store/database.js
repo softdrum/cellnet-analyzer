@@ -9,6 +9,11 @@ export default {
       commit('SET_MESSAGE', {message: 'Удалено', color:'success'})
       return response
     },
+    async getGeoJSONSlice ({commit}, {coordinates, radius}) {
+      const response = (await databaseService.getGeoJSONData({coordinates, radius})).data;
+      commit('');
+      return response
+    },
     async getDataFromDatabase({commit}, tableName) {
       const response = (await databaseService.getData(tableName)).data.data
       commit('')

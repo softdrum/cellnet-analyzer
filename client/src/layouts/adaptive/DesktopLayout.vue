@@ -2,7 +2,7 @@
   <div>
     <Sidebar @sideClicked="opened = !opened"/>
     <div class="d-flex">
-      <div class="ghostSidebar" :class="{sideOpened: opened}"></div>
+      <div class="ghostSidebar" :hidden="sideHidden" :class="{sideOpened: opened}"></div>
       <div class="content">
         <Appbar class="side-animation" v-if="!wide"/>
         <v-container fluid class="pl-8 pr-6" v-if="!wide">
@@ -26,7 +26,8 @@ export default {
     Appbar
   },
   data: () => ({
-    opened: true
+    opened: true,
+    sideHidden: false
   }),
   computed: {
     wide () {

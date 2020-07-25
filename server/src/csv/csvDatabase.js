@@ -1,7 +1,6 @@
 const csvParser = require('csv-parser')
 const csvWriter = require('csv-writer')
 const fs = require('fs')
-
 class csvDatabase {
   constructor (table) {
     this.table = table
@@ -27,21 +26,27 @@ class csvDatabase {
   async createGeoJSON () {
     const data = await this.findAll()
     const features = data.map(element => {
+      let icon;
+      switch (element.radio) {
+        case 'GSM': icon 
+      }
       return {
         type: 'Feature',
         geometry: {
           type: 'Point',
-          coordinates: [element.lat, element.lon],
+          coordinates: [element.lon, element.lat],
         },
         properties: {
           mcc: element.mcc,
           mnc: element.net,
           radio: element.radio,
           lac: element.area,
-          range: element.range,
+          cid: element.cell,
+          range: parseInt(element.range),
           createdAt: element.created,
           updatedAt: element.updated,
-          icon: 'bs1'
+          title: element.area,
+          icon: element.radio.toLowerCase()
         }
       }
     });

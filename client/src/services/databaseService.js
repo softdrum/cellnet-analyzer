@@ -6,6 +6,9 @@ export default {
     getData (tableName) {
       return api().post('getData', {tableName})
     },
+    getGeoJSONData (requestBody) {
+      return api().post('getGeoJSONData', requestBody)
+    },
     removeData ({tableName, selected}) {
       return api().post('remove', {tableName, selected})
     }

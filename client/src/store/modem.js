@@ -1,5 +1,6 @@
 export default {
   state: {
+    connected: false,
     signal_level: {
       value: 22 ,
       last_update: 22
@@ -20,6 +21,9 @@ export default {
         value: msg,
         last_update: new Date()
       }
+    },
+    SET_MODEM_CONNECTION_STATUS(state, value) {
+      state.connected = value
     },
     SET_SIGNAL_LVL(state, value) {
       state.signal_level = {
@@ -51,7 +55,12 @@ export default {
       commit('SET_SNR', value)
     },
     socket_modemError({commit}, error) {
-      commit('SET_MESSAGE', {message: error.msg, color:'red'})
+      commit('SET_MESSAGE', {message: error.data, color:'red'})
+      commit('SET_MODEM_CONNECTION_STATUS', false)
+    },
+    socket_modemConnected({commit}, error) {
+      commit('SET_MESSAGE', {message: error.data, color:'success'})
+      commit('SET_MODEM_CONNECTION_STATUS', true)
     }
   }
 }
