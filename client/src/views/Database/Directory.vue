@@ -1,97 +1,89 @@
 <template>
   <div>
-    <v-btn text to="/database" light style="color: #fff">
-      <v-icon>mdi-arrow-left</v-icon>
-      Back
-    </v-btn>
-    <v-row :justify="'center'">
-      <v-col cols="12" v-if="directory === 'signals'">
-        <BrushChart
-          slot="chart"
-          :title="'Signal level, dBm'"
-          :chartData="chartData"
-          :loading="dataLoading"
-        />
-      </v-col>
-      <v-col cols="12">
-        <DataTable :headers="headers" :data="data" :loading="dataLoading"/>
+    <v-row>
+      <v-col
+        v-for="dir in directives"
+        :key="dir"
+        cols="12"
+        xl="3"
+        lg="2"
+        sm="4"
+        xs="6"
+      >
+        <v-card class="heatmap-file d-flex align-center flex-column">
+          <div class="box">
+            <div class="heatmap scaleonhover">
+          </div>
+          </div>
+          <span class="filename">heatmap_23_08_20</span>
+        </v-card>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import DataTable from '@/components/tables/DataTable'
-import BrushChart from '@/components/charts/BrushChart'
-import tableHeaders from '@/components/tables/table.headers'
-
-import dateFilter from '@/utils/filters/date.filter'
 export default {
-  name: 'Directory',
+  name: 'Database',
   components: {
-    BrushChart,
-    DataTable
   },
   data: () => ({
-    dataLoading: false,
-    data: [],
-    chartData: [],
-    date: null,
-    headers: tableHeaders.signal,
-    directory: 'signal',
-  }),
-  methods: {
-    setupTable(directory) {
-      switch (directory) {
-        case 'signals': return tableHeaders.signal
-        case 'basestations': return tableHeaders.bs
+    directives: [
+      {
+        title: 'Basestations',
+        subtitle: 'Explore local BS data',
+        icon: 'mdi-antenna',
+        color: 'blue',
+        to: '/database/basestations'
+      },
+      {
+        title: 'Signals',
+        subtitle: 'Analize signal data',
+        icon: 'mdi-current-ac',
+        color: 'green',
+        to: '/database/signals'
+      },
+      {
+        title: 'Heatmap',
+        subtitle: 'Saved heatmap data',
+        icon: 'mdi-map',
+        color: 'orange',
+        to: "/database/heatmap"
       }
-    },
-    async addToDB() {
-      const data = [
-        {
-          lat: 39.3563,
-          long: 58.3554,
-          operator: 'MTS',
-          generation: 4,
-          radius: 1000,
-          arfcn: 56,
-          rx_level: 87,
-        }
-      ]
-      try {
-          await this.$store.dispatch('addDataInDatabase', {
-          tableName: this.directory,
-          data: data
-        })
-      } catch (error) {
-        console.log(error);
-        this.$error('Не удалось добавить данные')
-      }
-    }
-  },
-  async mounted() {
-    this.directory = this.$route.params.directory
-    this.headers = this.setupTable(this.directory)
-    // this.addToDB()
-    try {
-      this.dataLoading = true
-      this.data = await this.$store.dispatch('getDataFromDatabase', this.directory)
-      if (this.directory === 'signals') {
-        this.data.forEach(element => {
-        this.chartData.push({
-          x: new Date(element.createdAt),
-          y: element.signal_level
-        })
-        element.createdAt = dateFilter(new Date(element.createdAt), 'datetime')
-      })
-      }
-    } catch (error) {
-      console.log(error);
-      this.$error('Не удалось загрузить данные')
-    }
-    this.dataLoading = false
-  }
+    ]
+  })
 }
 </script>
+<style scoped>
+.heatmap-file {
+  width: 100%;
+  height: 100%;
+  background: none;
+  box-shadow: none;
+  border-radius: 0px;
+  overflow: hidden;
+}
+.box {
+  width: 128px;
+  height: 128px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+  .heatmap {
+    background-image: url('../../assets/heatmap.png');
+    width: 128px;
+    height: 128px;
+    cursor: pointer;
+    display: flex;
+    justify-items: center;
+    margin-bottom: 10px;
+  }
+  .filename {
+    position: relative;
+  }
+  .scaleonhover {
+    transition: all .2s ease-in-out;
+  }
+  .scaleonhover:hover { transform: scale(1.1);}
+  .scaleonhover:active { transform: scale(1); }
+</style>

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import auth from './auth'
 import modem from './modem'
+import map from './map'
 import database from './database'
 import persistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
@@ -37,6 +38,7 @@ export default new Vuex.Store({
   modules: {
     auth,
     modem,
+    map,
     database
   }
 })

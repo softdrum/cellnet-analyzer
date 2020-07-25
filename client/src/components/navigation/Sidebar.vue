@@ -52,7 +52,15 @@
 </template>
 <script>
 export default {
+  props: {
+    hidden: Boolean
+  },
   name: 'Sidebar',
+  watch: {
+    hidden (val) {
+      if (val) this.mini = val
+    }
+  },
   data () {
       return {
         items: [
@@ -75,6 +83,9 @@ export default {
 }
 </script>
 <style scoped>
+.sidehidden {
+  margin-left: -56px !important;
+}
 /* .side-dark {
   background: #06141F !important;
 }

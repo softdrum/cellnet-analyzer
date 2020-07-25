@@ -1,23 +1,15 @@
 <template>
   <div style="height: 100vh; width: 100%;" class="elevation-0">
-    <transition name="bounce">
-      <div v-if="mode === 'standard'">
-        <div class="map-mode-control">
-          <v-btn> <v-icon>mdi-select</v-icon></v-btn>
-        </div>
+    <v-card class="map-controls" @click.prevent="openLayers">
+      <div class="d-flex">
+        <v-icon class="control-icon">
+          mdi-layers
+        </v-icon>
+        Layers
       </div>
-    </transition>
-        <v-card class="map-controls">
-          <div class="d-flex justify-space-between">
-            Layers
-            <v-icon class="control-icon">
-              mdi-layers
-            </v-icon>
-          </div>
-          <v-checkbox v-model="selected" label="cells" value="unclustered-points"></v-checkbox>
-         <v-checkbox v-model="selected" label="clusters" value="clusters"></v-checkbox>
-        </v-card>
-      
+       <v-checkbox v-model="selected" label="John" value="John"></v-checkbox>
+    <v-checkbox v-model="selected" label="Jacob" value="Jacob"></v-checkbox>
+    </v-card>
     <div id="map" style="height: 100vh; width: 100ww;" class="map"></div>
   </div>
 </template>
@@ -52,9 +44,7 @@ export default {
   data() {
     return {
       map: null,
-      mode: 'standard',
       selected: [],
-      layers: ['unclustered-points', 'clusters'],
       measurements: [],
       measureMarker: null,
       mapCenterPosition: {lng: 30.3207309188291, lat: 59.922883996810725},
@@ -85,13 +75,6 @@ export default {
         console.log(this.visibleData);
         this.map.getSource('points').setData(this.visibleData)
       }
-    },
-    selected () {
-       for (let i=0; i<this.layers.length; i++) {
-         const visibility = this.selected.includes(this.layers[i]) ? 'visible' : 'none'
-         this.map.setLayoutProperty(this.layers[i], 'visibility', visibility);
-         console.log(this.layers[i], visibility);
-       }
     }
   },
   computed: {
@@ -179,7 +162,6 @@ export default {
     }
   },
   async mounted() {
-    setTimeout(()=> {this.mode = 'heatmap'}, 3000)
     // We need to set mapbox-gl library here in order to use it in template
     const context = this
     Mapbox.accessToken = this.accessToken;
@@ -400,109 +382,4 @@ export default {
   }
 };
 </script>
-<style>
-  .map {
-    height: 500px
-  }
-  .loading {
-   animation: mymove 1.5s infinite ease;
-}
 
-@keyframes mymove {
-  0% {background: rgb(245, 180, 0);}
-  50% {background: rgb(211, 155, 0);}
-  100% {background: rgb(245, 180, 0);}
-}
-.show-layers {
-  width: 30px;
-  height: 30px;
-  background-image: linear-gradient(to right, #f6d365 0%, #fda085 51%, #f6d365 100%);
-  color: white;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-.marker {
-  width: 32px;
-  height: 32px;
-  border-radius: 100%;
-  animation: mymove 1.5s infinite ease;
-  cursor: pointer;
-  box-shadow: 0 0 10px rgba(24, 150, 150,0.9);
-}
-.map {
-  height: 500px;
-  width: 100%;
-}
-.control-icon {
-  position: fixed;
-  top: 0px;
-  right: 0px;
-}
-.map-mode-control {
-  position: absolute;
-  z-index: 200;
-  right: 10px;
-  cursor: pointer;
-  overflow: hidden;
-  top: 100px;
-  transition: all 0.3s ease;
-}
-.map-controls {
-  position: absolute;
-  z-index: 200;
-  padding: 20px;
-  width: 40px;
-  height: 40px;
-  right: 10px;
-  cursor: pointer;
-  overflow: hidden;
-  top: 50px;
-  transition: all 0.3s ease;
-}
-.map-controls:hover {
-  width: 150px;
-  height: 180px;
-}
-.btn {
-  flex: 1 1 auto;
-  margin: 10px;
-  padding: 30px;
-  text-align: center;
-  text-transform: uppercase;
-  transition: 0.5s;
-  background-size: 200% auto;
-  color: white;
- /* text-shadow: 0px 0px 10px rgba(0,0,0,0.2);*/
-  box-shadow: 0 0 20px #eee;
-  border-radius: 10px;
- }
-
-/* Demo Stuff End -> */
-
-/* <- Magic Stuff Start */
-
-.btn:hover {
-  background-position: right center; /* change the direction of the change here */
-}
-
-.btn-1 {
-  background-image: linear-gradient(to right, #f6d365 0%, #fda085 51%, #f6d365 100%);
-}
-.bounce-enter-active {
-  animation: bounce-in .5s;
-}
-.bounce-leave-active {
-  animation: bounce-in .5s reverse;
-}
-@keyframes bounce-in {
-  0% {
-    transform: translateX(100px);
-  }
-  50% {
-    transform: translateX(-50px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-</style>

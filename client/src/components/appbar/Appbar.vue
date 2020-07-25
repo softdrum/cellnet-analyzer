@@ -2,7 +2,7 @@
   <div>
     <v-app-bar
     flat
-    class="mynav px-4"
+    class="mynav px-41"
     :class="{fullNav: fullMode}"
     >
       <div class="d-flex align-center justify-space-between" style="width: 100%;">

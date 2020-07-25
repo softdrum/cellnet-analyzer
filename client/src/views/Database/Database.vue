@@ -11,7 +11,7 @@
         xs="12"
       >
         <v-card
-          class="mx-auto"
+          class="mx-auto scaleonhover"
           :to="dir.to"
           hover
         >
@@ -77,3 +77,5 @@ export default {
   })
 }
 </script>
+<style scoped>
+</style>
