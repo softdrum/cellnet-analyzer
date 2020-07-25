@@ -5,7 +5,7 @@ sockets.init = (server, modem) => {
     var io = require('socket.io').listen(server);
 
     // initialize modem interface
-    const modemController = require('./controllers/modemController')(modem)
+    const modemController = require('../controllers/modemController')(modem)
 
     io.sockets.on('connection', function (socket) {
       console.log('socket connected');

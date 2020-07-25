@@ -4,8 +4,8 @@
   "description": "A backend of cellnet-analyzer",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "start": "node bin/www.js",
+    "dev": "nodemon bin/www.js"
   },
   "keywords": [],
   "author": "",

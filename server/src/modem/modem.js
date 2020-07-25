@@ -35,15 +35,17 @@ class Modem{
   }
   
   initModem() {
-    this.modem.open(this.port, this.options)
+    return this.modem.open(this.port, this.options)
       .then(result => {
         console.log(result);
         console.log('Modem connection is opened');
         this.setModemConnectionStatus(true)
+        return this.getModemConnectionStatus()
       })
       .catch(error => {
         console.log(error);
         this.setModemConnectionStatus(false)
+        return this.getModemConnectionStatus()
       })
   }
   executeAtCommand (command) {

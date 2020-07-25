@@ -42,11 +42,7 @@ class csvDatabase {
           radio: element.radio,
           lac: element.area,
           cid: element.cell,
-<<<<<<< HEAD
-          range: element.range,
-=======
           range: parseInt(element.range),
->>>>>>> 242d826c7f2dfd00bf7043af2cffda4a7cd6df94
           createdAt: element.created,
           updatedAt: element.updated,
           title: element.area,
