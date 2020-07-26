@@ -1,8 +1,8 @@
 const raspberry = require('./utils/raspberry')
-const databaseService = require('./services/databaseService')
+const databaseService = require('./services/database.service')
 module.exports = {
   start (modem, io) {
-    const modemService = require('./services/modemService')(modem)
+    const modemService = require('./services/modem.service')(modem)
 
     // async () => {
     //   let availableOperators = await modemService.getAvailableOperators()

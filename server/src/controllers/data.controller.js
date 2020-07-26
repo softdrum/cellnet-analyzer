@@ -1,4 +1,4 @@
-const dbService = require('../services/databaseService')
+const dbService = require('../services/database.service')
 
 module.exports = {
   async getGeoJSONData (req, res) {

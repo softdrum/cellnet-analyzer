@@ -2,7 +2,7 @@
 
 module.exports = (modem) => {
 
-  const modemService = require('../services/modemService')(modem)
+  const modemService = require('../services/modem.service')(modem)
 
   return {
     changeNetworkMode (mode, callback) {

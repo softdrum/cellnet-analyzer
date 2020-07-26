@@ -1,4 +1,4 @@
-const dataController = require('../controllers/DataController')
+const dataController = require('../controllers/data.controller')
 
 
 module.exports = (app) => {
