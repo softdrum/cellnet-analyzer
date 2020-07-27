@@ -6,7 +6,7 @@ const readFile = require('../utils/fileReader').readFile;
 const path = require('path')
 const filepath = path.parse(__dirname).dir + '/csv/geodata.json'
 const geoHelper = require('../utils/geo')
-
+const fs = require('fs')
 function pickTable(tableName) {
   switch (tableName) {
     case 'signals': return Signal
@@ -24,10 +24,22 @@ module.exports = {
     const data = geodata
           .filter(elem => geoHelper.getDistanceFromLatLonInKm(coordinates, {lat: elem.geometry.coordinates[1], lng: elem.geometry.coordinates[0]}) <= radius)
     console.log(radius);
-    return {
-      type: 'FeatureCollection',
-      features: data
+    return data
+  },
+  async saveGeoJSON (data) {
+    const geojson = {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: data
+      }
     }
+    fs.writeFile('test.json', JSON.stringify(geojson), (err) => {
+      if (err) {
+        console.log(err);
+      }
+    })
+    console.log('SUCCESS');
   },
   async getDataFromDatabaseTable (tableName) {
     const table = pickTable(tableName)

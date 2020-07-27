@@ -1,6 +1,19 @@
 const dbService = require('../services/database.service')
 
 module.exports = {
+  async saveGeoJSON (req, res) {
+    try {
+      console.log('Saving geojson data...');
+      console.log(req.body);
+      const data = await dbService.saveGeoJSON(req.body);
+      res.send('OK');
+    } catch (error) {
+        console.log(`Error ${error}`);
+        res.status(400).send({
+            error
+        })
+    }
+  },
   async getGeoJSONData (req, res) {
     try {
       console.log('Getting geojson slice...');

@@ -51,7 +51,6 @@ class Modem{
   executeAtCommand (command) {
     return new Promise ((resolve, reject) => {
       if (!this.getModemConnectionStatus()) reject('modem is not connected')
-      else if (this.getBusyMode()) reject('modem is busy')
       this.modem.executeCommand(command)
         .then( result => {
           resolve(result)

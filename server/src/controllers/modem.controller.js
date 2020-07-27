@@ -19,6 +19,20 @@ module.exports = (modem) => {
           modemService.setModemBusyMode(false)
         })
     },
+    async getMeasureData (callback) {
+      modemService.setModemBusyMode(true)
+      try {
+        const signalQuality = await modemService.getSignalQuality()
+        // const bsInfo = await modemService.getBasestationInfo()
+        callback({status: 'SUCCESS', data: {
+          ...signalQuality,
+          // ...bsInfo
+        }})
+      } catch (error) {
+        callback({status: 'ERROR', data: error})
+      }
+      modemService.setModemBusyMode(false)
+    },
     getSignalQuality (callback) {
       modemService.setModemBusyMode(true)
       modemService.getSignalQuality()
@@ -26,6 +40,7 @@ module.exports = (modem) => {
         callback({status: 'SUCCESS', data: response})
       })
       .catch(error => {
+        console.log(error);
         callback({status: 'ERROR', data: error})
       })
       .finally(() => {
