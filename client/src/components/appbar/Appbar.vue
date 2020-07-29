@@ -2,40 +2,14 @@
   <div>
     <v-app-bar
     flat
-    class="mynav px-41"
+    class="mynav pl-4"
     :class="{fullNav: fullMode}"
     >
       <div class="d-flex align-center justify-space-between" style="width: 100%;">
         <div><div class="font-weight-light" style="font-size: 1.25rem;">{{ pageName }}</div></div>
         <Battery :level="100" v-if="2 < 1"/>
         <v-spacer></v-spacer>
-         <div class="d-flex align-center font-weight-regular" style="font-family: roboto;color: #404C5C; font-size: 1rem">
-          Network: 
-          <v-menu
-            transition="slide-y-transition"
-            bottom
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                :loading="loading"
-                v-bind="attrs"
-                v-on="on"
-                class="elevation-0" style="font-family: roboto;color: #404C5C; font-size: 1rem"
-              >
-                {{ networkMode }}
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item
-                v-for="(item, i) of items"
-                :key="i"
-                @click="changeNetwork(item.title)"
-              >
-                <v-list-item-title> {{item.title}} </v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </div>
+        <NetworkSelector />
         <v-menu
           v-if="userLoggedIn"
           transition="slide-y-transition"
@@ -65,11 +39,13 @@
 </template>
 <script>
 import Battery from '@/components/appbar/Battery'
+import NetworkSelector from '@/components/NetworkSelector'
 import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'Navbar',
   components: {
-    Battery
+    Battery,
+    NetworkSelector
   },
   props: {
     fullMode: Boolean
