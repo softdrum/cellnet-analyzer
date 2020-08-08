@@ -4,19 +4,13 @@
     grow
     fixed
   >
-    <v-btn to="/database">
-      <span>Database</span>
-      <v-icon>mdi-database</v-icon>
-    </v-btn>
-
-    <v-btn to="/">
-      <span>Main</span>
-      <v-icon>mdi-view-dashboard</v-icon>
-    </v-btn>
-
-    <v-btn>
-      <span>Map</span>
-      <v-icon>mdi-map-marker</v-icon>
+    <v-btn
+      v-for="route in routes"
+      :key="route.title"
+      :to="route.link"
+    >
+      <span>{{ route.title }}</span>
+      <v-icon>{{ route.icon }}</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
@@ -25,6 +19,13 @@
     data () {
       return {
         activeBtn: 1,
+        routes: [
+          { title: 'Map', icon: 'mdi-map', link: '/map'},
+          { title: 'Charts', icon: 'mdi-chart-line', link: '/charts'},
+          { title: 'Dashboard', icon: 'mdi-view-dashboard', link: '/'},
+          { title: 'Database', icon: 'mdi-database', link: '/database'},
+          { title: 'System', icon: 'mdi-engine', link: '/system'},
+        ],
       }
     },
   }
