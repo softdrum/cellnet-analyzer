@@ -1,15 +1,15 @@
 import api from '../services/api'
 export default {
-    addData (tableName, data) {
-      return api().post('addData', {tableName, data})
-    },
-    getData (tableName) {
-      return api().post('getData', {tableName})
-    },
-    getGeoJSONData (requestBody) {
-      return api().post('getGeoJSONData', requestBody)
-    },
-    removeData ({tableName, selected}) {
-      return api().post('remove', {tableName, selected})
-    }
+  createDocument (collectionName, data) {
+    return api().post(`database/${collectionName}`, data)
+  },
+  readCollection (collectionName, query) {
+    return api().get(`database/${collectionName}${query}`)
+  },
+  updateDocument (collectionName, documentId) {
+    return api().put(`database/${collectionName}/${documentId}`)
+  },
+  deleteDocument (collectionName, documentId) {
+    return api().delete(`database/${collectionName}/${documentId}`)
+  },
 }
