@@ -4,6 +4,8 @@ client/dist/
 server/node_modules/
 server/*.sqlite
 server/public
+server/data
+server/src/csv
 # local env files
 .env.local
 .env.*.local
