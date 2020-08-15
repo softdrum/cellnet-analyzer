@@ -1,5 +1,3 @@
-
-
 module.exports = (modem) => {
 
   const modemService = require('../services/modem.service')(modem)
@@ -41,6 +39,19 @@ module.exports = (modem) => {
       })
       .catch(error => {
         console.log(error);
+        callback({status: 'ERROR', data: error})
+      })
+      .finally(() => {
+        modemService.setModemBusyMode(false)
+      })
+    },
+    getAvailableOperators (callback) {
+      modemService.setModemBusyMode(true)
+      modemService.getAvailableOperators()
+      .then(response => {
+        callback({status: 'SUCCESS', data: response})
+      })
+      .catch(error => {
         callback({status: 'ERROR', data: error})
       })
       .finally(() => {

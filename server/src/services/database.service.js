@@ -1,62 +1,52 @@
-const {Signal} = require('../models')
-// const {BS} = require('../models')
-const csvDatabase = require('../csv/csvDatabase')
-const BS = new csvDatabase('saint_petersburg_celltowers')
-const readFile = require('../utils/fileReader').readFile;
-const path = require('path')
-const filepath = path.parse(__dirname).dir + '/csv/geodata.json'
-const geoHelper = require('../utils/geo')
-const fs = require('fs')
-function pickTable(tableName) {
-  switch (tableName) {
-    case 'signals': return Signal
-    case 'basestations': return BS
-    default: return Signal
-  }
-}
-
+const collections = require('../database/models');
 
 
 module.exports = {
-  async getGeoJSONSlice (coordinates, radius) {
-    const geodata = (await readFile(filepath)).data.features
-   
-    const data = geodata
-          .filter(elem => geoHelper.getDistanceFromLatLonInKm(coordinates, {lat: elem.geometry.coordinates[1], lng: elem.geometry.coordinates[0]}) <= radius)
-    console.log(radius);
-    return data
+  createDocumentInCollection (collectionName, data) {
+    console.log(collectionName);
+    const document = new collections[collectionName](data)
+    return document.save()
   },
-  async saveGeoJSON (data) {
-    const geojson = {
-      type: 'geojson',
-      data: {
-        type: 'FeatureCollection',
-        features: data
-      }
-    }
-    fs.writeFile('test.json', JSON.stringify(geojson), (err) => {
-      if (err) {
-        console.log(err);
-      }
-    })
-    console.log('SUCCESS');
-  },
-  async getDataFromDatabaseTable (tableName) {
-    const table = pickTable(tableName)
-    const data = await table.findAll()
-    return data
-  },
-  async addDataInDatabaseTable (tableName, data) {
-    const table = pickTable(tableName)
-    await table.bulkCreate(data)
-  },
-  async removeDataFromDatabaseTable (tableName, dataToDelete) {
-    await dataToDelete.foreach(element => {
-      tableName.destroy({
-        where: {
-          id: element.id
-        }
+  insertDocumentsInCollection (collectionName, data) {
+    return new Promise((resolve, reject) => {
+      collections[collectionName].insertMany(data, (err, docs) => {
+        if (err) reject(err)
+        else resolve({status: 'success', data: docs.length})
       })
     })
-  }
+  },
+  getDocumentsFromCollection (collectionName, query) {
+    return new Promise((resolve, reject) => {
+      collections[collectionName].find({...query}, (err, docs) => {
+        if (err) reject(err)
+        else resolve(docs)
+      })
+    })
+    
+  },
+  findDocumentById (collectionName, id) {
+    return new Promise((resolve, reject) => {
+      collections[collectionName].findById(id, (err, doc) => {
+        if (err) reject(err)
+        else resolve(doc)
+      })
+    })
+  },
+  findDocumentByIdAndUpdate (collectionName, id, updateData) {
+    return new Promise((resolve, reject) => {
+      collections[collectionName].findByIdAndUpdate(id, {$set: updateData}, (err, doc) => {
+        if (err) reject(err)
+        else resolve({status: doc})
+      })
+    })
+  },
+  findDocumentByIdAndDelete (collectionName, id) {
+    return new Promise((resolve, reject) => {
+      collections[collectionName].findByIdAndDelete(id, (err, doc) => {
+        if (err) reject(err)
+        else resolve(doc)
+      })
+    })
+  },
+  
 }

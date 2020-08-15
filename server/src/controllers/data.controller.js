@@ -1,72 +1,62 @@
 const dbService = require('../services/database.service')
 
+
+
 module.exports = {
-  async saveGeoJSON (req, res) {
+  async createDocument (req, res) {
     try {
-      console.log('Saving geojson data...');
-      console.log(req.body);
-      const data = await dbService.saveGeoJSON(req.body);
-      res.send('OK');
+      const collectionName = req.params.collection
+      const data = req.body
+      let result
+      if (data.length) {
+        result = await dbService.insertDocumentsInCollection(collectionName, data)
+      } else {
+        result = await dbService.createDocumentInCollection(collectionName, data)
+      }
+      res.json(result)
     } catch (error) {
-        console.log(`Error ${error}`);
-        res.status(400).send({
-            error
-        })
+      res.status(400).json({status: 'error', payload: error.message})
     }
   },
-  async getGeoJSONData (req, res) {
+  async readCollection (req, res) {
     try {
-      console.log('Getting geojson slice...');
-      console.log(req.body);
-      const data = await dbService.getGeoJSONSlice(req.body.coordinates, req.body.radius);
-      console.log('sending data...');
-      res.send(data);
+      const collectionName = req.params.collection
+      const query = req.query
+      const data = await dbService.getDocumentsFromCollection(collectionName, query)
+      res.json(data)
     } catch (error) {
-        console.log(`Error ${error}`);
-        res.status(400).send({
-            error
-        })
+      res.status(400).json({status: 'error', payload: error.message})
     }
   },
-  async getData(req, res) {
+  async readDocument (req, res) {
     try {
-      const data = await dbService.getDataFromDatabaseTable(req.body.tableName)
-      res.send({
-          data: data,
-      })
+      const collectionName = req.params.collection
+      const documentId = req.params.id
+      const document = await dbService.findDocumentById(collectionName, documentId)
+      res.json(document)
     } catch (error) {
-        console.log(`Error ${error}`);
-        res.status(400).send({
-            error
-        })
+      res.status(400).json({status: 'error', payload: error.message})
     }
   },
-  async addData(req, res) {
+  async updateDocument (req, res) {
     try {
-      await dbService.addDataInDatabaseTable(req.body.tableName, req.body.data)
-      res.send({
-          success: "true",
-      })
+      const collectionName = req.params.collection
+      const documentId = req.params.id
+      const updateData = req.body
+      const result = await dbService.findDocumentByIdAndUpdate(collectionName, documentId, updateData)
+      res.json(result)
     } catch (error) {
-        console.log(`Error ${error}`);
-        res.status(400).send({
-            error: error
-        })
+      res.status(400).json({status: 'error', payload: error.message})
     }
   },
-  async removeData(req, res) {
+  async deleteDocument (req, res) {
     try {
-      await dbService.removeDataFromDatabaseTable(req.body.tableName, req.body.selected)
-      res.send({
-        success: selected
-      })
+      const collectionName = req.params.collection
+      const documentId = req.params.id
+      const result = await dbService.findDocumentByIdAndDelete(collectionName, documentId)
+      res.json(result)
     } catch (error) {
-      console.log('An error occured during removing data');
-      console.log(error);
-      res.status(400).send({
-        success: false,
-        error
-      })
+      res.status(400).json({status: 'error', payload: error.message})
     }
   }
 }
