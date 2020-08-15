@@ -1,10 +1,10 @@
 const dataController = require('../controllers/data.controller')
-
+const cache = require('../utils/memory.cache').cache
 
 module.exports = (app) => {
-  app.post('/api/remove', dataController.removeData)
-  app.post('/api/addData', dataController.addData)
-  app.post('/api/getData', dataController.getData)
-  app.post('/api/getGeoJSONData', dataController.getGeoJSONData)
-  app.post('/api/saveGeoJSON', dataController.saveGeoJSON)
+  app.post('/api/database/:collection', dataController.createDocument)
+  app.get('/api/database/:collection', cache(10), dataController.readCollection)
+  app.get('/api/database/:collection/:id', cache(10), dataController.readDocument)
+  app.put('/api/database/:collection/:id', dataController.updateDocument)
+  app.delete('/api/database/:collection/:id', dataController.deleteDocument)
 }
