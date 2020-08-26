@@ -6,8 +6,11 @@ export default {
   readCollection (collectionName, query) {
     return api().get(`database/${collectionName}${query}`)
   },
-  updateDocument (collectionName, documentId) {
-    return api().put(`database/${collectionName}/${documentId}`)
+  findLatestDocument (collectionName, query) {
+    return api().get(`database/${collectionName}/latest${query}`)
+  },
+  updateDocument (collectionName, documentId, update) {
+    return api().put(`database/${collectionName}/${documentId}`, update)
   },
   deleteDocument (collectionName, documentId) {
     return api().delete(`database/${collectionName}/${documentId}`)
