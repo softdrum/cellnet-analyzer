@@ -1,33 +1,35 @@
+@import './colors.scss';
 $material-dark: (
-  'background': #141926,
-  'app-bar': #141926,
-  'navigation-drawer': #1d2534,
-  'bottom-navigation': #1d2534,
+  'background': map-get($dark-theme-colors, "background"),
+  'app-bar': map-get($dark-theme-colors, "background"),
+  'navigation-drawer': map-get($dark-theme-colors, "base"),
+  'bottom-navigation': map-get($dark-theme-colors, "base"),
   'table': (
       'active': #212a3a,
       'hover': #242e3f,
-      // 'group': map-get($grey, 'darken-2')
   ),
-  'cards': #1d2534,
-  'toolbar': #1d2534,
+  'cards':  map-get($dark-theme-colors, "base"),
+  'toolbar': map-get($dark-theme-colors, "base"),
   'text': (
-    'primary': #f4f5f5,
+    'primary': map-get($dark-theme-colors, "text-primary"),
+    'secondary': map-get($dark-theme-colors, "text-secondary"),
   ),
   'icons': (
     'active': #323C4A,
-    'inactive': #323C4A
+    'inactive': #141926
   )
 );
 $material-light: (
-  'background': #f4f3ef,
-  'app-bar': #f4f3ef,
-  'navigation-drawer': #f4f3ef,
-  'cards': #fefefe,
+  'background': map-get($light-theme-colors, "background"),
+  'app-bar': map-get($light-theme-colors, "background"),
+  'navigation-drawer': map-get($light-theme-colors, "base"),
+  'cards': map-get($light-theme-colors, "base"),
   'text': (
-    'primary': #222222,
+    'primary': map-get($light-theme-colors, "text-primary"),
+    'secondary': map-get($light-theme-colors, "text-secondary"),
   ),
   'icons': (
     'active': #949494,
-    'inactive': #949494
+    'inactive': #f4f3ef
   )
 );
