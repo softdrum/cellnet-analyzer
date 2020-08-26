@@ -6,5 +6,4 @@ module.exports = (socket, modem) => {
   socket.on('getAvailableOperators', modemController.getAvailableOperators);
   socket.on('getGeoLocation', modemController.getGeoLocation);
   socket.on('getMeasureData', modemController.getMeasureData);
-  socket.on('setLogMode', modemController.setLogMode);
 }
