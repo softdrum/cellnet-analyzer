@@ -1,4 +1,4 @@
-const basestationController = require('../controllers/basestation.controller')
+const basestationController = require('../../controllers/basestation.controller')
 
 
 module.exports = (app) => {
