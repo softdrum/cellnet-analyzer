@@ -1,13 +1,27 @@
 <template>
-  <div v-resize="onResize">
-    <Sidebar @sideClicked="opened = !opened" v-if="desktop"/>
-    <BottomNavigation v-else />
-    <div class="d-flex">
-      <div v-if="desktop" class="ghostSidebar" :hidden="sideHidden" :class="{sideOpened: opened}"></div>
-      <div class="content">
-        <Appbar class="side-animation" v-if="!wide"/>
-        <transition name="fade" mode="out-in">
-        <v-container fluid class="pl-8 pr-6" v-if="!wide">
+  <div>
+    <appbar
+      v-if="!isFullscreen"
+      class="side-animation"
+      :class="contentClass"
+      :desktop="isDesktop"
+    />
+    <sidebar
+      v-if="isDesktop"
+      v-model="isSidebarOpened"
+      class="disable-scrollbars"
+    />
+    <bottom-navigation v-else />
+    <main
+      class="content"
+      :class="contentClass"
+    >
+      <transition name="fade" mode="out-in">
+        <v-container
+          v-if="!isFullscreen"
+          :class="{'pl-6 pr-4': isDesktop}"
+          fluid
+        >
           <transition name="fade" mode="out-in">
             <router-view />
           </transition>
@@ -15,15 +29,16 @@
         <transition name="fade" mode="out-in" v-else>
             <router-view />
         </transition>
-        </transition>
-    </div>
-    </div>
+      </transition>
+    </main>
+    <div class="bottom-navigation-ghost" v-if="!isDesktop && !isFullscreen"></div>
   </div>
 </template>
+
 <script>
-import Sidebar from '@/components/navigation/Sidebar'
-import Appbar from '@/components/appbar/Appbar'
-import BottomNavigation from '@/components/navigation/BottomNavigation'
+import Sidebar from '@/components/app/TheSidebar'
+import Appbar from '@/components/app/TheAppbar'
+import BottomNavigation from '@/components/app/TheBottomNavigation'
 
 export default {
   name: 'main',
@@ -33,19 +48,24 @@ export default {
     BottomNavigation
   },
   data: () => ({
-    desktop: true,
-    opened: true,
+    isSidebarOpened: true,
     sideHidden: false
   }),
-  methods: {
-    onResize () {
-      this.desktop = window.innerWidth > 900 ? true : false
-    }
-  },
   computed: {
-    wide () {
+    isDesktop () {
+      return this.$vuetify.breakpoint.width > 767
+    },
+    isFullscreen () {
       if (this.$route.fullPath === '/map') return true
       else return false
+    },
+    contentClass () {
+      if (this.isDesktop) {
+        if (this.isSidebarOpened) return 'sidebar-opened'
+        else return 'sidebar-closed'
+      } else {
+        return ''
+      }
     }
   }
 }
@@ -53,19 +73,15 @@ export default {
 <style scoped>
   .content {
     width: 100%;
+    transition: padding-left 0.1s ease-in;
   }
-  .sideOpened {
-    width: 312px !important;
+  .sidebar-opened {
+    padding-left: 256px;
   }
-  .ghostSidebar {
-    width: 56px;
-    transition: width 0.1s ease-in;
+  .bottom-navigation-ghost {
+    margin-top: 56px;
   }
-  .full {
-    padding-left: 260px !important;
-  }
-  .wide {
-    padding-left: 0px !important;
-    padding-right: 100px !important;
+  .sidebar-closed {
+    padding-left: 56px;
   }
 </style>
