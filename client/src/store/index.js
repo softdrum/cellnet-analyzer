@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import auth from './auth'
-import modem from './modem'
-import map from './map'
-import database from './database'
 import persistedState from 'vuex-persistedstate'
+import modules from './modules';
+
 Vue.use(Vuex)
+
 
 export default new Vuex.Store({
   plugins: [persistedState()],
@@ -35,10 +34,5 @@ export default new Vuex.Store({
   getters: {
     message: s => s.snackMessage
   },
-  modules: {
-    auth,
-    modem,
-    map,
-    database
-  }
+  modules
 })

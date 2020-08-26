@@ -1,4 +1,4 @@
-import databaseService from '../services/databaseService'
+import databaseService from '../../services/databaseService'
 export default {
   actions: {
     async removeDataFromDatabase({commit},{tableName, selected}) {
@@ -9,9 +9,19 @@ export default {
       commit('SET_MESSAGE', {message: 'Удалено', color:'success'})
       return response
     },
+    async saveGeoJSON ({commit}, data) {
+      await databaseService.saveGeoJSON(data)
+      commit('');
+    },
     async getGeoJSONSlice ({commit}, {coordinates, radius}) {
       const response = (await databaseService.getGeoJSONData({coordinates, radius})).data;
       commit('');
+      return response
+    },
+    async saveBS ({commit}, geodata) {
+      await databaseService.createDocument('Basestation',geodata)
+      const response = 'OK'
+      commit('')
       return response
     },
     async getDataFromDatabase({commit}, tableName) {
