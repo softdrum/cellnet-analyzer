@@ -3,7 +3,7 @@ export default {
     const options = {
       chart: {
         type: 'line',
-        foreColor: darkTheme ? '#476876': '#666',
+        foreColor: darkTheme ? '#476876': '#000',
         dropShadow: {
           color: colors[0],
           enabled: darkTheme,
@@ -28,7 +28,7 @@ export default {
       },
       colors: colors,
       grid: {
-        borderColor: darkTheme ? '#242e3e': '#ccc',
+        borderColor: darkTheme ? '#242e3e': '#EAEAEA',
         show: true,
         xaxis: {
           lines: {

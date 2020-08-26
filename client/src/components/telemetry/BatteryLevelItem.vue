@@ -1,12 +1,12 @@
 <template>
-  <div class=" pa-4 d-flex justify-center align-center">
-    <div class="d-flex flex-column justify-center align-center mr-2">
-        <div class="plus">
+  <div class="d-flex mr-1 justify-center align-center battery">
+    <div class="d-flex flex-column justify-center align-center">
+        <div class="plus card-content inner-shadow">
           <div class="topEnd" :class="{fullbattery: full}">
           </div>
         </div>
       <div class="mr-0">
-        <div class="back">
+        <div class="back card-content inner-shadow">
           <div class="top" :style="batteryLevel"></div>
         </div>
       </div>
@@ -15,12 +15,8 @@
 </template>
 
 <script>
-// import ChartCard from '@/components/cards/ChartCard'
-
 export default {
-  components: {
-    // ChartCard
-  },
+  name: 'BatteryLevelItem',
   props: {
     value: Number
   },
@@ -58,12 +54,12 @@ export default {
         level = this.value
       }
       else if (this.value <= 70) {
-        from = '#ffb347'
         to = '#ffcc33'
+        from = '#ffb347'
         level = this.value
       } else {
-        from = '#45b649'
-        to = '#dce35b'
+        from = '#dce35b'
+        to = '#45b649'
         level = this.value
         if (this.value >= 95) {
           level = 100
@@ -77,21 +73,20 @@ export default {
   }
 }
 </script>
+
 <style scoped>
   .battery {
     position: relative;
-    width: 100%;
+    width: 90px;
     height: 100%;
   }
   .back {
-    height: 110px;
-    width: 65px;
+    height: 90px;
+    width: 55px;
     border-radius: 10px;
-    background: rgba(20, 25, 38, 0.1);
     position: relative;
     z-index: 0;
     overflow: hidden;
-    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
   }
   .plus {
     height: 5px;
@@ -100,17 +95,15 @@ export default {
     position: relative;
     z-index: 3;
     overflow: hidden;
-    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
   }
   .topEnd {
-    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
     position: absolute;
     border-radius: 0px;
     height: 0%;
     width: 100%;
     z-index: 1;
     bottom: 0;
-    transition: all 0.3s ease;
+    transition: height 0.3s ease;
   }
   .fullbattery {
     height: 100%;
@@ -123,14 +116,13 @@ export default {
     z-index: 3;
   }
   .top {
-    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.4);
     position: absolute;
     border-radius: 0px;
     height: 100%;
     width: 100%;
     z-index: 1;
     bottom: 0;
-    transition: width 0.3s ease;
+    transition: height 0.3s ease;
   }
   
 </style>

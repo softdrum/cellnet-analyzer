@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <base-map-control>
     <div class="map-controls">
       <transition name="bounce">
         <v-card  v-if="!value">
@@ -16,17 +16,21 @@
       </transition>
       <transition name="fade" enter-active-class="delay fade-enter-active">
         <div class="d-flex justify-space-between" v-if="value">
-            <v-btn style="width: 48%;" @click="$emit('undo')"> Undo </v-btn>
-            <v-btn style="width: 48%;" @click="onStopBtnClicked" class="stop-btn elevation-4"> Stop</v-btn>
+            <v-btn class="control-btn" @click="$emit('undo')"> Undo </v-btn>
+            <v-btn
+              class="control-btn stop-btn elevation-4"
+              @click="onStopBtnClicked">
+              Stop
+            </v-btn>
         </div>
       </transition>
     </div>
-  </div>
+  </base-map-control>
 </template>
 
 <script>
+import BaseMapControl from '@/components/map/BaseMapControl'
 import NetworkSelector from '@/components/NetworkSelector'
-
 export default {
   name: "MeasureModeControls",
   inject: ["mapbox", "map", "actions"],
@@ -35,6 +39,7 @@ export default {
     value: Boolean
   },
   components: {
+    BaseMapControl,
     NetworkSelector,
   },
   data: () => ({
@@ -78,15 +83,15 @@ export default {
 };
 </script>
 <style scoped>
-  .stopBtn {
+  .control-btn {
+    width: 48%;
+  }
+  .stop-btn {
     background: red !important;
   }
   .map-controls {
-    position: absolute;
-    right: 10px;
     width: 170px;
     height: auto;
-    top: 100px;
     transition: all 0.2s ease;
   }
 </style>

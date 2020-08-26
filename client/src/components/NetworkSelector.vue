@@ -1,16 +1,18 @@
 <template>
   <div class="d-flex align-center justify-space-between font-weight-regular" style="font-family: roboto;color: #404C5C; font-size: 1rem">
-    Network: 
+    <span class="text--secondary">Network:</span> 
     <v-menu
       transition="slide-y-transition"
       bottom
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
+          small
+          width="45"
           :loading="loading"
           v-bind="attrs"
           v-on="on"
-          class="elevation-0" style="font-family: roboto; background: transparent; color: #404C5C; font-size: 1rem"
+          class="elevation-0 select-btn text--secondary"
         >
           {{ networkMode }}
         </v-btn>
@@ -19,7 +21,7 @@
         <v-list-item
           v-for="(item, i) of items"
           :key="i"
-          @click="changeNetwork(item.title)"
+          @click="$emit('change-network-mode', item.title)"
         >
           <v-list-item-title> {{item.title}} </v-list-item-title>
         </v-list-item>
@@ -38,19 +40,14 @@ export default {
       { title: 'GSM' },
       { title: 'AUTO' },
     ],
-  }),
-  methods: {
-    changeNetwork (network) {
-      this.loading = true
-      this.$socket.client.emit('changeMode', network, (response) => {
-        if (response.msg === 'success') this.$success('Network mode successfully changed')
-        else {
-          if (response.msg === 'No service') this.networkMode = 'No service'
-          this.$error(response.msg)
-        }
-        this.loading = false
-      });
-    }
-  },
+  })
 }
 </script>
+<style scoped>
+  .select-btn {
+    font-family: roboto;
+    background: transparent !important;
+    font-size: 1rem;
+    min-width: 10px
+  }
+</style>

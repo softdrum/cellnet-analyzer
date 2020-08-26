@@ -1,6 +1,6 @@
 <template>
     <div class="thermometer d-flex justify-center">
-      <div class="back mr-5">
+      <div class="back mr-5 card-content inner-shadow">
         <div class="top" :style="temperatureLevel"></div>
       </div>
       <div>
@@ -11,14 +11,13 @@
 </template>
 
 <script>
-// import ChartCard from '@/components/cards/ChartCard'
-
 export default {
-  components: {
-    // ChartCard
-  },
+  name: 'TemperatureItem',
   props: {
-    value: Number
+    value: {
+      type: Number,
+      default: 0
+    }
   },
   computed: {
     temperatureLevel() {
@@ -41,9 +40,8 @@ export default {
 </script>
 <style scoped>
   .thermometer {
-    min-width: 230px;
-    min-height: 100px;
-    height: 120px;
+    height: 100px;
+    margin-left: 50px;
   }
   .back {
     width: 20px;
@@ -52,8 +50,6 @@ export default {
     position: relative;
     z-index: 0;
     overflow: hidden;
-    background: rgba(20, 25, 38, 0.7);
-    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
   }
   .top {
     position: absolute;

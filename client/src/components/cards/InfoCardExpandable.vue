@@ -9,17 +9,17 @@
       class="d-flex align-center justify-space-around py-5 px-6 card-header"
     >
       <div v-if="desktop || !this.infoTitles.length">
-        <v-icon :class="{loading: !this.infoTitles.length}" style="font-size: 4.1rem; color: #141926;">mdi-antenna</v-icon>
+        <v-icon class="icon" :class="{loading: !this.infoTitles.length}" >icon-basestation</v-icon>
       </div>
       <div
         v-for="(item, i) of infoTitles.slice(0,4)"
         :key="i">
-        <div class="text-uppercase mb-2" style="font-size: 0.8rem; color: #616D83;">{{ item }}:</div>
-        <div :style="{color: item === 'status' ? '#40B64C':'white'}" style="font-size: 1.37rem">{{ info[item] }}</div>
+        <div class="text-uppercase mb-1 text--secondary title-1">{{ item }}:</div>
+        <div :class="{'text-green': item === 'status'}" class="subtitle--1" style="font-size: 1.37rem">{{ info[item] }}</div>
       </div>
     </div>
     <div class="card-body">
-      <div class="card-content">
+      <div class="card-content inner-shadow">
         <div
           v-for="n in 1"
           :key="n"
@@ -28,8 +28,8 @@
           <div
             v-for="(item, i) of infoTitles.slice(5,9)"
             :key="i">
-            <div class="text-uppercase mb-2" style="font-size: 0.75rem; color: #616D83;">{{ item }}:</div>
-            <div :style="{color: item === 'status' ? '#40B64C':'white'}" style="font-size: 1rem">{{ info[item] }}</div>
+            <div class="text-uppercase mb-2 text--secondary title-2">{{ item }}:</div>
+            <div lass="subtitle--2">{{ info[item] }}</div>
           </div>
         </div>
         
@@ -38,8 +38,10 @@
     </div>
   </v-card>
 </template>
+
 <script>
 export default {
+  name: 'InfoCardExpandable',
   props: {
     info: Object
   },
@@ -49,6 +51,7 @@ export default {
   }),
   computed: {
     infoTitles () {
+      // return []
       if (!this.info) return []
       return Object.keys(this.info)
     }
@@ -64,14 +67,16 @@ export default {
 }
 </script>
 
-<style scoped>
-  .card {}
+<style lang="scss" scoped>
   .card-header {
     cursor: pointer;
     height: 100%;
   }
+  .text-green {
+    color: #40B64C;
+  }
   .card-header:hover {
-    background: #212c3d;
+    background: rgba(255, 255, 255, 0.01);
     border-radius: inherit;
   }
   .card-body {
@@ -81,15 +86,29 @@ export default {
   }
   .card-body-bottom {
     height: 20px;
-    background: #1d2534;
     border-radius: 0 0 5px 5px;
   }
-  .card-content {
-    background: #161C2B;
+  .inner-shadow {
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.15);
   }
   .closed .card-body {
     max-height: 0 !important;
     padding-bottom: 0px;
+  }
+  .icon {
+    font-size: 4.5rem;
+    color: #141926;
+  }
+  .title-1 {
+    font-size: 0.8rem !important;;
+  }
+  .subtitle--1 {
+    font-size: 1.37rem !important;
+  }
+  .title-2 {
+    font-size: 0.75rem !important;;
+  }
+  .subtitle--2 {
+    font-size: 1rem !important;;
   }
 </style>

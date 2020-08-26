@@ -112,9 +112,13 @@ export default {
       }
       )
     })
-    this.$emit('sourceCreated', {
+    this.$emit('source-created', {
       id: this.sourceId,
-      layers: [`clustered${this.sourceId}`, `clustered${this.sourceId}Count`, `unclustered${this.sourceId}`]
+      layers: [
+        `clustered${this.sourceId}`,
+        `clustered${this.sourceId}Count`,
+        `unclustered${this.sourceId}`
+      ]
     })
   },
   methods: {

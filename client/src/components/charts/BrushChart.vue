@@ -12,6 +12,7 @@
     </ChartCard>
   </div>
 </template>
+
 <script>
 import ChartCard from '@/components/cards/ChartCard'
 export default {

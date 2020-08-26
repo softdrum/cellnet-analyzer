@@ -1,7 +1,7 @@
 <template>
-  <div class="map-controls">
-    <v-card class="d-flex align-center justify-space-around px-2">
-      <h1 class="align-self-center body-2 ">Measure mode</h1>
+  <base-map-control>
+    <div class="d-flex align-center justify-space-between px-3">
+      <h1 class="align-self-center body-2 mr-3">Measure mode</h1>
       <div @click="onClick">
         <v-switch
           v-model="mode"
@@ -10,17 +10,21 @@
           :inset="!desktop"
       />
       </div>
-    </v-card>
-  </div>
+    </div>
+  </base-map-control>
 </template>
 
 <script>
+import BaseMapControl from '@/components/map/BaseMapControl'
 
 export default {
-  name: "MeasureModeButton",
+  name: "MeasureModeSwitchButton",
   props: {
     value: Boolean,
     isStarted: Boolean
+  },
+  components: {
+    BaseMapControl
   },
   data: () => ({
     expand: false,
@@ -50,13 +54,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-  .map-controls {
-    position: absolute;
-    right: 10px;
-    width: 170px;
-    overflow: hidden;
-    top: 20px;
-    transition: all 0.2s ease;
-  }
-</style>

@@ -1,15 +1,22 @@
 <template>
   <div>
-    <v-card class="map-controls" @mouseenter="expand = true" @mouseleave="expand = false">
+    <v-card
+      class="map-controls mb-3"
+      @mouseenter="expand = true"
+      @mouseleave="expand = false"
+    >
       <div class="d-flex pa-3 justify-space-between align-center">
         <span v-if="expand">Layers</span>
         <div class="preview d-flex justify-center align-center">
           <v-icon class="control-icon">
-            mdi-layers
+            icon-layers
           </v-icon>
         </div>
       </div>
-      <div v-if="expand" class="px-5">
+      <div
+        v-if="expand"
+        class="px-5"
+      >
         <div v-for="(source, i) in sources" :key="i">
           <v-checkbox
             v-model="selected"
@@ -37,7 +44,6 @@ export default {
     selectedCopy: []
   }),
   mounted () {
-    // this.sources = Object.keys(this.map.style.sourceCaches).filter(source => source !== 'composite')
     this.selected = this.sources.map(source => source.id)
   },
   watch: {
@@ -72,12 +78,9 @@ export default {
     right: 0;
   }
   .map-controls {
-    position: absolute;
     width: 40px;
     height: 40px;
-    right: 10px;
     overflow: hidden;
-    top: 100px;
     transition: all 0.2s ease;
   }
   .map-controls:hover {

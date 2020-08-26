@@ -3,9 +3,11 @@
     <v-dialog
       v-model="value"
       persistent
-      width="500"
     >
-      <template v-if="button" v-slot:activator="{ on, attrs }">
+      <template
+        v-if="button"
+        v-slot:activator="{ on, attrs }"
+      >
         <v-btn
           color="red lighten-2"
           dark
@@ -61,6 +63,7 @@
 
 <script>
   export default {
+    name: 'DialogAccept',
     props: {
       title: String,
       text: String,

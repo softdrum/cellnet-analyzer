@@ -19,7 +19,7 @@ export default {
   methods: {
     onDrag () {
       const center = this.map.getCenter()
-      if (this.getDistanceFromLatLonInKm(this.mapCenterPosition, center) >= 5) {
+      if (this.getDistanceFromLatLonInKm(this.mapCenterPosition, center) >= this.radius) {
         this.mapCenterPosition = center
         this.$emit('changed', this.mapCenterPosition)
       }

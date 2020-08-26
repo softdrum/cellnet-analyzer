@@ -16,6 +16,7 @@
 <script>
 import DialogAccept from './DialogAccept'
 export default {
+  name: 'DialogSaveData',
   components: {
     DialogAccept
   },

@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <div class="back mr-3">
+  <div style="width: 100%">
+    <div class="back card-content mr-3 inner-shadow">
       <div class="inner-text d-flex align-center justify-center">
-        <div>{{ used }} / {{ size }} GB</div>
+        <span class="title-text text--white">{{ value.used }} / {{ value.size }} GB</span>
       </div>
       <div class="top" :style="diskSpace">
       </div>
@@ -11,8 +11,8 @@
 </template>
 
 <script>
-
 export default {
+  name: 'DiskSpaceItem',
   props: {
     value: {
       type: Object
@@ -24,7 +24,7 @@ export default {
   computed: {
     diskSpace() {
       let from, to
-      const usedPercentage = this.used / this.size * 100
+      const usedPercentage = this.value.used / this.value.size * 100
       if (usedPercentage <= 50) {
         from = '#dce35b'
         to = '#45b649'
@@ -38,14 +38,6 @@ export default {
       }
       return `width: ${usedPercentage}%; background: ${from};background: -webkit-linear-gradient(to top,  ${from},  ${to});background: linear-gradient(to top,  ${from},  ${to});`
     },
-    used() {
-      if (!this.value.free) return 0
-      return ((this.value.size - this.value.free) / 1000**3).toFixed(1)*1
-    },
-    size() {
-      if (!this.value.size) return 0
-      return  (this.value.size / 1000**3).toFixed(1)
-    }
   },
   watch: {
     value(val) {
@@ -57,11 +49,6 @@ export default {
 }
 </script>
 <style scoped>
-  .thermometer {
-    min-width: 230px;
-    min-height: 100px;
-    height: 120px;
-  }
   .inner-text {
     position: relative;
     z-index: 2;
@@ -69,16 +56,19 @@ export default {
   }
   .back {
     text-align: center;
-    width: 300px;
-    background: rgba(20, 25, 38, 0.7);
+    width: 100%;
     height: 50px;
-    border-radius: 10px;
+    border-radius: 5px;
     position: relative;
     z-index: 0;
     overflow: hidden;
-    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
   }
-
+  .title-text {
+    font-family: roboto;
+    font-weight: normal;
+    font-size: 1rem;
+    line-height: 1rem;
+  }
   .top {
     position: absolute;
     border-radius: 0px;
@@ -87,6 +77,5 @@ export default {
     z-index: 1;
     bottom: 0;
     transition: height 0.3s ease;
-    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.4);
   }
 </style>

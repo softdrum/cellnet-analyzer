@@ -1,6 +1,6 @@
 <template>
   <!-- <ChartCard :title="title" :loading="loading" > -->
-    <apexchart slot="chart" width="240" type="radialBar" ref="cpuusage"  :options="chartOptions" :series="series"></apexchart>
+    <apexchart class="radial-chart1" slot="chart" width="200" type="radialBar" ref="cpuusage"  :options="chartOptions" :series="series"></apexchart>
   <!-- </ChartCard> -->
 </template>
 <script>
@@ -36,7 +36,7 @@ export default {
           track: {
             background: '#141926'
           },
-          background: '#1d2534',
+          background: '#re',
           dataLabels: {
             name: {
               fontSize: '16px',
@@ -95,7 +95,7 @@ export default {
             hollow: {
             margin: 0,
             size: '70%',
-            background: '#1d2534',
+            background: 'transparent',
             image: undefined,
             imageOffsetX: 0,
             imageOffsetY: 0,
@@ -203,3 +203,8 @@ export default {
   })
 }
 </script>
+<style scoped>
+  .radial-chart1 {
+    margin-left: -50px !important;
+  }
+</style>
