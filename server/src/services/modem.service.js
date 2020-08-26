@@ -1,20 +1,25 @@
-const modemRegExp = require('../modem/modemRegexp')
-const modemHelpers = require('../modem/modemHelpers')
+const modemRegExp = require('../modules/modem/modemRegexp')
+const modemHelpers = require('../modules/modem/modemHelpers')
 
 
 module.exports = (modem) => {
   return {
     getSignalQuality () {
-      return modem.executeAtCommand('AT+CSQ')
-        .then( (result) => {
-          if (result.status === 'ERROR') throw 'Error: Can not get signal quality'
-          let data = result.data.result.match(modemRegExp.signalQuality)
-          if (!data) throw 'Error: Can not get signal quality'
-          return {
-            s_lvl: modemHelpers.calculateSignalLevel(data.groups.s_lvl),
-            ber: modemHelpers.calculateBitErrorRate(data.groups.ber)
-          }
-        })
+      return new Promise((resolve, reject) => {
+        modem.executeAtCommand('AT+CSQ')
+          .then( (result) => {
+            if (result.status === 'ERROR') reject('Error: Can not get signal quality')
+            let data = result.data.result.match(modemRegExp.signalQuality)
+            if (!data) reject('Error: Can not get signal quality')
+            resolve( {
+              s_lvl: modemHelpers.calculateSignalLevel(data.groups.s_lvl),
+              ber: modemHelpers.calculateBitErrorRate(data.groups.ber)
+            })
+          })
+          .catch(e => {
+            reject(e)
+          })
+      })
     },
     setPrefferedSystemMode(mode) {
       return modem.executeAtCommand(`AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`)
@@ -75,12 +80,6 @@ module.exports = (modem) => {
     },
     setModemBusyMode (value) {
       modem.setBusyMode(value)
-    },
-    setModemLogMode (value) {
-      modem.setLogMode(value)
-    },
-    isModemInLogMode () {
-      return modem.getLogMode()
     },
   }
 }

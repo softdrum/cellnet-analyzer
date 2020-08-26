@@ -71,13 +71,6 @@ module.exports = (modem) => {
         modemService.setModemBusyMode(false)
       })
     },
-    setLogMode (mode, callback) {
-      if (!modem.getModemConnectionStatus()) callback({status: 'ERROR', data: 'modem is not connected'})
-      else {
-        modemService.setModemLogMode(mode)
-        callback({status: 'SUCCESS', data: modemService.isModemInLogMode()})
-      }
-    }
   }
 
 }
