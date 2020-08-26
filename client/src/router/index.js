@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Dashboard from '../views/Dashboard.vue'
 import Charts from '../views/Charts.vue'
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'Dashboard',
     meta: {layout: 'main', auth: true},
-    component: Home
+    component: Dashboard
   }, 
   {
     path: '/charts',
