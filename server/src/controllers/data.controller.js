@@ -28,6 +28,16 @@ module.exports = {
       res.status(400).json({status: 'error', payload: error.message})
     }
   },
+  async findLatest (req, res) {
+    try {
+      const collectionName = req.params.collection
+      const query = req.query
+      const document = await dbService.findLatestDocument(collectionName, query)
+      res.json(document)
+    } catch (error) {
+      res.status(400).json({status: 'error', payload: error.message})
+    }
+  },
   async readDocument (req, res) {
     try {
       const collectionName = req.params.collection

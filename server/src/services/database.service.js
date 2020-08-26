@@ -17,12 +17,20 @@ module.exports = {
   },
   getDocumentsFromCollection (collectionName, query) {
     return new Promise((resolve, reject) => {
-      collections[collectionName].find({...query}, (err, docs) => {
+      collections[collectionName].find(query, (err, docs) => {
         if (err) reject(err)
         else resolve(docs)
       })
     })
-    
+  },
+  findLatestDocument (collectionName, query) {
+    return new Promise((resolve, reject) => {
+      console.log(query);
+      collections[collectionName].findOne({}, {}, {sort: {'updatedAt' : '-1'}, ...query}, (err, doc) => {
+        if (err) reject(err)
+        else resolve(doc)
+      })
+    })
   },
   findDocumentById (collectionName, id) {
     return new Promise((resolve, reject) => {
