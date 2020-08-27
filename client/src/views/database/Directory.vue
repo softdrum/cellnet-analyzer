@@ -52,13 +52,9 @@
 
 <script>
 import databaseService from '@/services/databaseService'
-import LongPress from 'vue-directive-long-press'
 import DialogCreateFile from '@/components/dialogs/DialogCreateFile'
 export default {
   name: 'Database',
-  directives: {
-    'long-press': LongPress
-  },
   components: {
     DialogCreateFile
   },

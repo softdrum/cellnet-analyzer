@@ -14,7 +14,6 @@ import Mapbox from "mapbox-gl";
 import VueSocketIOExt from 'vue-socket.io-extended';
 
 import Vuelidate from 'vuelidate'
-import LongPress from 'vue-directive-long-press'
 
 import io from 'socket.io-client'; 
 const socket = io('http://192.168.0.103:8081');
@@ -26,7 +25,6 @@ Vue.use(messagePlugin)
 Vue.filter('date', dateFilter)
 Vue.component('apexchart', VueApexCharts)
 Vue.use(VueMapbox, { mapboxgl: Mapbox });
-Vue.directive('long-press', LongPress)
 
 
 new Vue({
