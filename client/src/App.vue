@@ -1,32 +1,51 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app style="transition: background 0.7s cubic-bezier(0.075, 0.82, 0.165, 1);">
+    <Snackbar />
+    <component class="main-container" :is="layout">
+      <router-view/>
+    </component>
+  </v-app>
 </template>
 
+<script>
+import EmptyLayout from './layouts/EmptyLayout'
+import MainLayout from './layouts/MainLayout'
+import Snackbar from './components/app/Snackbar'
+export default {
+  components: {
+    EmptyLayout,
+    MainLayout,
+    Snackbar
+  },
+  mounted() {
+    this.$vuetify.theme.dark = this.$store.state.darkTheme
+  },
+  computed: {
+    layout() {
+      console.log(this.$route.meta);
+      return (this.$route.meta.layout || 'empty') + '-layout'
+    }
+  },
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+  @import './styles/animation.css';
+  @import './styles/scrollbar.scss';
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+  .v-card {
+    border: none !important;
+    border-radius: 5px !important;
+  }
+  .v-navigation-drawer__content::-webkit-scrollbar{
+    width: 0px !important;
+  }
+  html {
+    font-size: calc(14px + 2 * (100vw / 1280)) !important;
+  }
+  @media (max-width: 767px) {
+    html {
+      font-size: calc(14px + (2 + 2*0.7) * ((100vw - 320px) / 1280)) !important;;
+    }
+  }
 </style>

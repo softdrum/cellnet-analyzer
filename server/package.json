@@ -4,8 +4,8 @@
   "description": "A backend of cellnet-analyzer",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "start": "node bin/www.js",
+    "dev": "nodemon bin/www.js"
   },
   "keywords": [],
   "author": "",
@@ -17,9 +17,18 @@
     "bcrypt": "^4.0.1",
     "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
+    "check-disk-space": "^2.1.0",
+    "cors": "^2.8.5",
+    "csv-parser": "^2.3.2",
+    "csv-writer": "^1.6.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "sequelize": "^5.21.5",
-    "sqlite3": "^4.1.1"
+    "memory-cache": "^0.2.0",
+    "mongodb": "^3.6.0",
+    "mongoose": "^5.9.28",
+    "os-utils": "0.0.14",
+    "serialport": "^8.0.7",
+    "serialport-gsm": "^3.2.3",
+    "socket.io": "^2.3.0"
   }
 }

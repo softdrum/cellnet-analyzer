@@ -1,0 +1,35 @@
+@import './colors.scss';
+$material-dark: (
+  'background': map-get($dark-theme-colors, "background"),
+  'app-bar': map-get($dark-theme-colors, "background"),
+  'navigation-drawer': map-get($dark-theme-colors, "base"),
+  'bottom-navigation': map-get($dark-theme-colors, "base"),
+  'table': (
+      'active': #212a3a,
+      'hover': #242e3f,
+  ),
+  'cards':  map-get($dark-theme-colors, "base"),
+  'toolbar': map-get($dark-theme-colors, "base"),
+  'text': (
+    'primary': map-get($dark-theme-colors, "text-primary"),
+    'secondary': map-get($dark-theme-colors, "text-secondary"),
+  ),
+  'icons': (
+    'active': #323C4A,
+    'inactive': #141926
+  )
+);
+$material-light: (
+  'background': map-get($light-theme-colors, "background"),
+  'app-bar': map-get($light-theme-colors, "background"),
+  'navigation-drawer': map-get($light-theme-colors, "base"),
+  'cards': map-get($light-theme-colors, "base"),
+  'text': (
+    'primary': map-get($light-theme-colors, "text-primary"),
+    'secondary': map-get($light-theme-colors, "text-secondary"),
+  ),
+  'icons': (
+    'active': #949494,
+    'inactive': #f4f3ef
+  )
+);
