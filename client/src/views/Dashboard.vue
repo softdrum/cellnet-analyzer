@@ -64,6 +64,7 @@ import InfoCardExpandable from '../components/cards/InfoCardExpandable'
 import defaultOptions from '../components/charts/options/default.chart'
 
 import { mapState, mapGetters } from 'vuex'
+import themes from '@/styles/colors.js'
 
 export default {
   name: 'Dashboard',
@@ -81,6 +82,10 @@ export default {
     ...mapGetters([
       'freeDiskSpace'
     ]),
+    iconColor () {
+      if (this.$vuetify.theme.dark) return themes.dark['primary']
+      else return themes.light['accent']
+    },
     diskSpaceCard () {
       return {
         title: 'Free space',
@@ -88,7 +93,7 @@ export default {
         measure: 'GB',
         icon: {
           name: 'icon-drive',
-          color: '#009CCD'
+          color: this.iconColor
         }
       }
     },
