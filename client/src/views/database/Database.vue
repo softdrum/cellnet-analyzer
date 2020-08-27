@@ -19,6 +19,7 @@
             <v-list-item-content>
               <div class="overline mb-4">last updated 5 minutes ago</div>
               <v-list-item-title class="headline mb-1">{{ dir.title }}</v-list-item-title>
+
               <v-list-item-subtitle>{{ dir.subtitle }}</v-list-item-subtitle>
             </v-list-item-content>
 
@@ -36,8 +37,6 @@
           </v-list-item>
 
           <v-card-actions>
-            <!-- <v-btn text>Open</v-btn>
-            <v-btn text >Copy</v-btn> -->
           </v-card-actions>
         </v-card>
       </v-col>
@@ -55,16 +54,16 @@ export default {
       {
         title: 'Basestations',
         subtitle: 'Explore local BS data',
-        icon: 'mdi-antenna',
+        icon: 'icon-basestation',
         color: 'blue',
-        to: '/database/basestations'
+        to: '/database/basestation'
       },
       {
         title: 'Signals',
         subtitle: 'Analize signal data',
         icon: 'mdi-current-ac',
         color: 'green',
-        to: '/database/signals'
+        to: '/database/signal'
       },
       {
         title: 'Heatmap',
@@ -77,5 +76,3 @@ export default {
   })
 }
 </script>
-<style scoped>
-</style>

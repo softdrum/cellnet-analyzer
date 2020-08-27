@@ -10,7 +10,7 @@
       >
           <!-- {{ $store.state.modem.signal_level }} -->
         <ChartCard :title="'Signal level'">
-          <apexchart  height="250" slot="chart" type="line" ref="chart1" :options="options" :series="series"></apexchart>
+          <apexchart  height="250" type="line" ref="chart1" :options="options" :series="series"></apexchart>
        </ChartCard>
       </v-col>
       <v-col
@@ -22,7 +22,7 @@
         xs="12"
       >
         <ChartCard :title="'Bit Error Rate'">
-          <apexchart height="250" slot="chart" ref="chart2" type="line" :options="options2" :series="series2"></apexchart>
+          <apexchart height="250" ref="chart2" type="line" :options="options2" :series="series2"></apexchart>
        </ChartCard>
       </v-col>
       <v-col
@@ -34,7 +34,7 @@
         xs="12"
       >
         <ChartCard :title="'Bit Error Rate'">
-          <apexchart height="250" slot="chart" ref="chart2" type="line" :options="options2" :series="series2"></apexchart>
+          <apexchart height="250" ref="chart2" type="line" :options="options2" :series="series2"></apexchart>
        </ChartCard>
       </v-col>
       <v-col
@@ -46,7 +46,7 @@
         xs="12"
       >
         <ChartCard :title="'Bit Error Rate'">
-          <apexchart height="250" slot="chart" ref="chart2" type="line" :options="options2" :series="series2"></apexchart>
+          <apexchart height="250" ref="chart2" type="line" :options="options2" :series="series2"></apexchart>
        </ChartCard>
       </v-col>
   </v-row>

@@ -1,164 +1,134 @@
 <template>
-  <v-row>
-    <!-- <v-col
-      cols="12"
-      xl="6"
-      lg="6"
-      md="6"
-      sm="6"
-      xs="12"
-    >
-      <v-card class="pr-2" style="border-radius: 10px">
-        <div class="d-flex align-center justify-space-between">
-          <Temperature :value="cpuTemp" />
-          <RadialChart :title="'CPU Usage'" :value="cpuUsage"/>
-        </div>
-      </v-card>
-    </v-col> -->
-    <v-col
-      cols="12"
-      xl="4"
-      lg="4"
-      md="6"
-      sm="6"
-      xs="12"
-    >
-      <InfoCard :data="cpuInfo.data" :icon="cpuInfo.icon"/>
-    </v-col>
-     <v-col
-      cols="12"
-      xl="4"
-      lg="4"
-      md="6"
-      sm="6"
-      xs="12"
-    >
-      <InfoCard :data="memoryInfo.data" :icon="memoryInfo.icon"/>
-    </v-col>
-    <v-col
-      cols="12"
-      xl="6"
-      lg="6"
-      md="6"
-      sm="6"
-      xs="12"
-    >
-      <v-card class="py-7 px-12" style="border-radius: 10px">
-        <div class="d-flex align-center justify-space-between">
-          
-          <div>
-            <div class="font-weight-light" style="color: #404C5C; font-size: 1rem">Battery capacity</div>
-            <div class="font-weight-light" style="font-size: 1.8rem">{{cpuTemp}}%</div>
-            <div class="font-weight-light body-1" style="color: #404C5C;">Standalone</div>
-            <div class="font-weight-light" style="font-size: 1.8rem">2 hours</div>
+  <div>
+    <v-row>
+      <v-col
+        :cols="12"
+        :lg="4"
+        :md="6"
+        :sm="6"
+      >
+        <v-card class="py-3" style="width: 100%" v-if="isMobile">
+          <div class="d-flex align-center justify-space-between flex-row">
+            <temperature-item v-model="cpuTemperature"/>
+            <radial-chart v-model="cpuUsage" :title="'cpu'"/>
           </div>
-          <Battery class="mr-5" :value="cpuTemp"/>
-        </div>
-      </v-card>
-    </v-col>
-    <v-col
-      cols="12"
-      xl="6"
-      lg="6"
-      md="6"
-      sm="6"
-      xs="12"
-    >
-      <v-card class="py-7 px-12" style="height: 100%; border-radius: 10px">
-        <div class="d-flex align-center justify-space-between" style="height: 100%">
-          <v-icon style="font-size: 95px" color="#141926">mdi-harddisk</v-icon>
-          <DiskSpaceChart :value="diskSpace"/>
-        </div>
-      </v-card>
-    </v-col>
-  </v-row>
+        </v-card>
+        <info-card :data="cpuInfoCard.data" :icon="cpuInfoCard.icon" v-else/>
+      </v-col>
+      <v-col
+        :cols="12"
+        :lg="4"
+        :md="6"
+        :sm="6"
+      >
+        <info-card :data="memoryInfoCard.data" :icon="memoryInfoCard.icon"/>
+      </v-col>
+      <v-col
+        :cols="12"
+        :lg="4"
+        :md="6"
+        :sm="6"
+      >
+        <battery-info-card :data="batteryInfo" />
+      </v-col>
+      <v-col
+        :cols="12"
+        :lg="4"
+        :md="6"
+        :sm="6"
+      >
+        <disk-space-info-card v-model="diskSpaceInfo"/>
+      </v-col>
+    </v-row>
+  </div>
 </template>
+
 <script>
-// import RadialChart from '@/components/charts/RadialChart'
-import DiskSpaceChart from '@/components/charts/DiskSpaceChart'
-// import Temperature from '@/components/charts/Temperature'
-import Battery from '@/components/charts/Battery'
+import RadialChart from '@/components/charts/RadialChart'
+import TemperatureItem from '@/components/telemetry/TemperatureItem'
 import InfoCard from '@/components/cards/InfoCard'
+import BatteryInfoCard from '@/components/cards/BatteryInfoCard'
+import DiskSpaceInfoCard from '@/components/cards/DiskSpaceInfoCard'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
-  //  RadialChart,
-    DiskSpaceChart,
-  //  Temperature,
-    Battery,
-    InfoCard
+    RadialChart,
+    DiskSpaceInfoCard,
+    TemperatureItem,
+    InfoCard,
+    BatteryInfoCard
   },
-  data: () => ({
-    cpuTemp: 0,
-    memoryInfo: {
-      icon: {
-        name: 'mdi-cpu-32-bit',
-        color: '',
-      }
-    },
-    diskSpace: {},
-    cpuInfo: {
-      icon: {
-        name: 'mdi-cpu-32-bit',
-        color: '',
-      }
-    }
-  }),
-  mounted() {
-    // this.change()
-  },
-
-  methods: {
-  },
-  sockets: {
-    connect() {
-        console.log('socket connected')
-    },
-    cpu_info: function (data) {
-      this.cpuInfo = {
+  computed: {
+    ...mapState({
+      cpuTemperature: state => state.telemetry.cpuTemperature,
+      cpuUsage: state => state.telemetry.cpuUsage,
+      memoryFree: state => state.telemetry.memoryFree,
+      memoryUsage: state => state.telemetry.memoryUsage,
+      batteryLevel: state => state.telemetry.batteryLevel,
+    }),
+    ...mapGetters([
+      'diskSpaceInfo'
+    ]),
+    cpuInfoCard () {
+      return {
         data: [
           {
             title: 'CPU Temp',
-            value: data.cpuTemp,
+            value: this.cpuTemperature,
             measure: '°C'
           },
           {
             title: 'Usage',
-            value: data.cpuUsage,
+            value: this.cpuUsage,
             measure: '%'
           }
         ],
         icon: {
-          name: 'mdi-cpu-32-bit',
-          color: '#3f8bb5'
+          name: 'icon-cpu',
+          color: '#3F8BB5'
         }
       }
     },
-    disk_space: function (data) {
-      this.diskSpace = data
-    },
-    freemem_percentage: function (data) {
-      this.memoryInfo = {
+    memoryInfoCard () {
+      return {
         data: [
           {
             title: 'Free',
-            value: data.freemem,
+            value: this.memoryFree,
             measure: 'MB'
           },
           {
             title: 'Usage',
-            value: data.freememPercent,
+            value: this.memoryUsage,
             measure: '%'
           }
         ],
         icon: {
-          name: 'mdi-memory',
+          name: 'icon-ram',
           color: '#3FB58B'
         }
       }
-    }
+    },
+    batteryInfo () {
+      return [
+        {
+          title: 'Battery level',
+          value: this.batteryLevel,
+          measure: '°C'
+        },
+        {
+          title: 'Time left',
+          value: this.batteryLevel,
+          measure: 'hours'
+        }
+      ]
+    },
+    isMobile () {
+      return this.$vuetify.breakpoint.width < 767
     },
   }
+}
 </script>
 <style scoped>
   .inner-shadow {
