@@ -6,6 +6,7 @@
     </component>
   </v-app>
 </template>
+
 <script>
 import EmptyLayout from './layouts/EmptyLayout'
 import MainLayout from './layouts/MainLayout'
@@ -27,11 +28,17 @@ export default {
   },
 }
 </script>
+
 <style>
-@import './styles/animation.css';
-@import './styles/scrollbar.scss';
+  @import './styles/animation.css';
+  @import './styles/scrollbar.scss';
+
   .v-card {
     border: none !important;
+    border-radius: 5px !important;
+  }
+  .v-navigation-drawer__content::-webkit-scrollbar{
+    width: 0px !important;
   }
   html {
     font-size: calc(14px + 2 * (100vw / 1280)) !important;
