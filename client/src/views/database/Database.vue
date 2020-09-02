@@ -2,8 +2,8 @@
   <div>
     <v-row>
       <v-col
-        v-for="dir in directives"
-        :key="dir"
+        v-for="(dir, i) in directives"
+        :key="i"
         cols="12"
         xl="3"
         lg="4"

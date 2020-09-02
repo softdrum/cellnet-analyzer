@@ -1,78 +1,151 @@
 <template>
   <div>
-    <div class="d-flex py-3 align-center mb-3">
-      <v-btn style="background: transparent" class="mr-3" to="/database">
-        <v-icon>mdi-arrow-left</v-icon>
+    <v-card
+      :loading="loading" 
+      class="directory-card">
+    <div
+      class="d-flex align-center pa-5"
+    >
+      <v-btn
+        otlined
+        class="base mr-3"
+        to="/database"
+      >
+        <v-icon left>mdi-arrow-left</v-icon>
         Back
       </v-btn>
       {{ files.length }} files are available
     </div>
-    <dialog-create-file @save="saveFile" v-model="dialog" :loading="loading" :file="selectedFile" />
-    <v-row>
-      <v-col
-        v-for="(file, i) in files"
-        :key="i"
-        cols="12"
-        xl="3"
-        lg="2"
-        sm="2"
-        xs="6"
+    <dialog-create-file
+      v-model="dialog"
+      :file="selectedFile"
+      :loading="loading"
+      @save="saveFile"
+    />
+    <v-divider></v-divider>
+    <div
+      v-if="this.files.length"
+      class="pa-6 d-flex flex-wrap"
+      :class="`justify-${justify}`"
+    >
+      <div
+        v-for="file in files"
+        :key="file._id"
+        class="pa-3"
       >
         <div
-          @contextmenu.prevent="show($event, file)"
           class="heatmap-file d-flex align-center flex-column"
+          @contextmenu.prevent="show($event, file)"
+          @click="open(file)"
         >
-          <v-card :color="iconColor" class="box mb-2" hover>
-            <div class="scaleonhover d-flex align-center justify-center">
-              HMP
+          <v-card
+            hover
+            class="box mb-2"
+            :color="iconColor"
+          >
+            <div class="scaleonhover d-flex align-center justify-center disable-select">
+              {{ dataType }}
             </div>
           </v-card>
           <span class="filename text-center">{{ file.name }}</span>
         </div>
-        <v-menu v-model="showMenu" :absolute="true"
+        <v-menu
+          v-model="showMenu"
+          :absolute="true"
           :position-x="x"
           :position-y="y"
         >
-            <!-- slot content goes here -->
           <v-card class="d-flex flex-column">
             <v-btn @click="deleteFile">
               <v-icon small>mdi-delete</v-icon>
               Delete
             </v-btn>
-             <v-btn @click="editFile">
+            <v-btn @click="editFile">
               <v-icon>mdi-pencil</v-icon>
               Rename
             </v-btn>
           </v-card>
         </v-menu>
-      </v-col>
-    </v-row>
+      </div>
+    </div>
+    </v-card>
+    <dialog-fullscreen
+      v-model="fullscreenDialog"
+      @close="onFullscreenClose"
+    >
+      <v-card class="background">
+        <view-file-map
+          v-if="dataType !== 'SGNL'"
+          :data="fileData"
+          :heatmap="dataType === 'HMP'"
+        />
+        <chart-group
+          v-else
+          :charts="charts"
+          class="ma-1"
+        />
+      </v-card>
+    </dialog-fullscreen>
   </div>
 </template>
 
 <script>
 import databaseService from '@/services/databaseService'
 import DialogCreateFile from '@/components/dialogs/DialogCreateFile'
+import DialogFullscreen from '@/components/dialogs/DialogFullscreen'
+import ViewFileMap from '@/components/map/ViewFileMap'
+import ChartGroup from '@/components/ChartGroup'
+
 export default {
   name: 'Database',
   components: {
-    DialogCreateFile
+    DialogCreateFile,
+    DialogFullscreen,
+    ViewFileMap,
+    ChartGroup
   },
   data: () => ({
+    charts: [
+      {
+        title: 'Signal level, dBm',
+        refName: 'slvl',
+        color: '#82B1FF',
+        data: []
+      },
+      {
+        title: 'Bit Error Rate',
+        refName: 'ber',
+        color: '#82B1FF',
+        data: []
+      }
+    ],
     x: 0,
     y: 0,
     dialog: false,
-    loading: false,
     result: [],
+    fileData: [],
     delay: 700,
     clicks: 0,
-    longpressed: false,
     showMenu: false,
     timer: null,
     selectedFile: {dataType: ''},
     files: [],
+    loading: false,
+    fullscreenDialog: false,
+    filesId: 0,
   }),
   computed: {
+    dataType () {
+      let directory = this.$route.params.directory
+      if (directory === 'heatmap') return 'HMP'
+      else if (directory === 'basestation') return 'BS'
+      else return 'SGNL'
+    },
+    justify () {
+      let isMobile = this.$vuetify.breakpoint.width < 767
+      if (isMobile) return 'space-between'
+      else return 'start'
+    },
     iconColor () {
       switch (this.$route.params.directory) {
         case 'basestation': return 'primary'
@@ -83,27 +156,57 @@ export default {
     }
   },
   async mounted() {
-    try {
-      const l = (await databaseService.findLatestDocument('Basestation', ''))
-      console.log(l);
-      const latest = (await databaseService.findLatestDocument('MeasureFile', '?dataType=heatmap'))
-      console.log(latest);
-      const dataType = this.$route.params.directory
-      this.files = (await databaseService.readCollection('MeasureFile', `?dataType=${dataType}`)).data
-    } catch (error) {
-      console.log(error);
+    let dataType = this.$route.params.directory
+    if (dataType === 'basestation') {
+      this.fullscreenDialog = true
+    } else {
+      this.loading = true
+      try {
+        this.files = (await databaseService.readCollection('MeasureFile', `?dataType=${dataType}`)).data.slice()
+      } catch (error) {
+        console.log(error);
+        this.$error('Can not load files')
+      }
+      this.loading = false
     }
   },
   methods: {
-    open () {
-      alert()
+    onFullscreenClose () {
+       for (let i=0; i < this.charts.length; ++i) {
+              this.charts[i].data = []
+            }
+    },
+    async open (file) {
+      this.fileData = (await databaseService.readDocument('MeasureData', file.dataId)).data.data
+      if (this.dataType === 'SGNL') {
+        let dataLength = this.fileData.length
+        let idx = 0
+        let timer = setInterval(() => {
+          if (idx < dataLength) {
+            let elem = this.fileData[idx]
+            this.charts[0].data.push({
+              x: elem.properties.time,
+              y: elem.properties.s_lvl
+            })
+            this.charts[1].data.push({
+              x: elem.properties.time,
+              y: elem.properties.ber
+            })
+            idx += 1;
+          } else {
+            clearInterval(timer)
+            this.$success('interval clerared')
+          }
+        }, 1000);
+      }
+      this.fullscreenDialog = true
     },
     editFile () {
       this.dialog = true
     },
     async saveFile (id, update) {
+      this.loading = true
       try {
-        this.loading = true
         if (update.name !== this.selectedFile.name) {
           await databaseService.updateDocument('MeasureFile', id, update)
           this.files = (await databaseService.readCollection('MeasureFile', '?dataType=heatmap')).data
@@ -114,14 +217,16 @@ export default {
       this.loading = false
       this.dialog = false
     },
-    async deleteFile(file) {
+    async deleteFile() {
+      this.loading = true
       try {
-        await databaseService.deleteDocument('MeasureData', file.dataId)
-        await databaseService.deleteDocument('MeasureFile', file._id)
-        this.files = (await databaseService.readCollection('MeasureFile', '?dataType=heatmap')).data
+        await databaseService.deleteDocument('MeasureData', this.selectedFile.dataId)
+        await databaseService.deleteDocument('MeasureFile', this.selectedFile._id)
+        this.files = this.files.filter(file => file._id !== this.selectedFile._id)
       } catch (error) {
         console.log(error);
       }
+      this.loading = false
     },
     show (e, file) {
       this.dialog = false
@@ -133,39 +238,28 @@ export default {
         this.showMenu = true
       })
     },
-    showInfo () {
-      console.log('object');
-    },
-    onClick () {
-      console.log('clicked')
-      if (!this.longpressed) {
-        this.showMenu = false
-      }
-    },
-    onLongPressStart () {
-      this.longpressed = true
-    },
-    onLongPressStop (id) {
-      this.fileSelected = id
-    }
   },
 }
 </script>
 <style scoped>
-.heatmap-file {
-  width: 100%;
-  height: 100%;
-  background: none;
-  box-shadow: none;
-  border-radius: 0px;
-  overflow: hidden;
-}
-.box {
-  overflow: hidden;
-  height: 128px;
-  width: 128px;
-  border-radius: 10px;
-}
+  .directory-card {
+    width: 100%;
+    min-height: 80vh
+  }
+  .heatmap-file {
+    width: 128px;
+    height: 100%;
+    background: none;
+    box-shadow: none;
+    border-radius: 0px;
+    overflow: hidden;
+  }
+  .box {
+    overflow: hidden;
+    height: 64px;
+    width: 64px;
+    border-radius: 10px;
+  }
   .heatmap {
     background: red;
     border-radius: 10px;
@@ -184,6 +278,4 @@ export default {
     height: 100%;
     transition: all .2s ease-in-out;
   }
-  .scaleonhover:hover { transform: scale(1.1);}
-  .scaleonhover:active { transform: scale(1); }
 </style>

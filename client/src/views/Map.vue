@@ -1,35 +1,75 @@
 <template>
   <div style="height: 100vh; width: 100%;" class="elevation-0">
-    <DialogSaveData
+    <dialog-save-data
       @close="dialog = false"
       @decline="onDecline"
-      @accept="onSave"
+      @save="onSave"
       :content="dialogContent"
       v-model="dialog"
     />
     <base-map>
-      <MapClusterLayer
-      :sourceId="'measurements'"
-      :sourceData="measurements"
+      <map-cluster-layer
+        :sourceId="'cellsSource'"
+        :sourceData="visibleCells"
+        @source-created="addNewSource"
       />
-      <map-controls-container position="top-right" style="position: absolute">
-        <map-measure-mode-switch-button v-model="measureMode" :isStarted="measureModeStarted" @error="onMeasureError"/>
-        <transition name="bounce" enter-active-class="delay bounce-enter-active">
+      <map-cluster-layer
+        :sourceId="'measurements'"
+        :sourceData="measurements"
+      />
+      <map-icons />
+      <map-controls-container
+        position="top-right"
+        style="position: absolute"
+      >
+        <map-measure-mode-switch-button
+          v-model="measureMode"
+          :isStarted="measureModeStarted"
+          @error="onMeasureError"
+        />
+        <transition
+          name="bounce"
+          enter-active-class="delay bounce-enter-active"
+        >
           <map-measure-mode-controls
             v-model="measureModeStarted"
             v-if="measureMode"
+            @change-network-mode="onNetworkModeChange"
             @measure="onMeasureMarkerPlaced"
             @stop="onStopMeasure"
             @undo="onUndo"
           />
         </transition>
-        <transition name="bounce" enter-active-class="delay bounce-enter-active">
-          <map-layers-control v-show="!measureMode" :sources="sources" :hidden="measureMode"/>
+        <map-center 
+          v-show="!measureMode" 
+          @clicked="scanBasestationsAround" 
+          class="mb-3"
+        >
+          <map-control-button
+            :loading="loading"
+            text="scan cells"
+          />
+        </map-center>
+        <transition
+          name="bounce"
+          enter-active-class="delay bounce-enter-active"
+        >
+          <map-layers-control
+           v-show="!measureMode"
+           :sources="sources"
+           :hidden="measureMode"
+          />
         </transition>
-        <map-control-button text="" icon="icon-cog" />
       </map-controls-container>
-      <mgl-marker v-if="measureModeStarted && loading" :coordinates="measureMarkerPosition" color="blue">
-        <div slot="marker" class="marker"></div>
+      <mgl-marker
+        v-if="measureModeStarted && loading"
+        :coordinates="measureMarkerPosition"
+        color="blue"
+      >
+        <div
+          slot="marker"
+          class="marker">
+        </div>
       </mgl-marker>
       <mgl-scale-control position="bottom-right"/>
     </base-map>
@@ -48,37 +88,59 @@ import {
   MapMeasureModeSwitchButton,
   MapMeasureModeControls,
   MapControlsContainer,
-  MapControlButton
+  MapControlButton,
+  MapCenter,
+  MapIcons
 } from '@/components/map/components'
 
 import DialogSaveData from '@/components/dialogs/DialogSaveData'
 import databaseService from '@/services/databaseService'
+import basestationService from '@/services/basestationService'
 
 export default {
   components: {
     BaseMap,
+    MapCenter,
     MapClusterLayer,
     MapLayersControl,
     MapMeasureModeSwitchButton,
     MapMeasureModeControls,
     DialogSaveData,
     MglMarker,
+    MapIcons,
     MapControlsContainer,
     MglScaleControl,
     MapControlButton
   },
   data: () => ({
+    mapCenterPosition: {lng: 30.3207309188291, lat: 59.922883996810725},
     sources: [],
     dialog: false,
     dialogContent: {},
-    mapCenterPosition: {lng: 30.3207309188291, lat: 59.922883996810725},
     measureMode: false,
     measureModeStarted: false,
     measureMarkerPosition: [0,0],
     measurements: [],
     loading: false,
+    visibleCells: [],
   }),
   methods: {
+    addNewSource (source) {
+      this.sources.push(source)
+    },
+    onNetworkModeChange (mode) {
+      this.$store.dispatch('changeNetworkMode', mode)
+    },
+    async scanBasestationsAround (coordinates) {
+      this.loading = true
+      const query = `?lng=${coordinates.lng}&lat=${coordinates.lat}&radius=1`
+      try {
+        this.visibleCells = (await basestationService.getBasestations(query)).data
+      } catch (error) {
+        console.log(error);
+      }
+      this.loading = false
+    },
     onMeasureError (error) {
       this.dialog = true
       this.dialogContent = {
@@ -108,11 +170,11 @@ export default {
       if (this.measurements.length) this.measurements.pop()
         console.log(this.measurements)
     },
-    async onSave() {
+    async onSave(filename) {
       try {
         const dataId = (await databaseService.createDocument('MeasureData', {data: this.measurements})).data._id
         await databaseService.createDocument('MeasureFile', {
-          name: 'testFile',
+          name: filename,
           dataType: 'heatmap',
           dataId,
         })
@@ -145,7 +207,7 @@ export default {
           },
           properties: {
             ...measureData,
-            icon: 'gsm'
+            icon: 'sq'
           }
         })
       } catch (error) {
