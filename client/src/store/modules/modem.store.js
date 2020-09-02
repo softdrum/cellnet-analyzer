@@ -1,13 +1,15 @@
+import socketService from '@/services/socketService'
 export default {
   state: {
     connected: false,
+    networkMode: 'auto',
     signalLevel: 0,
     bitErrorRate: 0,
+    measureModeState: 'stopped'
   },
   mutations: {
     SET_SIGNAL_LEVEL (state , value) {
       state.signalLevel = value
-      console.log(value);
     },
     SET_BIT_ERROR_RATE (state , value) {
       state.bitErrorRate = value
@@ -15,18 +17,33 @@ export default {
     SET_MODEM_CONNECTION_STATUS(state, value) {
       state.connected = value
     },
+    SET_MODEM_NETWORK_MODE(state, value) {
+      state.networkMode = value
+    },
+    SET_MEASURE_MODE_STATE(state, value) {
+      state.measureModeState = value
+    },
   },
   actions: {
-    getMeasureData({commit}, socket) {
-      return new Promise ((resolve, reject) => {
-        socket.client.emit('getMeasureData', response => {
-          if (response.status === 'ERROR') reject({s_lvl: 31, ber: 1})
-          else {
-            resolve(response.data)
-            commit('SET_SIGNAL_LVL', response.data)
-          }
-        });
-      })
+    async changeNetworkMode ({ commit }, mode) {
+      try {
+        let result = await socketService.emit(this._vm.$socket, 'changeMode', mode)
+        commit('SET_MODEM_NETWORK_MODE', result)
+      } catch (error) {
+        console.log(error);
+        commit('SET_ERROR', error)
+      }
+    },
+    async getMeasureData({commit}) {
+      try {
+        const result = await socketService.emit(this._vm.$socket, 'getMeasureData')
+        return result
+      } catch (error) {
+        commit('SET_ERROR', error)
+      }
+    },
+    setMeasureModeState ({ commit }, value) {
+      commit('SET_MEASURE_MODE_STATE', value)
     },
     socket_signalQuality ({ commit }, data) {
       commit('SET_SIGNAL_LEVEL', data.s_lvl)
