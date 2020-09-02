@@ -8,6 +8,7 @@ import MapMeasureModeControls from './MapMeasureModeControls.vue'
 import MapMeasureModeSwitchButton from './MapMeasureModeSwitchButton.vue'
 import MapControlsContainer from './MapControlsContainer'
 import MapControlButton from './MapControlButton'
+import MapCenter from './MapCenter'
 
 export {
   MapBoundsDragHandler,
@@ -19,5 +20,6 @@ export {
   MapMeasureModeControls,
   MapMeasureModeSwitchButton,
   MapControlsContainer,
-  MapControlButton
+  MapControlButton,
+  MapCenter
 }

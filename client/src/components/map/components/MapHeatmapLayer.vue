@@ -3,12 +3,6 @@
     <MglGeojsonLayer
       :sourceId="sourceId"
       :source="source"
-      :layerId="heatmapLayer.id"
-      :layer="heatmapLayer"
-    />
-    <MglGeojsonLayer
-      :sourceId="sourceId"
-      :source="source"
       :layerId="dataPoints.id"
       :layer="dataPoints"
     />
@@ -25,7 +19,7 @@ export default {
     sourceId: String,
     popUpEnabled: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   computed: {
@@ -43,125 +37,45 @@ export default {
   data: () => ({
   }),
   created () {
-    this.heatmapLayer = {
-      'id': `heatmap${this.sourceId}`,
-      'type': 'heatmap',
-      'maxzoom': 20,
-      'paint': {
-        // Increase the heatmap weight based on frequency and property magnitude
-        'heatmap-weight': [
-          'interpolate',
-          ['linear'],
-          ['get', 'test'],
-          1,
-          5,
-          6,
-          10
-        ],
-        // Increase the heatmap color weight weight by zoom level
-        // heatmap-intensity is a multiplier on top of heatmap-weight
-        'heatmap-intensity': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          5,
-          1,
-          9,
-          2
-        ],
-        // Color ramp for heatmap.  Domain is 0 (low) to 1 (high).
-        // Begin color ramp at 0-stop with a 0-transparancy color
-        // to create a blur-like effect.
-        'heatmap-color': [
-          'interpolate',
-          ['linear'],
-          ['heatmap-density'],
-          0,
-          'rgba(33,102,172,0)',
-          0.1,
-          'rgb(103,169,207)',
-          0.3,
-          'rgb(209,229,240)',
-          0.5,
-          'rgb(253,219,199)',
-          0.6,
-          'rgb(239,138,98)',
-          1,
-          'rgb(178,24,43)'
-        ],
-        // Adjust the heatmap radius by zoom level
-        'heatmap-radius': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-          10,
-          20,
-          20,
-          20
-        ],
-        // Transition from heatmap to circle layer by zoom level
-        'heatmap-opacity': [
-          'interpolate',
-          ['linear'],
-          ['zoom'],
-            7,
-            1,
-            9,
-            10
-        ]
-      }
-    }
     this.dataPoints = {
       'id': `point${this.sourceId}`,
       'type': 'circle',
-      'maxzoom': 14,
       'paint': {
-      // Size circle radius by earthquake magnitude and zoom level
-      // 'circle-radius': [
-      //   'interpolate',
-      //   ['linear'],
-      //   ['zoom'],
-      //   7,
-      //   ['interpolate', ['linear'], ['get', 'test'], 1, 1, 6, 4],
-      //   16,
-      //   ['interpolate', ['linear'], ['get', 'test'], 1, 5, 6, 50]
-      // ],
-      'circle-radius': 5,
-      // Color circle by earthquake magnitude
-      'circle-color': [
-        'interpolate',
-        ['linear'],
-        ['get', 'test'],
-        0,
-        'rgba(33,102,172,0)',
-        20,
-        'rgb(103,169,207)',
-        30,
-        'rgb(209,229,240)',
-        40,
-        'rgb(253,219,199)',
-        50,
-        'rgb(239,138,98)',
-        100,
-        'rgb(178,24,43)'
-      ],
-      'circle-stroke-color': 'white',
-      'circle-stroke-width': 1,
-      // Transition from heatmap to circle layer by zoom level
-      // 'circle-opacity': [
-      //   'interpolate',
-      //   ['linear'],
-      //   ['zoom'],
-      //   0,
-      //   8,
-      //   12,
-      //   14
-      //   ]
+        // Size circle radius by earthquake magnitude and zoom level
+        'circle-radius': {
+          'base': 1.75,
+          'stops': [
+          [12, 2],
+          [14, 5],
+          [18, 20],
+          [20, 100],
+          [22, 150]
+          ]
+        },
+        'circle-blur': 0.1,
+        // Color circle by earthquake magnitude
+        'circle-color': [
+          'interpolate',
+          ['linear'],
+          ['get', 's_lvl'],
+          -100,
+          'rgba(244,67,54,0.8)',
+          -90,
+          'rgba(255,193,7,0.8)',
+          -70,
+          'rgba(76,175,80,0.7)',
+       ],
       }
-    },
+    }
+    let context = this
+    this.map.on('click', `point${this.sourceId}`, function(e) {
+      const coordinates = e.features[0].geometry.coordinates.slice();
+      const properties = e.features[0].properties
+      context.addPopup(e, coordinates, properties)
+    });
     this.$emit('sourceCreated', {
       id: this.sourceId,
-      layers: [`heatmap${this.sourceId}`, `point${this.sourceId}`]
+      layers: [`point${this.sourceId}`]
     })
   },
   methods: {

@@ -1,5 +1,8 @@
 <template>
-  <v-btn class="map-control-button base">
+  <v-btn
+    :loading="loading"
+    class="map-control-button base"
+  >
     <div class="d-flex pa-3 justify-space-between align-center">
       {{ text }}
       <v-icon small>{{ icon }}</v-icon>
@@ -19,6 +22,10 @@ export default {
     icon: {
       type: String,
       default: ''
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
 };

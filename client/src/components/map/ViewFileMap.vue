@@ -2,62 +2,73 @@
   <div style="height: 100vh; width: 100%;" class="elevation-0">
     <Map
     >
-      <MapBoundsDragHandler @changed="onBoundsChanged" :radius="1"/>
-      <MapHeatmapLayer
-        :sourceId="'heatmapSource'"
-        :sourceData="heatmapData"
+      <map-icons />
+      <map-bounds-drag-handler
+       v-if="!heatmap"
+       :radius="1"
+       @changed="onBoundsChanged"
+      />
+      <map-cluster-layer
+        v-if="heatmap"
+        :sourceId="'fileSource'"
+        :sourceData="data"
+        :heatmap="heatmap"
         @source-created="addNewSource"
       />
-       <MapClusterLayer
-        :sourceId="'cellsSource'"
+      <map-cluster-layer
+        v-if="!heatmap"
+        :sourceId="'cells'"
         :sourceData="visibleCells"
         @source-created="addNewSource"
       />
-      <MglScaleControl position="bottom-right"/>
+      <map-controls-container
+       position="top-right"
+       style="position: absolute">
+        <map-layers-control :sources="sources"/>
+      </map-controls-container>
+      <mgl-scale-control position="bottom-right"/>
     </Map>
   </div>
 </template>
 
 <script>
 import {
-  MglMarker,
   MglScaleControl,
 } from "vue-mapbox";
 import Map from '@/components/map/BaseMap'
 import {
   MapIcons,
-  MapLayer,
   MapClusterLayer,
-  MapHeatmapLayer,
+  MapControlsContainer,
   MapLayersControl,
-  MapMeasureModeSwitchButton,
-  MapMeasureModeControls,
-  MapBoundsDragHandler,
+  MapBoundsDragHandler
 } from '@/components/map/components'
 
-import DialogSaveData from '@/components/dialogs/DialogSaveData'
 import basestationService from '@/services/basestationService'
-import databaseService from '@/services/databaseService'
 
-// import { mapState } from 'vuex'
 export default {
+  name: 'ViewFileMap',
   components: {
     Map,
-    MapBoundsDragHandler,
     MapIcons,
-    MapHeatmapLayer,
-    MapClusterLayer,
-    MapLayer,
+    MapControlsContainer,
     MapLayersControl,
-    MapMeasureModeSwitchButton,
-    MapMeasureModeControls,
-    DialogSaveData,
-    MglMarker,
-    MglScaleControl
+    MapClusterLayer,
+    MglScaleControl,
+    MapBoundsDragHandler
+  },
+  props: {
+    data: {
+      type: Array,
+      default: () => {return []}
+    },
+    heatmap: {
+      type: Boolean,
+      default: false
+    }
   },
   data: () => ({
     cellsSourceData: [],
-    heatmapData: [],
     sources: [],
     basestations: [],
     dialog: false,
@@ -72,9 +83,8 @@ export default {
     basestationsCached: false
   }),
   methods: {
-    addNewSource (source) {
-      this.sources.push(source)
-    },
+  
+  
     async onBoundsChanged (newMapCenter) {
       if (this.basestationsCached) {
         const query = `?lng=${newMapCenter.lng}&lat=${newMapCenter.lat}&radius=1`
@@ -83,21 +93,20 @@ export default {
         } catch (error) {
           console.log(error);
         }
+      } else {
+        if (!this.loading) {
+          this.loading = true
+          try {
+            const query = `?lng=${newMapCenter.lng}&lat=${newMapCenter.lat}&radius=1`
+            this.visibleCells = (await basestationService.getBasestations(query)).data
+            this.basestationsCached = true
+            this.loading = false
+          } catch (error) {
+            console.log(error);
+          }
+        }
       }
     },
   },
-  async mounted () {
-    const query = `?lng=${this.mapCenterPosition.lng}&lat=${this.mapCenterPosition.lat}&radius=1`
-    try {
-      const vis = (await basestationService.getBasestations(query)).data
-      this.basestationsCached = true
-      this.heatmapData = vis.slice(0, 200).map (elem => {
-        elem.properties.test = Math.round(Math.random()*100)
-        return elem
-      })
-    } catch (error) {
-      console.log(error);
-    }
-  }
 };
 </script>
