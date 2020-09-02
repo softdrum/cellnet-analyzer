@@ -21,15 +21,10 @@ class Modem{
         case 'AT+CSQ': resolve({
           status: 'SUCCESS',
           data: {
-            result: '110,2'
+            result: `${-Math.abs(Math.round(Math.random()*50))},${Math.abs(Math.round(Math.random())+3)}`
           }
         })
-        case 'AT+CSQ': resolve({
-          status: 'SUCCESS',
-          data: {
-            result: '110,2'
-          }
-        })
+        case 'AT+CNMP=13': resolve('OK')
       }
     })
   } 

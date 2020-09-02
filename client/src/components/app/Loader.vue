@@ -2,7 +2,8 @@
   <div>
     <v-overlay
       v-if="overlay"
-      absolute color="primary"
+      absolute
+      color="primary"
     >
       <v-progress-circular indeterminate :size="size" ></v-progress-circular>
     </v-overlay>

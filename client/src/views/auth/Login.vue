@@ -88,7 +88,7 @@ export default {
   },
   methods: {
     async submitHandler() {
-       if(this.$v.$invalid) {
+      if(this.$v.$invalid) {
         this.$v.$touch()
         this.alert = true
         return

@@ -6,6 +6,9 @@ export default {
   readCollection (collectionName, query) {
     return api().get(`database/${collectionName}${query}`)
   },
+  readDocument (collectionName, documentId) {
+    return api().get(`database/${collectionName}/${documentId}`)
+  },
   findLatestDocument (collectionName, query) {
     return api().get(`database/${collectionName}/latest${query}`)
   },

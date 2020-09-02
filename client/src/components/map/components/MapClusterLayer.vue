@@ -28,7 +28,11 @@ export default {
   inject: ["mapbox", "map", "actions"],
   props: {
     sourceData: Array,
-    sourceId: String
+    sourceId: String,
+    heatmap: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     source () {
@@ -82,12 +86,46 @@ export default {
         'text-size': 12
       }
     }
-    this.unclustered = {
-      'id': `unclustered${this.sourceId}`,
-      'type': 'symbol',
-      'filter': ['!', ['has', 'point_count']],
-      'layout': {
-        'icon-image': ['get', 'icon'],
+    if (this.heatmap) {
+      this.unclustered = {
+        'id': `unclustered${this.sourceId}`,
+        'filter': ['!', ['has', 'point_count']],
+        'type': 'circle',
+        'paint': {
+          // Size circle radius by earthquake magnitude and zoom level
+          'circle-radius': {
+            'base': 1.75,
+            'stops': [
+            [12, 2],
+            [14, 5],
+            [18, 20],
+            [20, 100],
+            [22, 150]
+            ]
+          },
+          'circle-blur': 0.1,
+          // Color circle by earthquake magnitude
+          'circle-color': [
+            'interpolate',
+            ['linear'],
+            ['get', 's_lvl'],
+            -100,
+            'rgba(244,67,54,0.8)',
+            -90,
+            'rgba(255,193,7,0.8)',
+            -70,
+            'rgba(76,175,80,0.7)',
+        ],
+        }
+      }
+    } else {
+      this.unclustered = {
+        'id': `unclustered${this.sourceId}`,
+        'type': 'symbol',
+        'filter': ['!', ['has', 'point_count']],
+        'layout': {
+          'icon-image': ['get', 'icon'],
+        }
       }
     }
     const me = this

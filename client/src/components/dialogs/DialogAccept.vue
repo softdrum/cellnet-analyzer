@@ -3,6 +3,7 @@
     <v-dialog
       v-model="value"
       persistent
+      max-width="600px"
     >
       <template
         v-if="button"
@@ -17,44 +18,20 @@
           Click Me
         </v-btn>
       </template>
-
+      
       <v-card>
         <v-card-title class="headline">
-          {{ title }}
+          <slot name="title"/>
         </v-card-title>
 
         <v-card-text>
-          {{ text }}
+          <slot />
         </v-card-text>
 
         <v-divider></v-divider>
 
-        <v-card-actions v-if="acceptText+declineText+cancelText !== ''">
-          <v-spacer></v-spacer>
-          <v-btn
-            v-if="acceptText"
-            color="primary"
-            text
-            @click="onClick('accept')"
-          >
-            {{ acceptText }}
-          </v-btn>
-          <v-btn
-            v-if="declineText"
-            color="primary"
-            text
-            @click="onClick('decline')"
-          >
-            {{ declineText }}
-          </v-btn>
-          <v-btn
-            v-if="cancelText"
-            color="primary"
-            text
-            @click="$emit('close')"
-          >
-            {{ cancelText }}
-          </v-btn>
+        <v-card-actions>
+          <slot name="actions"/>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -65,8 +42,6 @@
   export default {
     name: 'DialogAccept',
     props: {
-      title: String,
-      text: String,
       value: {
         type: Boolean,
         default: false

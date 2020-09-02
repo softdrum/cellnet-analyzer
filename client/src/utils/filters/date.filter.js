@@ -1,5 +1,5 @@
 
-export default function dateFilter(value, format='date') {
+export default function dateFilter(value, format='date', locale="ru-RU") {
   format
   const options = {}
   if (format.includes('date')) {
@@ -12,5 +12,5 @@ export default function dateFilter(value, format='date') {
     options.minute = '2-digit'
     options.second = '2-digit'
   }
-  return new Intl.DateTimeFormat('ru-RU', options).format(value)
+  return new Intl.DateTimeFormat(locale, options).format(value)
 }

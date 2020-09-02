@@ -48,4 +48,11 @@ export default {
       font-size: calc(14px + (2 + 2*0.7) * ((100vw - 320px) / 1280)) !important;;
     }
   }
+  .disable-select {
+    user-select: none; /* supported by Chrome and Opera */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+}
 </style>

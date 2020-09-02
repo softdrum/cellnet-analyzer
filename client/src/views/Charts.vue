@@ -1,111 +1,153 @@
 <template>
-  <v-row>
-   <v-col
-        cols="12"
-        xl="6"
-        lg="6"
-        md="6"
-        sm="6"
-        xs="12"
-      >
-          <!-- {{ $store.state.modem.signal_level }} -->
-        <ChartCard :title="'Signal level'">
-          <apexchart  height="250" type="line" ref="chart1" :options="options" :series="series"></apexchart>
-       </ChartCard>
-      </v-col>
-      <v-col
-        cols="12"
-        xl="6"
-        lg="6"
-        md="6"
-        sm="6"
-        xs="12"
-      >
-        <ChartCard :title="'Bit Error Rate'">
-          <apexchart height="250" ref="chart2" type="line" :options="options2" :series="series2"></apexchart>
-       </ChartCard>
-      </v-col>
-      <v-col
-        cols="12"
-        xl="6"
-        lg="6"
-        md="6"
-        sm="6"
-        xs="12"
-      >
-        <ChartCard :title="'Bit Error Rate'">
-          <apexchart height="250" ref="chart2" type="line" :options="options2" :series="series2"></apexchart>
-       </ChartCard>
-      </v-col>
-      <v-col
-        cols="12"
-        xl="6"
-        lg="6"
-        md="6"
-        sm="6"
-        xs="12"
-      >
-        <ChartCard :title="'Bit Error Rate'">
-          <apexchart height="250" ref="chart2" type="line" :options="options2" :series="series2"></apexchart>
-       </ChartCard>
-      </v-col>
-  </v-row>
+  <div>
+    <dialog-save-data
+      @close="dialog = false"
+      @decline="onDecline"
+      @save="onSave"
+      :content="dialogContent"
+      v-model="dialog"
+    />
+    <chart-group :charts="charts" />
+  </div>
 </template>
 <script>
-let data1 = []
-let data2 = []
-function getNewSeries(s_lvl, ber) {
-  data1.push({
-    x: new Date().getTime(),
-    y: s_lvl
-  })
-  data2.push({
-    x: new Date().getTime(),
-    y: ber
-  })
-  
-}
-function resetData(){
-// Alternatively, you can also reset the data at certain intervals to prevent creating a huge series 
-  data1 = data1.slice(data1.length - 10, data1.length);
-  data2 = data2.slice(data2.length - 10, data2.length);
-}
-import ChartCard from '../components/cards/ChartCard'
-import defaultOptions from '../components/charts/options/default.chart'
+import { mapState } from 'vuex'
+
+import ChartGroup from '@/components/ChartGroup'
+import DialogSaveData from '@/components/dialogs/DialogSaveData'
+import databaseService from '@/services/databaseService'
 
 export default {
   components: {
-    ChartCard
+    DialogSaveData,
+    ChartGroup
   },
   data: () => ({
-    options: defaultOptions.getOptions(['#00d0ea']),
-    options2: defaultOptions.getOptions(['#fba500']),
+    measureMode: false,
+    measurements: [],
+    dialogContent: {},
+    timer: null,
+    dialog: false,
+    charts: [
+      {
+        title: 'Signal level, dBm',
+        refName: 'slvl',
+        color: '#82B1FF',
+        data: []
+      },
+      {
+        title: 'Bit Error Rate',
+        refName: 'ber',
+        color: '#82B1FF',
+        data: []
+      }
+    ]
   }),
-  mounted () {
-    var me = this
-    setInterval(function () {
-      resetData()
-      me.$refs.chart1.updateSeries([{
-        data: me.data1
-      }], false, true)
-      me.$refs.chart2.updateSeries([{
-        data: me.data2
-      }], false, true)
-    }, 60000)
+  computed: {
+    ...mapState({
+      measureModeState: state => state.modem.measureModeState,
+    }),
+  },
+  watch: {
+    measureModeState: {
+      immediate: true,
+      handler (value) {
+        switch (value) {
+          case 'started': {
+            this.onMeasureStart()
+            break
+          }
+          case 'paused': {
+            this.onMeasurePause()
+            break
+          }
+          case 'stopped': {
+            this.onMeasureStop()
+            break
+          }
+        }
+      }
+    }
+  },
+  methods: {
+    onDecline () {
+      this.measurements = []
+      this.dialog = false
+    },
+    async onSave(filename) {
+      try {
+        const dataId = (await databaseService.createDocument('MeasureData', {data: this.measurements})).data._id
+        await databaseService.createDocument('MeasureFile', {
+          name: filename,
+          dataType: 'signal',
+          dataId,
+        })
+        this.measurements = []
+        this.$success('Data is succesfully saved in a database')
+      } catch (error) {
+        this.$error(error)
+      }
+      this.dialog = false
+    },
+    onMeasureStart () {
+      this.timer = setInterval(async () => {
+        try {
+          const measureData = await this.$store.dispatch('getMeasureData', this.$socket)
+          this.charts[0].data.push({
+            x: measureData.time,
+            y: measureData.s_lvl
+          })
+          this.charts[1].data.push({
+            x: measureData.time,
+            y: measureData.ber
+          })
+          this.measurements.push({
+            type: 'Feature',
+            geometry: {
+              type: 'Point',
+            },
+            properties: {
+              ...measureData,
+            }
+          })
+        } catch (error) {
+          this.$error(error)
+        }
+      }, 1000);
+    },
+    onMeasurePause () {
+      clearInterval(this.timer)
+    },
+    onMeasureStop () {
+      clearInterval(this.timer)
+      const dataLength = this.measurements.length
+      if (dataLength) {
+        this.dialog = true
+         this.dialogContent = {
+          title: 'Action confirmation',
+          text: `You measured ${dataLength} ${dataLength > 1 ? 'points' : 'point'}. Do you want to save measured data?`,
+          acceptText: 'Yes',
+          declineText: 'No',
+          cancelText: 'Cancel'
+        }
+      }
+    }
   },
   sockets: {
     connect() {
         console.log('socket connected')
     },
     signal_quality: function (data) {
-      var me = this
-      getNewSeries(data.s_lvl, data.ber)
-      me.$refs.chart1.updateSeries([{
-        data: data1
-      }])
-      me.$refs.chart2.updateSeries([{
-        data: data2
-      }])
+      if (this.measureModeState !== 'started') {
+        this.charts[0].data.push({
+          x: data.time,
+          y: data.s_lvl
+        })
+        this.charts[1].data.push({
+          x: data.time,
+          y: data.ber
+        })
+      }
     }
   },
 }

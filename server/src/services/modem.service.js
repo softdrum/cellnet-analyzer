@@ -13,7 +13,8 @@ module.exports = (modem) => {
             if (!data) reject('Error: Can not get signal quality')
             resolve( {
               s_lvl: modemHelpers.calculateSignalLevel(data.groups.s_lvl),
-              ber: modemHelpers.calculateBitErrorRate(data.groups.ber)
+              ber: modemHelpers.calculateBitErrorRate(data.groups.ber),
+              time: new Date()
             })
           })
           .catch(e => {
@@ -24,7 +25,7 @@ module.exports = (modem) => {
     setPrefferedSystemMode(mode) {
       return modem.executeAtCommand(`AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`)
     },
-    changeNetMode (mode) {
+    changeMode (mode) {
       return modem.executeAtCommand(`AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`)
       .then (response => {
         if (response.data.result === 'ERROR')  throw 'Unable to set preffered system mode'

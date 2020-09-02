@@ -7,11 +7,10 @@
       :sm="12"
     >
       <chart-card :title="'Signal level'">
-        <apexchart
-          type="line"
-          ref="signalLevelChart"
-          :options="options"
-          :series="series"
+        <realtime-chart
+          v-model="s_lvl"
+          refName="slvl"
+          color="#82B1FF"
         />
       </chart-card>
     </v-col>
@@ -22,11 +21,10 @@
       :sm="12"
     >
       <chart-card :title="'Bit Error Rate'">
-        <apexchart
-          type="line"
-          ref="bitErrorRateChart"
-          :options="options2"
-          :series="series2"
+        <realtime-chart
+          v-model="ber"
+          refName="ber"
+          color="#82B1FF"
         />
       </chart-card>
     </v-col>
@@ -62,7 +60,7 @@ import InfoCardSingle from '../components/cards/InfoCardSingle'
 import ChartCard from '../components/cards/ChartCard'
 import InfoCardExpandable from '../components/cards/InfoCardExpandable'
 import defaultOptions from '../components/charts/options/default.chart'
-
+import RealtimeChart from '../components/charts/RealtimeChart'
 import { mapState, mapGetters } from 'vuex'
 import themes from '@/styles/colors.js'
 
@@ -71,6 +69,7 @@ export default {
   components: {
     InfoCardSingle,
     ChartCard,
+    RealtimeChart,
     InfoCardExpandable
   },
   computed: {
@@ -110,38 +109,19 @@ export default {
       }
     }
   },
-  watch: {
-    signalLevel (val) {
-      console.log(val);
-    }
-    // signalLevel: {
-    //   immediate: true,
-    //   handler (value) {
-    //     this.signalLevelData.push({
-    //       x: new Date().getTime(),
-    //       y: value
-    //     })
-    //     this.$refs.signalLevelChart.updateSeries([{
-    //       data: this.signalLevelData
-    //     }])
-    //   }
-    // },
-    // bitErrorRate: {
-    //   immediate: true,
-    //   handler (value) {
-    //      this.bitErrorRateData.push({
-    //     x: new Date().getTime(),
-    //     y: value
-    //   })
-    //   this.$refs.bitErrorRateChart.updateSeries([{
-    //     data: this.bitErrorRateData
-    //   }])
-    //   }
-    // },
-  },
   sockets: {
     connect() {
       console.log('socket connected')
+    },
+    signal_quality (data) {
+      this.s_lvl = {
+        x: data.time,
+        y: data.s_lvl
+      }
+      this.ber = {
+        x: data.time,
+        y: data.ber
+      }
     },
     basestation (info) {
       this.bsInfo = info
@@ -171,16 +151,17 @@ export default {
   data: () => ({
     signalLevelData: [],
     bitErrorRateData: [],
-    s_lvl: '',
+    s_lvl: null,
+    ber: null,
     bsInfo: {status: 'online', mcc: 250, mnc: '02', snr: 22, slvl: 54, cid: 3132332, lac: 312},
     diskSpace: {title: 'No data', icon: {name: 'icon-drive'}},
     cpuTemp: {title: 'No data', icon: {name: 'icon-thermometer',}},
     options: defaultOptions.getOptions(['#00d0ea']),
     options2: defaultOptions.getOptions(['#fba500']),
     series: [{
-      name: 'series-1',
+      name: 'slvl',
       type: 'line',
-      data: []
+      data: [10, 20, 30, 40]
     }],
     series2: [{
       name: 'series-2',

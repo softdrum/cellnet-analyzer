@@ -1,6 +1,6 @@
 <template>
   <v-card class="pa-4 elevation-2">
-    <div class="title-text px-3">{{ title }}s</div>
+    <div class="title-text px-3">{{ title }}</div>
     <Loader
       v-if="loading"
       :overlay="true"
