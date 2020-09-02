@@ -4,14 +4,15 @@ module.exports = (modem) => {
 
   return {
     changeNetworkMode (mode, callback) {
+      console.log(mode);
       modemService.setModemBusyMode(true)
-      modem.changeNetMode(mode)
+      modemService.changeMode(mode)
         .then(response => {
           console.log(response)
-          callback({status: 'SUCCESS', data: response})
+          callback({status: 'SUCCESS', payload: response})
         })
         .catch(error => {
-          callback({status: 'ERROR', data: error})
+          callback({status: 'ERROR', payload: error})
         })
         .finally(() => {
           modemService.setModemBusyMode(false)
@@ -22,12 +23,12 @@ module.exports = (modem) => {
       try {
         const signalQuality = await modemService.getSignalQuality()
         // const bsInfo = await modemService.getBasestationInfo()
-        callback({status: 'SUCCESS', data: {
+        callback({status: 'SUCCESS', payload: {
           ...signalQuality,
           // ...bsInfo
         }})
       } catch (error) {
-        callback({status: 'ERROR', data: error})
+        callback({status: 'ERROR', payload: error})
       }
       modemService.setModemBusyMode(false)
     },
@@ -35,11 +36,11 @@ module.exports = (modem) => {
       modemService.setModemBusyMode(true)
       modemService.getSignalQuality()
       .then(response => {
-        callback({status: 'SUCCESS', data: response})
+        callback({status: 'SUCCESS', payload: response})
       })
       .catch(error => {
         console.log(error);
-        callback({status: 'ERROR', data: error})
+        callback({status: 'ERROR', payload: error})
       })
       .finally(() => {
         modemService.setModemBusyMode(false)
@@ -49,10 +50,10 @@ module.exports = (modem) => {
       modemService.setModemBusyMode(true)
       modemService.getAvailableOperators()
       .then(response => {
-        callback({status: 'SUCCESS', data: response})
+        callback({status: 'SUCCESS', payload: response})
       })
       .catch(error => {
-        callback({status: 'ERROR', data: error})
+        callback({status: 'ERROR', payload: error})
       })
       .finally(() => {
         modemService.setModemBusyMode(false)
@@ -62,10 +63,10 @@ module.exports = (modem) => {
       modemService.setModemBusyMode(true)
       modemService.getGeoLocation()
       .then(response => {
-        callback({status: 'SUCCESS', data: response})
+        callback({status: 'SUCCESS', payload: response})
       })
       .catch(error => {
-        callback({status: 'ERROR', data: error})
+        callback({status: 'ERROR', payload: error})
       })
       .finally(() => {
         modemService.setModemBusyMode(false)

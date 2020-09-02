@@ -61,6 +61,7 @@ module.exports = {
   },
   async deleteDocument (req, res) {
     try {
+      console.log(req.params);
       const collectionName = req.params.collection
       const documentId = req.params.id
       const result = await dbService.findDocumentByIdAndDelete(collectionName, documentId)
