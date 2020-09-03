@@ -8,7 +8,9 @@ const mongoDB = require('../src/database')
 const mainloop = require('../src/mainloop')
 
 mongoDB.init()
-
+/**
+ * Main node js server app file
+ */
 server.listen(config.port, async () => {
   console.log(`Server started on port ${config.port}`);
   const isModemConnected = await modem.initModem()

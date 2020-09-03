@@ -2,6 +2,9 @@ const basestationService = require('../services/basestation.service')
 
 module.exports = {
   async getBasestations (req, res) {
+    /**
+     * Extracts all basestations within a radius of one km
+     */
     try {
       const coordinates = {lng: req.query.lng, lat: req.query.lat}
       const radius = parseInt(req.query.radius)

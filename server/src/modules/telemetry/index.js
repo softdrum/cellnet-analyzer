@@ -1,7 +1,11 @@
 const os = require('os-utils')
 const fs = require('fs')
 const checkDiskSpace = require('check-disk-space')
-
+/**
+ * Module that encapsulated all methods for getting
+ * telemetry data such as cpu usage and temperature data
+ * of the machine of which the app is running
+ */
 module.exports = {
   cpuUsage () {
     return new Promise((resolve, reject) => {

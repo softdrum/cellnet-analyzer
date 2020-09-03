@@ -1,5 +1,9 @@
 var sockets = {};
-
+/**
+ * Initialization of socket io
+ * @param {*} server 
+ * @param {*} modem 
+ */
 sockets.init = (server, modem) => {
     /* socket.io setup */
     var io = require('socket.io').listen(server);

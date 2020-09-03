@@ -3,6 +3,14 @@ const modemOptions = require('./modemOptions')
 
 
 class Modem{
+  /**
+   * Modem class is an extension of serialPortGSM
+   * library. It extends logic of at command execution and
+   * simplifies work with connection initialization
+   * @param {*} port 
+   * @param {*} baudRate 
+   * @param {*} logger 
+   */
   constructor(port, baudRate, logger=null) {
     this.port = port
     this.options = modemOptions.generate(baudRate, logger)

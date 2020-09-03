@@ -4,6 +4,10 @@ const gsm = /(?<mode>\w+),(?<status>\w+),(?<mcc>\d+)-(?<mnc>\d+),(?<lac>.+),(?<c
       lte = /(?<mode>\w+),(?<status>\w+),(?<mcc>\d+)-(?<mnc>\d+),(?<tac>.+),(?<scellid>\d+),(?<pcellid>\d+),(?<band>.+),(?<earfcn>.+),(?<dlbw>\d+),(?<ulbw>\d+),(?<rsrq>.+),(?<rsrp>.+),(?<rssi>.+),(?<rssnr>.+)/,
       availableOperators = /"(?<operator>\w+)","(?<code>\d+)"/g,
       signalQuality = /(?<s_lvl>\d+)\,(?<ber>\d+)/
+
+/**
+ * All regular expression for at command responses
+ */
 module.exports = {
   gsm,
   wcdma,

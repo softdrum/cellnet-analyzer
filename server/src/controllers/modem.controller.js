@@ -1,9 +1,11 @@
 module.exports = (modem) => {
-
   const modemService = require('../services/modem.service')(modem)
 
   return {
     changeNetworkMode (mode, callback) {
+      /**
+       * Changes modem network mode
+       */
       console.log(mode);
       modemService.setModemBusyMode(true)
       modemService.changeMode(mode)
@@ -19,6 +21,7 @@ module.exports = (modem) => {
         })
     },
     async getMeasureData (callback) {
+      /** Collects measure data */
       modemService.setModemBusyMode(true)
       try {
         const signalQuality = await modemService.getSignalQuality()
@@ -33,6 +36,7 @@ module.exports = (modem) => {
       modemService.setModemBusyMode(false)
     },
     getSignalQuality (callback) {
+      /** Collects signal quality data */
       modemService.setModemBusyMode(true)
       modemService.getSignalQuality()
       .then(response => {
@@ -47,6 +51,9 @@ module.exports = (modem) => {
       })
     },
     getAvailableOperators (callback) {
+      /**
+       * Getting currently available mobile operators
+       */
       modemService.setModemBusyMode(true)
       modemService.getAvailableOperators()
       .then(response => {
@@ -60,6 +67,9 @@ module.exports = (modem) => {
       })
     },
     getGeoLocation (callback) {
+      /**
+       * Getting gps coordinates
+       */
       modemService.setModemBusyMode(true)
       modemService.getGeoLocation()
       .then(response => {

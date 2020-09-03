@@ -1,5 +1,7 @@
 const telemetry = require('./modules/telemetry')
-
+/** Performs measurements and emits them to every socket client
+ * that is subscribed to topics
+ */
 
 module.exports = {
   start (modem, io) {

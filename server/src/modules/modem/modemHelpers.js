@@ -3,7 +3,9 @@ const modemRegExp = require('./modemRegexp')
 function mapValue( x,  in_min=2,  in_max=30,  out_min=-119,  out_max=-53){
   return Math.round((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min)
 }
-
+/**
+ * Helper function for working with at command responses
+ */
 module.exports = {
   getSystemMode (str) {
     return str.match(/(?<mode>\w+),/)

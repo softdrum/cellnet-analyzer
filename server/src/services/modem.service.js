@@ -1,6 +1,11 @@
 const modemRegExp = require('../modules/modem/modemRegexp')
 const modemHelpers = require('../modules/modem/modemHelpers')
-
+/**
+ * Modem service that uses instance of Modem class
+ * Executes at commands to get data about signal quality,
+ * basestation info, etc.
+ * @param {*} modem 
+ */
 
 module.exports = (modem) => {
   return {

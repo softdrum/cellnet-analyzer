@@ -3,6 +3,13 @@ const modemOptions = require('./modemOptions')
 
 
 class Modem{
+  /**
+   * Simple mock that is made for testing
+   * modem service without an actual simcom uart modem
+   * @param {*} port 
+   * @param {*} baudRate 
+   * @param {*} logger 
+   */
   constructor(port, baudRate, logger=null) {
     this.port = port
     this.options = modemOptions.generate(baudRate, logger)

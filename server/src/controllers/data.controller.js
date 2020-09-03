@@ -1,6 +1,8 @@
 const dbService = require('../services/database.service')
 
-
+/**
+ * Basic CRUD functions
+ */
 
 module.exports = {
   async createDocument (req, res) {
