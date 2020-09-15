@@ -6,7 +6,7 @@ export default {
     memoryFree: 0,
     memoryUsage: 0,
     diskSpace: null,
-    batteryLevel: 0
+    batteryInfo: null
   },
   mutations: {
     SET_CPU_TEMPERATURE (state, value) {
@@ -24,8 +24,8 @@ export default {
     SET_DISK_SPACE (state, value) {
       state.diskSpace = value
     },
-    SET_BATTERY_LEVEL (state, value) {
-      state.batteryLevel = Math.round(value)
+    SET_BATTERY_INFO (state, value) {
+      state.batteryInfo = value
     }
   },
   actions: {
@@ -40,11 +40,19 @@ export default {
     socket_diskSpace ({ commit }, data) {
       commit('SET_DISK_SPACE', data)
     },
-    socket_batteryLevel ({ commit }, data) {
-      commit('SET_BATTERY_LEVEL', data)
+    socket_batteryInfo ({ commit }, data) {
+      commit('SET_BATTERY_INFO', data)
     },
   },
   getters: {
+    batteryLevel: state => {
+      if (state.batteryInfo) return state.batteryInfo.capacity
+      else return 33
+    },
+    batteryVoltage: state => {
+      if (state.batteryInfo) return state.batteryInfo.voltage
+      else return 0
+    },
     freeDiskSpace: state => {
       if (!state.diskSpace) return 0
       return (state.diskSpace.free / 1000**3).toFixed(1)

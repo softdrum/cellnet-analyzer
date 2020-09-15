@@ -65,10 +65,11 @@ export default {
       cpuUsage: state => state.telemetry.cpuUsage,
       memoryFree: state => state.telemetry.memoryFree,
       memoryUsage: state => state.telemetry.memoryUsage,
-      batteryLevel: state => state.telemetry.batteryInfo,
     }),
     ...mapGetters([
-      'diskSpaceInfo'
+      'diskSpaceInfo',
+      'batteryCapacity',
+      'batteryVoltage'
     ]),
     cpuInfoCard () {
       return {
@@ -114,12 +115,12 @@ export default {
       return [
         {
           title: 'Battery capacity',
-          value: this.batteryLevel.capacity,
+          value: this.batteryCapacity,
           measure: '%'
         },
         {
           title: 'Voltage',
-          value: this.batteryLevel.voltage,
+          value: this.batteryVoltage,
           measure: 'V'
         }
       ]
