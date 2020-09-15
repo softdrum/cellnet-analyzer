@@ -70,7 +70,11 @@ export default {
     }
   },
   created () {
-    this.map.off('click', this.onClick)
+    this.map.off('click', this.onClick);
+    this.map.addSource('mapbox-terrain', {
+      type: 'vector',
+      url: 'mapbox://mapbox.mapbox-terrain-v2'
+    });
   },
   watch: {
     value (value) {

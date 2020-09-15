@@ -16,7 +16,7 @@ import VueSocketIOExt from 'vue-socket.io-extended';
 import Vuelidate from 'vuelidate'
 
 import io from 'socket.io-client'; 
-const socket = io('http://192.168.0.103:8081');
+const socket = io('http://localhost:8083');
 
 Vue.use(VueSocketIOExt, socket, { store });
 Vue.config.productionTip = false

@@ -49,7 +49,7 @@ export default {
     const urls = this.images.map(image => {
       return {
         id: image.id,
-        url: `http://192.168.0.103:8081/static/images/${image.url}`
+        url: `http://localhost:8082/static/images/${image.url}`
       }
     })
     const result = await this.addImages(this.map, urls)
