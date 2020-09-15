@@ -2,7 +2,7 @@ const collections = require('../database/models');
 
 
 module.exports = {
-  createDocumentInCollection (collectionName, data) {
+  async createDocumentInCollection (collectionName, data) {
     console.log(collectionName);
     const document = new collections[collectionName](data)
     return document.save()

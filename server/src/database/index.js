@@ -1,20 +1,32 @@
 // Bring Mongoose into the app 
 const mongoose = require( 'mongoose' );
-const config = require('../config/config')
+const config = require('../config')
 // Build the connection string 
-const dbURI = config.db.url; 
+const DB_ADDRESS = config.db.addr;
+const DB_PORT = config.db.port;
+const DB_NAME = config.db.name;
+const DB_URL = `mongodb://${DB_ADDRESS}:${DB_PORT}/${DB_NAME}`; 
 
 
 module.exports = {
   init () {
     // Create the database connection 
-    mongoose.connect(dbURI); 
+    mongoose.connect(DB_URL, 
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        reconnectTries: 10,
+        reconnectInterval: 1000, // Reconnect every 500ms
+        poolSize: 10 // Maintain up to 10 socket connections
+     }
+    )
+    .then( () => {
+        'Mongoose connected'
+     })
+    .catch(error => {
+      console.log(error);
+    })
     mongoose.set('useFindAndModify', false);
-    // CONNECTION EVENTS
-    // When successfully connected
-    mongoose.connection.on('connected', function () {
-      console.log('Mongoose default connection open to ' + dbURI);
-    }); 
       
     // If the connection throws an error
     mongoose.connection.on('error',function (err) { 

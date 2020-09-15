@@ -1,0 +1,17 @@
+{
+  "name": "socket-server",
+  "version": "1.0.0",
+  "description": "A socket server that us used as interface  between client and usb modem",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Daniel R.",
+  "license": "ISC",
+  "dependencies": {
+    "check-disk-space": "^2.1.0",
+    "os-utils": "0.0.14",
+    "serialport-gsm": "^3.3.1",
+    "socket.io": "^2.3.0"
+  }
+}
