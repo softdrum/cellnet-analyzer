@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100vh; width: 100%;" class="elevation-0">
-    <Map
+    <base-map
     >
       <map-icons />
       <map-bounds-drag-handler
@@ -27,7 +27,7 @@
         <map-layers-control :sources="sources"/>
       </map-controls-container>
       <mgl-scale-control position="bottom-right"/>
-    </Map>
+    </base-map>
   </div>
 </template>
 
@@ -35,7 +35,7 @@
 import {
   MglScaleControl,
 } from "vue-mapbox";
-import Map from '@/components/map/BaseMap'
+import BaseMap from '@/components/map/BaseMap'
 import {
   MapIcons,
   MapClusterLayer,
@@ -49,7 +49,7 @@ import basestationService from '@/services/basestationService'
 export default {
   name: 'ViewFileMap',
   components: {
-    Map,
+    BaseMap,
     MapIcons,
     MapControlsContainer,
     MapLayersControl,

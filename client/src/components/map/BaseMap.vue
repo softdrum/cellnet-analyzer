@@ -1,5 +1,5 @@
 <template>
-  <MglMap
+  <mgl-map
     :accessToken="accessToken"
     :mapStyle="mapStyle"
     :zoom="10"
@@ -7,7 +7,7 @@
     class="base-map"
   >
     <slot />
-  </MglMap>
+  </mgl-map>
 </template>
 
 <script>
