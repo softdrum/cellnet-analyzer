@@ -1,8 +1,10 @@
 .DS_Store
 client/node_modules/
-client/dist/
 server/node_modules/
-server/*.sqlite
+frontend/node_modules
+socket-server/node_modules
+client/dist/
+frontend/dist
 server/public
 server/data
 server/src/csv
