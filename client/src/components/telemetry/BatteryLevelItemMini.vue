@@ -5,7 +5,7 @@
   >
     <div
       class="battery-level"
-      :style="{width: batteryLevel, background: batteryColor}"
+      :style="{width: batteryWidth, background: batteryColor}"
     >
     </div>
   </div>
@@ -13,22 +13,21 @@
 
 <script>
 import themes from '@/styles/colors.js'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'TheBatteryLevelItem',
-  props: {
-    value: {
-      type: Number,
-      default: 0
-    }
-  },
   computed: {
-    batteryLevel () {
-      return this.value + '%'
+    ...mapGetters([
+      'batteryLevel'
+    ]),
+    batteryWidth () {
+      return this.batteryLevel + '%'
     },
     batteryColor () {
-      if (this.value < 15) return 'red'
-      else if (this.value < 50) return 'orange'
-      else if (this.value < 70) return 'yellow'
+      if (this.batteryLevel < 15) return 'red'
+      else if (this.batteryLevel < 50) return 'orange'
+      else if (this.batteryLevel < 70) return 'yellow'
       else return 'green'
     },
     borderColor () {
