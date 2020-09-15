@@ -6,35 +6,32 @@ volumes:
 
 services:
 
-  client_service:
-    build: client/
-    restart: always
-    ports:
-      - 8081:8081
-    links:
-      # - database_api_service
-      - socket_service
-    environment:
-      - PORT=8081
-      - DB_API_HOST=database_api_service
-      - DB_API_PORT=8082
-      - SOCKET_IO_HOST=socket_service
-      - SOCKET_IO_PORT=8083
+  # client_service:
+  #   build: client/
+  #   restart: always
+  #   ports:
+  #     - 8081:8081
+  #   environment:
+  #     - PORT=8081
+  #     - DB_API_HOST=database_api_service
+  #     - DB_API_PORT=8082
+  #     - SOCKET_IO_HOST=socket_service
+  #     - SOCKET_IO_PORT=8083
 
-  database_api_service:
-    build: server/
-    restart: always
-    ports:
-    - 8082:8082
-    depends_on:
-      - mongodb
-    links:
-      - mongodb
-    environment:
-      - PORT=8082
-      - MONGO_DB_ADDR=mongodb
-      - MONGO_DB_PORT=27017
-      - MONGO_DB_NAME=admin
+  # database_api_service:
+  #   build: server/
+  #   restart: always
+  #   ports:
+  #   - 8082:8082
+  #   depends_on:
+  #     - mongodb
+  #   links:
+  #     - mongodb
+  #   environment:
+  #     - PORT=8082
+  #     - MONGO_DB_ADDR=mongodb
+  #     - MONGO_DB_PORT=27017
+  #     - MONGO_DB_NAME=admin
 
   socket_service:
     build: socket-server/
@@ -50,16 +47,16 @@ services:
       - MODEM_BAUDRATE=115200
       - MODEM_MOCK_MODE=false
 
-  vector-tileserver:
-    image: klokantech/tileserver-gl-light
-    ports:
-    - "8080:80"
-    volumes:
-    - tileserver_volume:/data/tileserver
-    restart: always
+  # vector-tileserver:
+  #   image: klokantech/tileserver-gl-light
+  #   ports:
+  #   - "8080:80"
+  #   volumes:
+  #   - tileserver_volume:/data/tileserver
+  #   restart: always
 
-  mongodb:
-    image: apcheamitru/arm32v7-mongo:latest
-    restart: always
-    volumes:
-      - mongodb_volume:/data/db
+  # mongodb:
+  #   image: apcheamitru/arm32v7-mongo:latest
+  #   restart: always
+  #   volumes:
+  #     - mongodb_volume:/data/db

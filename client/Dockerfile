@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:12.18.3-buster
 
 # устанавливаем простой HTTP-сервер для статики
 RUN npm install -g http-server
@@ -18,5 +18,5 @@ COPY . .
 # собираем приложение для production с минификацией
 RUN npm run build
 
-EXPOSE 8080
+EXPOSE 8081
 CMD [ "http-server", "dist" ]

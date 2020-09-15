@@ -1,6 +1,6 @@
 import axios from 'axios'
 // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-const apiURL = `http://${process.env.DB_API_HOST}:${process.env.DB_API_PORT}`;
+const apiURL = `http://http://192.168.0.102:8082`;
 
 export default () => {
     return axios.create({
