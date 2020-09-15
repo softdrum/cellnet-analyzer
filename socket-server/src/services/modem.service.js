@@ -6,7 +6,7 @@ const modemHelpers = require('../modules/modem/modemHelpers')
  * basestation info, etc.
  * @param {*} modem 
  */
-
+const sleep = ms => {return new Promise(resolve => setTimeout(resolve, ms));}
 module.exports = (modem) => {
   return {
     getSignalQuality () {
@@ -30,35 +30,23 @@ module.exports = (modem) => {
     setPrefferedSystemMode(mode) {
       return modem.executeAtCommand(`AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`)
     },
-    changeMode (mode) {
-      return modem.executeAtCommand(`AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`)
-      .then (response => {
-        if (response.data.result === 'ERROR')  throw 'Unable to set preffered system mode'
-        return sleep(5000).then(() => {
-          return modem.getBasestationInfo()
-        })
-      })
-      .then (response => {
-        modem.modemBusy = false
-        if (response.mode === mode || mode === 'auto') return 'SUCCESS'
-        else throw 'Preffered mode was changed but modem is not connected to suitable base station'
-      })
-      .catch (error => {
-        modem.modemBusy = false
-        throw error
-      })
+    async changeMode (mode) {
+      let atCommand = `AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`;
+      let result = await modem.executeAtCommand(atCommand);
+      if (result.data.result === 'ERROR') throw 'Unable to set preffered system mode'
+      console.log(result);
+      let retries = 5;
+      while (retries) {
+        retries--;
+        let bsInfo = await this.getBasestationInfo()
+        console.log(bsInfo.mode === mode);
+        if (bsInfo.mode === mode) return mode
+        await sleep(1000);
+      }
+      throw 'Preffered mode was changed but modem is not connected to suitable base station'
     },
     getGeoLocation () {
       return modem.executeAtCommand('AT+CGPSINFO')
-        .then( (result) => {
-          if (result.status === 'ERROR') throw 'Error: Can not get signal quality'
-          let data = result.data.result.match(modemRegExp.signalQuality)
-          if (!data) throw 'Error: Can not get signal quality'
-          return {
-            s_lvl: modemHelpers.calculateSignalLevel(data.groups.s_lvl),
-            ber: modemHelpers.calculateBitErrorRate(data.groups.ber)
-          }
-        })
     },
     getBasestationInfo () {
       return modem.executeAtCommand('AT+CPSI?')
