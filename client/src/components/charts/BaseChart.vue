@@ -46,12 +46,13 @@ export default {
   mounted () {
     this.timer = setInterval(() => {
       let length = this.chartData.length
-      if (length) {
-        this.chartData.slice(length - 10, length);
-      } else {
-        this.$emit('reset')
+      if (length > 10) {
+        this.chartData = this.chartData.slice(length - 10, length);
+        this.$refs[this.refName].updateSeries([{
+          data: this.chartData
+        }])
       }
-    }, 5000);
+    }, 60000);
   },
   computed: {
     dataLength () {
@@ -59,7 +60,7 @@ export default {
     }
   },
   watch: {
-     value: {
+    value: {
       immediate: true,
       handler (newVal) {
         if (newVal) {
