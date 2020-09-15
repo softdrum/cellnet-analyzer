@@ -1,4 +1,3 @@
-const serialPortGSM = require('serialport-gsm')
 const modemOptions = require('./modemOptions')
 
 
@@ -13,7 +12,6 @@ class Modem{
   constructor(port, baudRate, logger=null) {
     this.port = port
     this.options = modemOptions.generate(baudRate, logger)
-    this.modem = serialPortGSM.Modem()
     this.connected = false
     this.isBusy = false
   }
@@ -21,20 +19,19 @@ class Modem{
     this.connected = true
     return true
   }
-  executeAtCommand (command) {
-    return new Promise ((resolve, reject) => {
-      if (!this.getModemConnectionStatus()) reject('modem is not connected')
-      switch (command) {
-        case 'AT+CSQ': resolve({
-          status: 'SUCCESS',
-          data: {
-            result: `${-Math.abs(Math.round(Math.random()*50))},${Math.abs(Math.round(Math.random())+3)}`
-          }
-        })
-        case 'AT+CNMP=13': resolve('OK')
+  async executeAtCommand (command) {
+    if (!this.getModemConnectionStatus()) throw 'modem is not connected'
+    if (command === 'AT+CSQ') {
+      return {
+        status: 'SUCCESS',
+        data: {
+          result: `${-Math.abs(Math.round(Math.random()*50))},${Math.abs(Math.round(Math.random())+3)}`
+        }
       }
-    })
-  } 
+    }
+    else if (command === 'AT+CNMP=13') return 'OK'
+    else if (command ==='AT+CPSI?') return {result: 'success', data: {result: 'NO SERVICE,Online'}}
+  }
   setModemConnectionStatus (value) {
     this.connected = value
   }
