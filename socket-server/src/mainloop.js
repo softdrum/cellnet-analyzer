@@ -15,7 +15,8 @@ module.exports = {
           // let basestationInfo = await modemService.getBasestationInfo()
           // io.emit('basestation', basestationInfo)
         } catch (error) {
-          io.emit('modem_error', {status: 'ERROR', data: error})
+          console.log(error);
+          // io.emit('modem_error', {status: 'ERROR', data: error})
         }
       }
       io.emit('battery_level', Math.random()*100)

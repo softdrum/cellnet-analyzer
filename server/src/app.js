@@ -4,7 +4,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 app.use(bodyParser.json())
-app.use(cors({origin: 'http://localhost:8081'}));
+app.use(cors({origin: '*'}));
 
 require('./router')(app, express) // adding routes
 

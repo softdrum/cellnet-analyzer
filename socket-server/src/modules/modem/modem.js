@@ -12,6 +12,7 @@ class Modem{
    * @param {*} logger 
    */
   constructor(port, baudRate, logger=null) {
+    console.log('Creating real modem');
     this.port = port
     this.options = modemOptions.generate(baudRate, logger)
     this.modem = serialPortGSM.Modem()
@@ -32,12 +33,8 @@ class Modem{
       })
   }
   executeAtCommand (command) {
-    return '+CSQ: 3,3'
     if (!this.getModemConnectionStatus()) return 'modem is not connected'
     else {
-      this.modem.executeCommand(command).then(res => {
-        console.log(res);
-      })
       return this.modem.executeCommand(command)
     }
   } 

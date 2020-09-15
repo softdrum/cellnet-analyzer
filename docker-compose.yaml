@@ -39,7 +39,7 @@ services:
       - PORT=8083
       - MODEM_PORT=/dev/ttyUSB2
       - MODEM_BAUDRATE=115200
-      - MODEM_MOCK_MODE=0
+      - MODEM_MOCK_MODE="true"
   vector-tileserver:
     image: klokantech/tileserver-gl-light
     ports:
