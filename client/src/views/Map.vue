@@ -34,7 +34,6 @@
           <map-measure-mode-controls
             v-model="measureModeStarted"
             v-if="measureMode"
-            @change-network-mode="onNetworkModeChange"
             @measure="onMeasureMarkerPlaced"
             @stop="onStopMeasure"
             @undo="onUndo"
@@ -127,9 +126,6 @@ export default {
   methods: {
     addNewSource (source) {
       this.sources.push(source)
-    },
-    onNetworkModeChange (mode) {
-      this.$store.dispatch('changeNetworkMode', mode)
     },
     async scanBasestationsAround (coordinates) {
       this.loading = true
