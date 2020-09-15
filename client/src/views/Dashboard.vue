@@ -59,7 +59,6 @@
 import InfoCardSingle from '../components/cards/InfoCardSingle'
 import ChartCard from '../components/cards/ChartCard'
 import InfoCardExpandable from '../components/cards/InfoCardExpandable'
-import defaultOptions from '../components/charts/options/default.chart'
 import RealtimeChart from '../components/charts/RealtimeChart'
 import { mapState, mapGetters } from 'vuex'
 import themes from '@/styles/colors.js'
@@ -124,7 +123,8 @@ export default {
       }
     },
     basestation (info) {
-      this.bsInfo = info
+      console.log(info);
+      this.bsInfo = {...info}
     },
   },
   methods: {
@@ -136,17 +136,6 @@ export default {
     }
   },
   mounted() {
-    var me = this
-    // every 60 seconds, we reset the data to prevent memory leaks
-    setInterval(function () {
-      me.resetData()
-      me.$refs.signalLevelChart.updateSeries([{
-        data: me.signalLevelData
-      }], false, true)
-      me.$refs.bitErrorRateChart.updateSeries([{
-        data: me.bitErrorRateData
-      }], false, true)
-    }, 60000)
   },
   data: () => ({
     signalLevelData: [],
@@ -156,18 +145,6 @@ export default {
     bsInfo: {status: 'online', mcc: 250, mnc: '02', snr: 22, slvl: 54, cid: 3132332, lac: 312},
     diskSpace: {title: 'No data', icon: {name: 'icon-drive'}},
     cpuTemp: {title: 'No data', icon: {name: 'icon-thermometer',}},
-    options: defaultOptions.getOptions(['#00d0ea']),
-    options2: defaultOptions.getOptions(['#fba500']),
-    series: [{
-      name: 'slvl',
-      type: 'line',
-      data: [10, 20, 30, 40]
-    }],
-    series2: [{
-      name: 'series-2',
-      type: 'line',
-      data: []
-    }]
   }),
 }
 </script>
