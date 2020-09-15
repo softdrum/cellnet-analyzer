@@ -71,10 +71,25 @@ export default {
     RealtimeChart,
     InfoCardExpandable
   },
+  data: () => ({
+    signalLevelData: [],
+    bitErrorRateData: [],
+    s_lvl: null,
+    ber: null,
+    diskSpace: {title: 'No data', icon: {name: 'icon-drive'}},
+    cpuTemp: {title: 'No data', icon: {name: 'icon-thermometer',}},
+  }),
+  mounted() {
+    setInterval(async () => {
+      let response = await this.$store.dispatch('getGeoLocation');
+      console.log(response);
+    }, 5000);
+  },
   computed: {
     ...mapState({
       signalLevel: state => state.modem.signalLevel,
       bitErrorRate: state => state.modem.bitErrorRate,
+      bsInfo: state => state.modem.basestationInfo,
       cpuTemperature: state => state.telemetry.cpuTemperature
     }),
     ...mapGetters([
@@ -109,9 +124,6 @@ export default {
     }
   },
   sockets: {
-    connect() {
-      console.log('socket connected')
-    },
     signal_quality (data) {
       this.s_lvl = {
         x: data.time,
@@ -122,10 +134,6 @@ export default {
         y: data.ber
       }
     },
-    basestation (info) {
-      console.log(info);
-      this.bsInfo = {...info}
-    },
   },
   methods: {
     resetData(){
@@ -134,18 +142,7 @@ export default {
       this.signalLevelData = this.signalLevelData.slice(slvlDataLength - 10, slvlDataLength);
       this.bitErrorRateData = this.bitErrorRateData.slice(berDataLength - 10, berDataLength);
     }
-  },
-  mounted() {
-  },
-  data: () => ({
-    signalLevelData: [],
-    bitErrorRateData: [],
-    s_lvl: null,
-    ber: null,
-    bsInfo: {status: 'online', mcc: 250, mnc: '02', snr: 22, slvl: 54, cid: 3132332, lac: 312},
-    diskSpace: {title: 'No data', icon: {name: 'icon-drive'}},
-    cpuTemp: {title: 'No data', icon: {name: 'icon-thermometer',}},
-  }),
+  }
 }
 </script>
 <style scoped>
