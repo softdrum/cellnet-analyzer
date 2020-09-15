@@ -37,7 +37,10 @@
           </div>
         </div>
         <v-spacer></v-spacer>
-        <network-selector class="mr-3" />
+        <network-selector
+          class="mr-3"
+          @change-network-mode="onNetSelectorClicked"
+        />
         <battery-level-mini v-model="batteryLevel"/>
       </div>
     </v-app-bar>
@@ -82,7 +85,7 @@ export default {
   },
   methods: {
     ...mapActions(['setMeasureModeState'])
-  },
+  }
 }
 </script>
 <style lang="scss" scoped>
