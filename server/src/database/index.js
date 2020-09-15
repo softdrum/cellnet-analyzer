@@ -14,10 +14,7 @@ module.exports = {
     mongoose.connect(DB_URL, 
       {
         useNewUrlParser: true,
-        useUnifiedTopology: true,
-        reconnectTries: 10,
-        reconnectInterval: 1000, // Reconnect every 500ms
-        poolSize: 10 // Maintain up to 10 socket connections
+        useUnifiedTopology: true
      }
     )
     .then( () => {

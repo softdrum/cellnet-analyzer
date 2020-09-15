@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { ObjectId } = require('mongodb')
 /**
  * This model stores measure session as files
  * Every file has name, datatype and id of document in
@@ -7,7 +6,7 @@ const { ObjectId } = require('mongodb')
  */
 const measureFile = new mongoose.Schema({
   name: String,
-  dataId: ObjectId,
+  dataId: mongoose.ObjectId,
   dataType: String,
   createdAt: Date,
   updatedAt: Date

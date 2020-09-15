@@ -26,6 +26,7 @@ module.exports = {
   },
   async readCollection (req, res) {
     try {
+      console.log(req.params)
       const collectionName = req.params.collection
       console.log(collectionName);
       const query = req.query

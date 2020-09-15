@@ -12,8 +12,8 @@ module.exports = {
         try {
           let signalQuality = await modemService.getSignalQuality()
           io.emit('signal_quality', signalQuality)
-          // let basestationInfo = await modemService.getBasestationInfo()
-          // io.emit('basestation', basestationInfo)
+          let basestationInfo = await modemService.getBasestationInfo()
+          io.emit('basestation', basestationInfo)
         } catch (error) {
           console.log(error);
           // io.emit('modem_error', {status: 'ERROR', data: error})
