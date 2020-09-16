@@ -3,10 +3,17 @@ const i2c = require('i2c-bus');
 
 class MockHat {
   constructor (address) {
-      this.address = address
+      this.address = address,
+      this.capacity = 0,
+      this.step = 5
   }
   async getCapacity () {
-    return Math.round(Math.random()*100)
+    if (this.capacity === 100) {
+      this.step = -5
+    } else if (this.capacity === 0) {
+      this.step = 5
+    }
+    return this.capacity += this.step
   }
   async getVoltage () {
     return Math.round(Math.random()*5)
