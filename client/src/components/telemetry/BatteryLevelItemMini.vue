@@ -19,15 +19,15 @@ export default {
   name: 'TheBatteryLevelItem',
   computed: {
     ...mapGetters([
-      'batteryLevel'
+      'batteryCapacity'
     ]),
     batteryWidth () {
-      return this.batteryLevel + '%'
+      return this.batteryCapacity + '%'
     },
     batteryColor () {
-      if (this.batteryLevel < 15) return 'red'
-      else if (this.batteryLevel < 50) return 'orange'
-      else if (this.batteryLevel < 70) return 'yellow'
+      if (this.batteryCapacity < 15) return 'red'
+      else if (this.batteryCapacity < 50) return 'orange'
+      else if (this.batteryCapacity < 70) return 'yellow'
       else return 'green'
     },
     borderColor () {
