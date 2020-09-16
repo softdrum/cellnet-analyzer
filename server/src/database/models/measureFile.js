@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
  */
 const measureFile = new mongoose.Schema({
   name: String,
-  dataId: mongoose.ObjectId,
+  dataId: String,
   dataType: String,
   createdAt: Date,
   updatedAt: Date
