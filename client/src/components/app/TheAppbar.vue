@@ -37,10 +37,7 @@
           </div>
         </div>
         <v-spacer></v-spacer>
-        <network-selector
-          class="mr-3"
-          @change-network-mode="onNetSelectorClicked"
-        />
+        <network-selector class="mr-3" />
         <battery-level-mini v-model="batteryLevel"/>
       </div>
     </v-app-bar>
