@@ -52,7 +52,10 @@ module.exports = (modem) => {
       return modem.executeAtCommand('AT+CPSI?')
         .then(response => {
           if (response.status === 'ERROR') throw 'Can not get BS Info'
-          if (response.data.result.trim() === 'NO SERVICE,Online') throw 'No service'
+          if (response.data.result.trim() === 'NO SERVICE,Online') return {
+            status: 'Online',
+            mode: 'no service'
+          }
           const info = modemHelpers.extractBasestationInfo(response.data.result)
           if (!info) throw `Unknown data: ${response}`
           return info.groups
@@ -74,6 +77,9 @@ module.exports = (modem) => {
     },
     setModemBusyMode (value) {
       modem.setBusyMode(value)
+    },
+    getModemBusyMode () {
+      return modem.getBusyMode()
     },
   }
 }
