@@ -45,9 +45,9 @@ export default {
     },
   },
   getters: {
-    batteryLevel: state => {
+    batteryCapacity: state => {
       if (state.batteryInfo) return state.batteryInfo.capacity
-      else return 33
+      else return 0
     },
     batteryVoltage: state => {
       if (state.batteryInfo) return state.batteryInfo.voltage
