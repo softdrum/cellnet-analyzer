@@ -17,7 +17,7 @@ import Vuelidate from 'vuelidate'
 
 import io from 'socket.io-client';
 
-const socketIOURL = `http://192.168.0.102:8083`;
+const socketIOURL = process.env.VUE_APP_SOCKET_IO_URL || `localhost:8082`;
 const socket = io(socketIOURL);
 
 Vue.use(VueSocketIOExt, socket, { store });
