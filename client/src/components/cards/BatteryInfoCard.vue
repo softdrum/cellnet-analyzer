@@ -1,6 +1,6 @@
 <template>
   <base-info-card :data="data"  :no-data-icon="'mdi-battery'">
-    <battery-level-item slot="icon" v-model="data[0].value"/>
+    <battery-level-item slot="icon" v-if="data.length" v-model="data[0].value"/>
   </base-info-card>
 </template>
 

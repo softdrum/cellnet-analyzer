@@ -72,6 +72,13 @@ export default {
       'batteryVoltage'
     ]),
     cpuInfoCard () {
+      if (this.cpuTemperature === -1 && this.cpuUsage === -1) return {
+        data: [],
+        icon: {
+          name: 'icon-cpu',
+          color: '#3F8BB5'
+        }
+      }
       return {
         data: [
           {
@@ -92,6 +99,13 @@ export default {
       }
     },
     memoryInfoCard () {
+       if (this.memoryFree === -1 && this.memoryUsage === -1) return {
+        data: [],
+        icon: {
+          name: 'icon-ram',
+          color: '#3F8BB5'
+        }
+      }
       return {
         data: [
           {
@@ -112,6 +126,7 @@ export default {
       }
     },
     batteryInfo () {
+      if (this.batteryCapacity === -1 && this.batteryVoltage === -1) return []
       return [
         {
           title: 'Battery capacity',
