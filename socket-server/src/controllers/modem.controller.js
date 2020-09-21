@@ -6,7 +6,6 @@ module.exports = (modem) => {
       /**
        * Changes modem network mode
        */
-      console.log(mode);
       modemService.setModemBusyMode(true)
       modemService.changeMode(mode)
         .then(response => {
@@ -25,10 +24,10 @@ module.exports = (modem) => {
       modemService.setModemBusyMode(true)
       try {
         const signalQuality = await modemService.getSignalQuality()
-        // const bsInfo = await modemService.getBasestationInfo()
+        const bsInfo = await modemService.getBasestationInfo()
         callback({status: 'SUCCESS', payload: {
           ...signalQuality,
-          // ...bsInfo
+          ...bsInfo
         }})
       } catch (error) {
         callback({status: 'ERROR', payload: error})

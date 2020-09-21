@@ -11,20 +11,11 @@ const DB_URL = `mongodb://${DB_ADDRESS}:${DB_PORT}/${DB_NAME}`;
 module.exports = {
   init () {
     // Create the database connection 
-    mongoose.connect(DB_URL, 
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-     }
-    )
-    .then( () => {
-        'Mongoose connected'
-     })
-    .catch(error => {
-      console.log(error);
-    })
+    mongoose.connect(DB_URL,{ useMongoClient: true })
     mongoose.set('useFindAndModify', false);
-      
+    mongoose.connection.on('connection',function () { 
+      console.log('Mongoose default connection established');
+    }); 
     // If the connection throws an error
     mongoose.connection.on('error',function (err) { 
       console.log('Mongoose default connection error: ' + err);

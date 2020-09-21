@@ -1,7 +1,6 @@
 const serialPortGSM = require('serialport-gsm')
 const modemOptions = require('./modemOptions')
 
-
 class Modem{
   /**
    * Modem class is an extension of serialPortGSM
@@ -13,42 +12,31 @@ class Modem{
    */
   constructor(port, baudRate, logger=null) {
     console.log('Creating real modem');
-    this.port = port
-    this.options = modemOptions.generate(baudRate, logger)
-    this.modem = serialPortGSM.Modem()
-    this.connected = false
-    this.isBusy = false
+    this._port = port;
+    this.options = modemOptions.generate(baudRate, logger);
+    this._modem = serialPortGSM.Modem()
+    this._busy = false
   }
-  initModem() {
-    return this.modem.open(this.port, this.options)
-      .then(result => {
-        console.log(result);
-        this.setModemConnectionStatus(true)
-        return this.getModemConnectionStatus()
-      })
-      .catch(error => {
-        console.log(error);
-        this.setModemConnectionStatus(false)
-        return this.getModemConnectionStatus()
-      })
+  async initModem() {
+    try {
+      let result = await this._modem.open(this._port, this._options);
+      return result.data.status === 'Online'
+    } catch (error) {
+      return false
+    }
+  }
+  stopModem() {
+    console.log('Stopping modem');
+    this.modem.close();
   }
   executeAtCommand (command) {
-    if (!this.getModemConnectionStatus()) return 'modem is not connected'
-    else {
-      return this.modem.executeCommand(command)
-    }
+    return this._modem.executeCommand(command)
   } 
-  setModemConnectionStatus (value) {
-    this.connected = value
-  }
   setBusyMode (value) {
-    this.isBusy = value
-  }
-  getModemConnectionStatus () {
-    return this.connected
+    this._busy = value
   }
   getBusyMode () {
-    return this.isBusy
+    return this._busy
   }
 }
 

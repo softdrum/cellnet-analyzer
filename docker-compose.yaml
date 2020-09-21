@@ -6,11 +6,11 @@ volumes:
 
 services:
 
-  client_service:
-    build: client/
-    restart: always
-    ports:
-      - 8080:8080
+  # client_service:
+  #   build: client/
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
 
   database_api_service:
     build: server/
