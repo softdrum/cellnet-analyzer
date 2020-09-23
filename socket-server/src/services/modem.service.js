@@ -1,5 +1,6 @@
-const modemRegExp = require('../modules/modem/modemRegexp')
-const modemHelpers = require('../modules/modem/modemHelpers')
+const modemRegExp = require('../modules/modem/modemRegexp');
+const modemHelpers = require('../modules/modem/modemHelpers');
+
 /**
  * Modem service that uses instance of Modem class
  * Executes at commands to get data about signal quality,
@@ -34,12 +35,10 @@ module.exports = (modem) => {
       let atCommand = `AT+CNMP=${modemHelpers.getSystemModeCode(mode)}`;
       let result = await modem.executeAtCommand(atCommand);
       if (result.data.result === 'ERROR') throw 'Unable to set preffered system mode'
-      console.log(result);
       let retries = 5;
       while (retries) {
         retries--;
         let bsInfo = await this.getBasestationInfo()
-        console.log(bsInfo.mode === mode);
         if (bsInfo.mode === mode) return mode
         await sleep(1000);
       }
@@ -67,8 +66,12 @@ module.exports = (modem) => {
           if (response.status === 'ERROR') throw 'Error: Can not get available operators'
           let data = response.data.result.matchAll(modemRegExp.availableOperators)
           if (!data) throw 'Error: Can not get available operators'
-          const available_operators = [...data].map(item => { return item.groups })
-          const unique_operators = modemHelpers.filterUniqueOperators(available_operators)
+          const available_operators = [...data].map(item => { return item.groups });
+          const unique_operators = modemHelpers.filterUniqueOperators(available_operators);
+          if (unique_operators) {
+            let idx = unique_operators.findIndex(elem => elem.code === '25011');
+            if (idx !== -1) unique_operators[idx].operator = 'Yota'
+          }
           return {
             topic: 'available_operators',
             data:  unique_operators

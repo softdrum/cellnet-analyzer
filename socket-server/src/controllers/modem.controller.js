@@ -1,3 +1,6 @@
+const mcache = require('../utils/memory.cache').mcache
+const CACHE_DURATION = 60000;
+
 module.exports = (modem) => {
   const modemService = require('../services/modem.service')(modem)
 
@@ -53,17 +56,24 @@ module.exports = (modem) => {
       /**
        * Getting currently available mobile operators
        */
+      console.log('getting operators');
       modemService.setModemBusyMode(true)
-      modemService.getAvailableOperators()
-      .then(response => {
-        callback({status: 'SUCCESS', payload: response})
-      })
-      .catch(error => {
-        callback({status: 'ERROR', payload: error})
-      })
-      .finally(() => {
-        modemService.setModemBusyMode(false)
-      })
+      const cachedData = mcache.get('operators')
+      if (cachedData) {
+        callback({status: 'SUCCESS', payload: cachedData})
+      } else {
+        modemService.getAvailableOperators()
+        .then(response => {
+          mcache.put('operators', response, CACHE_DURATION)
+          callback({status: 'SUCCESS', payload: response})
+        })
+        .catch(error => {
+          callback({status: 'ERROR', payload: error})
+        })
+        .finally(() => {
+          modemService.setModemBusyMode(false)
+        })
+      }
     },
     getGeoLocation (callback) {
       /**
