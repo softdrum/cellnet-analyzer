@@ -13,7 +13,7 @@
       @click="snackbar = false"
     >
       <v-icon>
-        mdi-close
+        icon-cross
       </v-icon>
     </v-btn>
   </v-snackbar>
