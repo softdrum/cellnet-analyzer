@@ -60,6 +60,7 @@ module.exports = (modem) => {
       modemService.setModemBusyMode(true)
       const cachedData = mcache.get('operators')
       if (cachedData) {
+        modemService.setModemBusyMode(false)
         callback({status: 'SUCCESS', payload: cachedData})
       } else {
         modemService.getAvailableOperators()

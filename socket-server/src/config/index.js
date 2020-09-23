@@ -6,6 +6,6 @@ module.exports = {
       mock: process.env.MODEM_MOCK_MODE === 'T',
     },
     ups: {
-      mock: process.env.UPS_MOCK_MODE || false,
+      mock: process.env.UPS_MOCK_MODE === 'T',
     }
 }

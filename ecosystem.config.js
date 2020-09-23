@@ -41,8 +41,9 @@ module.exports = {
       name: 'vector-tile-server',
       script: 'index.js',
       cwd: '/home/pi/projects/vector-tile-server',
+      exp_backoff_restart_delay: 100,
       env: {
-        "HOST": "192.168.0.100",
+        "HOST": "10.10.10.10",
         "PORT": 8083,
       },
       watch: '.'
