@@ -6,6 +6,7 @@
       @save="onSave"
       :content="dialogContent"
       v-model="dialog"
+      :loading="saving"
     />
     <chart-group :charts="charts" />
   </div>
@@ -26,6 +27,7 @@ export default {
     measureMode: false,
     measurements: [],
     dialogContent: {},
+    saving: false,
     timer: null,
     dialog: false,
     charts: [
@@ -75,6 +77,7 @@ export default {
       this.dialog = false
     },
     async onSave(filename) {
+      this.saving = true;
       try {
         const dataId = (await databaseService.createDocument('MeasureData', {data: this.measurements})).data._id
         await databaseService.createDocument('MeasureFile', {
@@ -87,6 +90,7 @@ export default {
       } catch (error) {
         this.$error(error)
       }
+      this.saving = false;
       this.dialog = false
     },
     onMeasureStart () {
@@ -134,18 +138,15 @@ export default {
     }
   },
   sockets: {
-    connect() {
-        console.log('socket connected')
-    },
-    signal_quality: function (data) {
+    modem_info: function (data) {
       if (this.measureModeState !== 'started') {
         this.charts[0].data.push({
-          x: data.time,
-          y: data.s_lvl
+          x: data.timestamp,
+          y: data.sq.s_lvl
         })
         this.charts[1].data.push({
-          x: data.time,
-          y: data.ber
+          x: data.timestamp,
+          y: data.sq.ber
         })
       }
     }
