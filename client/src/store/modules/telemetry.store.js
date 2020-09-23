@@ -1,10 +1,10 @@
 export default {
   state: {
     connected: false,
-    cpuTemperature: 0,
-    cpuUsage: 0,
-    memoryFree: 0,
-    memoryUsage: 0,
+    cpuTemperature: -1,
+    cpuUsage: -1,
+    memoryFree: -1,
+    memoryUsage: -1,
     diskSpace: null,
     batteryInfo: null
   },
@@ -29,29 +29,23 @@ export default {
     }
   },
   actions: {
-    socket_cpuInfo ({ commit }, data) {
-      commit('SET_CPU_TEMPERATURE', data.cpuTemp)
-      commit('SET_CPU_USAGE', data.cpuUsage)
-    },
-    socket_freememPercentage ({ commit }, data) {
-      commit('SET_MEMORY_FREE', data.freemem)
-      commit('SET_MEMORY_USAGE', data.freememPercent)
-    },
-    socket_diskSpace ({ commit }, data) {
-      commit('SET_DISK_SPACE', data)
-    },
-    socket_batteryInfo ({ commit }, data) {
-      commit('SET_BATTERY_INFO', data)
+    socket_hardwareInfo ({ commit }, data) {
+      commit('SET_CPU_TEMPERATURE', data.cpu.cpuTemp)
+      commit('SET_CPU_USAGE', data.cpu.cpuUsage)
+      commit('SET_MEMORY_FREE', data.ram.freemem)
+      commit('SET_MEMORY_USAGE', data.ram.freememPercent)
+      commit('SET_DISK_SPACE', data.disk)
+      commit('SET_BATTERY_INFO', data.battery)
     },
   },
   getters: {
     batteryCapacity: state => {
       if (state.batteryInfo) return state.batteryInfo.capacity
-      else return 0
+      else return -1
     },
     batteryVoltage: state => {
       if (state.batteryInfo) return state.batteryInfo.voltage
-      else return 0
+      else return -1
     },
     freeDiskSpace: state => {
       if (!state.diskSpace) return 0
@@ -66,10 +60,7 @@ export default {
           size
         }
       } else {
-        return {
-          used: 0,
-          size: 0
-        }
+        return null
       }
     }
   },

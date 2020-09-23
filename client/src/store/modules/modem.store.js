@@ -4,20 +4,12 @@ export default {
     connected: false,
     basestationInfo: null,
     networkMode: 'auto',
-    signalLevel: 0,
-    bitErrorRate: 0,
     measureModeState: 'stopped'
   },
   mutations: {
-    SOCKET_BASESTATION (state, value) {
+    SET_BASESTATION (state, value) {
       state.networkMode = value.mode
       state.basestationInfo = value
-    },
-    SET_SIGNAL_LEVEL (state , value) {
-      state.signalLevel = value
-    },
-    SET_BIT_ERROR_RATE (state , value) {
-      state.bitErrorRate = value
     },
     SET_MODEM_CONNECTION_STATUS(state, value) {
       state.connected = value
@@ -37,9 +29,17 @@ export default {
         commit('SET_ERROR', error)
       }
     },
-    async getGeoLocation ({ commit }, mode) {
+    async getGeoLocation ({ commit }) {
       try {
-        let response = await socketService.emit(this._vm.$socket, 'getGeoLocation', mode)
+        let response = await socketService.emit(this._vm.$socket, 'getGeoLocation')
+        return response
+      } catch (error) {
+        commit('SET_ERROR', error)
+      }
+    },
+    async getAvailableOperators ({ commit }) {
+      try {
+        let response = await socketService.emit(this._vm.$socket, 'getAvailableOperators')
         return response
       } catch (error) {
         commit('SET_ERROR', error)
@@ -57,11 +57,11 @@ export default {
       commit('SET_BASESTATION', value)
       commit('SET_MEASURE_MODE_STATE', value)
     },
-    socket_signalQuality ({ commit }, data) {
-      commit('SET_SIGNAL_LEVEL', data.s_lvl)
-      commit('SET_BIT_ERROR_RATE', data.ber)
+    socket_modemInfo ({ commit }, data) {
+      commit('SET_BASESTATION', data.bs)
     },
     socket_modemError({commit}, error) {
+      console.log(error);
       commit('SET_MESSAGE', {message: error.data, color:'red'})
       commit('SET_MODEM_CONNECTION_STATUS', false)
     },
