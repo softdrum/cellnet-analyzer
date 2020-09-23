@@ -1,7 +1,8 @@
 <template>
   <div class="d-flex align-center justify-space-between font-weight-regular" style="font-family: roboto;color: #404C5C; font-size: 1rem">
-    <span class="text--secondary">Network:</span> 
+    <span class="text--secondary">{{ title }}</span> 
     <v-menu
+      v-if="title !== 'No service'"
       transition="slide-y-transition"
       bottom
     >
@@ -42,6 +43,10 @@ export default {
     ],
   }),
   computed: {
+    title () {
+      if (this.networkMode.toLowerCase() === 'no service') return 'No service'
+      else return 'Network:'
+    },
     ...mapState({
       networkMode: state => state.modem.networkMode,
     }),
