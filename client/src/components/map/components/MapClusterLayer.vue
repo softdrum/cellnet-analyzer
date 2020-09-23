@@ -82,7 +82,7 @@ export default {
       'filter': ['has', 'point_count'],
       'layout': {
         'text-field': '{point_count_abbreviated}',
-        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+        'text-font': ['Open Sans Bold'],
         'text-size': 12
       }
     }

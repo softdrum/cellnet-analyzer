@@ -17,7 +17,7 @@ import {
 export default {
   data: () => ({
     tileServerURL: process.env.VUE_APP_TILE_SERVER_URL || 'http://localhost:8083',
-    // accessToken:
+    accessToken: 'pk.eyJ1IjoiZHJld3plcmciLCJhIjoiY2thdHAyZHB6MHZtbjM3b2NpdmFhMzBjbiJ9.FitsZxcjiZzIx9_4VddY3g',
     coordinates: [30.3207309188291, 59.922883996810725],
   }),
   components: {

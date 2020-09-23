@@ -1,6 +1,7 @@
 <template>
   <v-btn
     :loading="loading"
+    @click="$emit('click')"
     class="map-control-button base"
   >
     <div class="d-flex pa-3 justify-space-between align-center">

@@ -8,6 +8,7 @@ export default {
   name: "MglCenter",
   inject: ["mapbox", "map", "actions"],
   data: () => ({
+    apiServerURL: process.env.VUE_APP_DB_API_URL || `http://localhost:8081`,
     images: [
       {
         id: 'gsm',
@@ -23,7 +24,7 @@ export default {
       },
       {
         id: 'sq',
-        url: 'sq.png'
+        url: 'measure_point.png'
       },
     ]
   }),
@@ -49,7 +50,7 @@ export default {
     const urls = this.images.map(image => {
       return {
         id: image.id,
-        url: `http://localhost:8082/static/images/${image.url}`
+        url: `${this.apiServerURL}/static/images/${image.url}`
       }
     })
     const result = await this.addImages(this.map, urls)
