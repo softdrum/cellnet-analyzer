@@ -1,5 +1,5 @@
 export default {
-  getOptions(colors=[], darkTheme=true) {
+  getOptions(colors=[], darkTheme=true, yScale=[0, 100]) {
     const options = {
       chart: {
         type: 'line',
@@ -83,8 +83,8 @@ export default {
           }
       },
       yaxis: {
-          max: 0,
-          min: -120
+          max: yScale[1],
+          min: yScale[0]
       }
     }
     return options

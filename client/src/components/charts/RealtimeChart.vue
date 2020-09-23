@@ -22,6 +22,10 @@ export default {
       type: Array,
       default: () => []
     },
+    scaleY: {
+      type: Array,
+      default: () => [-120, 0]
+    },
     value: {
       type: Object,
       default: null
@@ -51,7 +55,7 @@ export default {
     darkTheme: {
       immediate: true,
       handler (val) {
-        this.options = defaultOptions.getOptions([this.color], val)
+        this.options = defaultOptions.getOptions([this.color], val, this.scaleY)
       }
     }
   }

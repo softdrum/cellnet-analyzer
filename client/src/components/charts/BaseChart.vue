@@ -3,7 +3,8 @@
       :type="type" 
       :ref="refName" 
       :options="options" 
-      :series="series" 
+      :series="series"
+      style="pointer-events: none;"
     />
 </template>
 
