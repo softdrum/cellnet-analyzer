@@ -26,6 +26,7 @@
       <v-btn
         color="primary"
         text
+        :loading="loading"
         @click="onAccept"
       >
         {{ confirmButtonText }}
@@ -67,6 +68,10 @@ export default {
       type: Boolean,
       default: false
     },
+    loading: {
+      type: Boolean,
+      default: false
+    }
   },
   validations: {
     filename: {required, minLength: minLength(5)}
