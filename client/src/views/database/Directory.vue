@@ -209,10 +209,13 @@ export default {
       try {
         if (update.name !== this.selectedFile.name) {
           await databaseService.updateDocument('MeasureFile', id, update)
-          this.files = (await databaseService.readCollection('MeasureFile', '?dataType=heatmap')).data
+          let idx = this.files.findIndex(file => file.name === this.selectedFile.name);
+          if (idx !== -1) {
+            this.files[idx].name = update.name
+          }
         }
       } catch (error) {
-        console.log(error);
+        this.$error('Can not change file name. Network error')
       }
       this.loading = false
       this.dialog = false

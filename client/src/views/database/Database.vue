@@ -61,14 +61,14 @@ export default {
       {
         title: 'Signals',
         subtitle: 'Analize signal data',
-        icon: 'mdi-current-ac',
+        icon: 'icon-graph',
         color: 'green',
         to: '/database/signal'
       },
       {
         title: 'Heatmap',
         subtitle: 'Saved heatmap data',
-        icon: 'mdi-map',
+        icon: 'icon-map',
         color: 'orange',
         to: "/database/heatmap"
       }
