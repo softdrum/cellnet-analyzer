@@ -32,7 +32,8 @@ module.exports = {
         "PORT": 8082,
         "MODEM_PORT": "/dev/ttyUSB2",
         "MODEM_BAUDRATE": 115200,
-        "MODEM_MOCK_MODE": "F"
+        "MODEM_MOCK_MODE": "F",
+        "UPS_MOCK_MODE": "F"
       },
       watch: '.'
     },
@@ -41,7 +42,7 @@ module.exports = {
       script: 'index.js',
       cwd: '/home/pi/projects/vector-tile-server',
       env: {
-        "HOST": "192.168.0.104",
+        "HOST": "192.168.0.100",
         "PORT": 8083,
       },
       watch: '.'
