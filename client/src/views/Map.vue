@@ -6,6 +6,7 @@
       @save="onSave"
       :content="dialogContent"
       v-model="dialog"
+      :loading="saving"
     />
     <base-map>
       <map-cluster-layer
@@ -49,6 +50,11 @@
             text="scan cells"
           />
         </map-center>
+        <map-control-button
+          class="mb-3"
+          icon="icon-map"
+          @click="getLocation"
+        />
         <transition
           name="bounce"
           enter-active-class="delay bounce-enter-active"
@@ -121,9 +127,20 @@ export default {
     measureMarkerPosition: [0,0],
     measurements: [],
     loading: false,
+    saving: false,
     visibleCells: [],
   }),
   methods: {
+    async getLocation () {
+      try {
+        let response = await this.$store.dispatch('getGeoLocation');
+        this.$success(response.data.result)
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+        this.$error('Can not get gps location')
+      }
+    },
     addNewSource (source) {
       this.sources.push(source)
     },
@@ -167,6 +184,7 @@ export default {
         console.log(this.measurements)
     },
     async onSave(filename) {
+      this.saving = true;
       try {
         const dataId = (await databaseService.createDocument('MeasureData', {data: this.measurements})).data._id
         await databaseService.createDocument('MeasureFile', {
@@ -181,7 +199,8 @@ export default {
       } catch (error) {
         this.$error(error)
       }
-      this.dialog = false
+      this.saving = false;
+      this.dialog = false;
     },
     onDecline () {
       this.measurements = []

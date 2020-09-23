@@ -31,9 +31,9 @@
   animation: mymove 2.5s infinite ease;
 }
 @keyframes mymove {
-  0% {color: cyan;}
-  50% {color:  rgba(0, 104, 104, 0.95);}
-  100% {color: cyan;}
+  0% {color: #82B1FF;}
+  50% {color: #4c658d}
+  100% {color: #82B1FF;}
 }
 .animated {
   -webkit-animation-duration: 1s;

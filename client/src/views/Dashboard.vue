@@ -23,6 +23,7 @@
       <chart-card :title="'Bit Error Rate'">
         <realtime-chart
           v-model="ber"
+          :scaleY="[0, 100]"
           refName="ber"
           color="#82B1FF"
         />
@@ -52,6 +53,19 @@
     >
       <info-card-single v-model="cpuTemperatureCard"/>
     </v-col>
+    <v-col
+      :cols="12"
+      :lg="3"
+      :md="6"
+      :sm="6"
+    >
+      <list-card
+        :data="operators"
+        :title="'Available operators'"
+        :loading="loadingOps"
+        @update="updateOperators"
+      />
+    </v-col>
   </v-row>
 </template>
 
@@ -60,6 +74,7 @@ import InfoCardSingle from '../components/cards/InfoCardSingle'
 import ChartCard from '../components/cards/ChartCard'
 import InfoCardExpandable from '../components/cards/InfoCardExpandable'
 import RealtimeChart from '../components/charts/RealtimeChart'
+import ListCard from '../components/cards/ListCard'
 import { mapState, mapGetters } from 'vuex'
 import themes from '@/styles/colors.js'
 
@@ -69,7 +84,8 @@ export default {
     InfoCardSingle,
     ChartCard,
     RealtimeChart,
-    InfoCardExpandable
+    InfoCardExpandable,
+    ListCard
   },
   data: () => ({
     signalLevelData: [],
@@ -78,13 +94,9 @@ export default {
     ber: null,
     diskSpace: {title: 'No data', icon: {name: 'icon-drive'}},
     cpuTemp: {title: 'No data', icon: {name: 'icon-thermometer',}},
+    operators: [],
+    loadingOps: false
   }),
-  mounted() {
-    setInterval(async () => {
-      let response = await this.$store.dispatch('getGeoLocation');
-      console.log(response);
-    }, 5000);
-  },
   computed: {
     ...mapState({
       signalLevel: state => state.modem.signalLevel,
@@ -124,14 +136,14 @@ export default {
     }
   },
   sockets: {
-    signal_quality (data) {
+    modem_info (data) {
       this.s_lvl = {
-        x: data.time,
-        y: data.s_lvl
+        x: data.timestamp,
+        y: data.sq.s_lvl
       }
       this.ber = {
-        x: data.time,
-        y: data.ber
+        x: data.timestamp,
+        y: data.sq.ber
       }
     },
   },
@@ -141,6 +153,17 @@ export default {
       let berDataLength = this.bitErrorRateData.length
       this.signalLevelData = this.signalLevelData.slice(slvlDataLength - 10, slvlDataLength);
       this.bitErrorRateData = this.bitErrorRateData.slice(berDataLength - 10, berDataLength);
+    },
+    async updateOperators () {
+      this.loadingOps = true;
+      try {
+        let response = await this.$store.dispatch('getAvailableOperators');
+        this.operators = response.data;
+      } catch (error) {
+        this.$error('Failed to get available operators list')
+        console.log(error);
+      }
+      this.loadingOps = false;
     }
   }
 }
