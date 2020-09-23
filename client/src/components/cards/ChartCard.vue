@@ -1,7 +1,7 @@
 <template>
-  <v-card class="pa-4 elevation-2">
+  <v-card class="px-4 py-5 elevation-2">
     <div class="title-text px-3">{{ title }}</div>
-    <Loader
+    <loader
       v-if="loading"
       :overlay="true"
     />

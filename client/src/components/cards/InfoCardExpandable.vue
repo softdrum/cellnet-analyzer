@@ -58,7 +58,9 @@ export default {
   },
   methods: {
     activateAccordion () {
-      this.isCollapsed = !this.isCollapsed
+      if (this.infoTitles.length > 5) {
+        this.isCollapsed = !this.isCollapsed
+      }
     },
     onResize () {
       this.desktop = window.innerWidth > 500 ? true : false
