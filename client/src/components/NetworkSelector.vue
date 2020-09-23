@@ -21,7 +21,7 @@
         <v-list-item
           v-for="(item, i) of items"
           :key="i"
-          @click="$emit('change-network-mode', item.title)"
+          @click="onChange(item.title)"
         >
           <v-list-item-title> {{item.title}} </v-list-item-title>
         </v-list-item>
@@ -30,17 +30,30 @@
   </div>
 </template>
 <script>
+import { mapState, mapActions } from 'vuex'
 export default {
   data: () => ({
     loading: false,
-    networkMode: 'LTE',
     items: [
       { title: 'LTE' },
       { title: '3G' },
       { title: 'GSM' },
       { title: 'AUTO' },
     ],
-  })
+  }),
+  computed: {
+    ...mapState({
+      networkMode: state => state.modem.networkMode,
+    }),
+  },
+  methods: {
+    ...mapActions(['changeNetworkMode']),
+    async onChange (mode) {
+      this.loading = true;
+      await this.changeNetworkMode(mode);
+      this.loading = false;
+    }
+  }
 }
 </script>
 <style scoped>

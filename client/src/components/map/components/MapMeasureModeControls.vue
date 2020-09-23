@@ -4,7 +4,7 @@
       <v-card  v-if="!value">
         <div class="pa-4 mb-4">  
           Settings
-          <NetworkSelector @change-network-mode="onNetworkSelectorClick"/>
+          <network-selector />
         </div>
       </v-card>
     </transition>
@@ -44,9 +44,6 @@ export default {
     start: false,
   }),
    methods: {
-    onNetworkSelectorClick (mode) {
-      this.$emit('change-network-mode', mode)
-    },
     onStopBtnClicked () {
       this.$emit('stop')
     },
@@ -70,7 +67,11 @@ export default {
     }
   },
   created () {
-    this.map.off('click', this.onClick)
+    this.map.off('click', this.onClick);
+    this.map.addSource('mapbox-terrain', {
+      type: 'vector',
+      url: 'mapbox://mapbox.mapbox-terrain-v2'
+    });
   },
   watch: {
     value (value) {

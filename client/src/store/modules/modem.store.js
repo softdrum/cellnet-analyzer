@@ -2,12 +2,17 @@ import socketService from '@/services/socketService'
 export default {
   state: {
     connected: false,
+    basestationInfo: null,
     networkMode: 'auto',
     signalLevel: 0,
     bitErrorRate: 0,
     measureModeState: 'stopped'
   },
   mutations: {
+    SOCKET_BASESTATION (state, value) {
+      state.networkMode = value.mode
+      state.basestationInfo = value
+    },
     SET_SIGNAL_LEVEL (state , value) {
       state.signalLevel = value
     },
@@ -27,10 +32,16 @@ export default {
   actions: {
     async changeNetworkMode ({ commit }, mode) {
       try {
-        let result = await socketService.emit(this._vm.$socket, 'changeMode', mode)
-        commit('SET_MODEM_NETWORK_MODE', result)
+        await socketService.emit(this._vm.$socket, 'changeMode', mode)
       } catch (error) {
-        console.log(error);
+        commit('SET_ERROR', error)
+      }
+    },
+    async getGeoLocation ({ commit }, mode) {
+      try {
+        let response = await socketService.emit(this._vm.$socket, 'getGeoLocation', mode)
+        return response
+      } catch (error) {
         commit('SET_ERROR', error)
       }
     },
@@ -43,6 +54,7 @@ export default {
       }
     },
     setMeasureModeState ({ commit }, value) {
+      commit('SET_BASESTATION', value)
       commit('SET_MEASURE_MODE_STATE', value)
     },
     socket_signalQuality ({ commit }, data) {
@@ -53,8 +65,7 @@ export default {
       commit('SET_MESSAGE', {message: error.data, color:'red'})
       commit('SET_MODEM_CONNECTION_STATUS', false)
     },
-    socket_modemConnected({commit}, error) {
-      commit('SET_MESSAGE', {message: error.data, color:'success'})
+    socket_modemConnected({commit}) {
       commit('SET_MODEM_CONNECTION_STATUS', true)
     }
   }

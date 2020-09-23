@@ -1,18 +1,24 @@
 const dbService = require('../services/database.service')
 
-
+/**
+ * Basic CRUD functions
+ */
 
 module.exports = {
   async createDocument (req, res) {
     try {
       const collectionName = req.params.collection
       const data = req.body
+      console.log('creating');
+      console.log(collectionName);
+      console.log(data);
       let result
       if (data.length) {
         result = await dbService.insertDocumentsInCollection(collectionName, data)
       } else {
         result = await dbService.createDocumentInCollection(collectionName, data)
       }
+      console.log(result);
       res.json(result)
     } catch (error) {
       res.status(400).json({status: 'error', payload: error.message})
@@ -20,7 +26,9 @@ module.exports = {
   },
   async readCollection (req, res) {
     try {
+      console.log(req.params)
       const collectionName = req.params.collection
+      console.log(collectionName);
       const query = req.query
       const data = await dbService.getDocumentsFromCollection(collectionName, query)
       res.json(data)

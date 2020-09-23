@@ -36,7 +36,7 @@ export default {
         from = '#e43a15'
         to = '#e65245'
       }
-      return `width: ${usedPercentage}%; background: ${from};background: -webkit-linear-gradient(to top,  ${from},  ${to});background: linear-gradient(to top,  ${from},  ${to});`
+      return `width: ${usedPercentage}%; background: ${from};background: -webkit-linear-gradient(to right,  ${from},  ${to});background: linear-gradient(to right,  ${from},  ${to});`
     },
   },
   watch: {

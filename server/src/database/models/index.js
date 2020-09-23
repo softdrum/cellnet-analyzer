@@ -1,6 +1,9 @@
 const fs = require('fs')
 const path = require('path')
 
+/**
+ * imports all mongo db models
+ */
 
 let models = {}
 fs.readdirSync(__dirname)

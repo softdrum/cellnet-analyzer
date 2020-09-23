@@ -1,6 +1,10 @@
 const mcache = require('memory-cache');
 
 module.exports = {
+  /**
+   * Cashes response data
+   * @param {*} duration 
+   */
   cache (duration) {
     return (req, res, next) => {
       let key = '__express__' + req.originalUrl || req.url

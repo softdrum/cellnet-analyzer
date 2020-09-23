@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     ...mapActions(['setMeasureModeState'])
-  },
+  }
 }
 </script>
 <style lang="scss" scoped>

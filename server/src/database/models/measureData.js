@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
-
+/**
+ * This model stores measure data as an Array
+ */
 const measureData = new mongoose.Schema({
   data: Array
 })

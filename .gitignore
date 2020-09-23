@@ -1,9 +1,10 @@
 .DS_Store
-client/node_modules/
+client/node_modules
+server/node_modules
+frontend/node_modules
+socket-server/node_modules
 client/dist/
-server/node_modules/
-server/*.sqlite
-server/public
+frontend/dist
 server/data
 server/src/csv
 # local env files

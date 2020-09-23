@@ -22,54 +22,43 @@ export default {
   },
   data: () => ({
     full: false,
-    oldValue: 0,
-    batteryLevel: ''
+    batteryLevel: '',
   }),
   watch: {
-    value (val) {
-      if (val > 95) {
-        this.batteryLevel = this.calculateBatteryLevel()
-        setTimeout(() => {
-          this.full = true
-        }, 300)
-      } else {
-        if (this.oldValue > 95) {
-          this.full = false
-          setTimeout(() => {
-            this.batteryLevel = this.calculateBatteryLevel()
-          }, 300)
-        } else {
-          this.batteryLevel = this.calculateBatteryLevel()
-        }
-      }
-      this.oldValue = val
+    value (newVal) {
+      this.batteryLevel = this.calculateBatteryLevel(newVal)
     }
   },
   methods: {
-    calculateBatteryLevel() {
+    calculateBatteryLevel(value) {
       let from, to, level
-      if (this.value <= 20) {
-        from = '#e43a15'
-        to = '#e65245'
-        level = this.value
-      }
-      else if (this.value <= 70) {
-        to = '#ffcc33'
-        from = '#ffb347'
-        level = this.value
+      if (value > 90) {
+        this.full = true
+        level = 100
+        from = '#45b649'
+        to = from
       } else {
-        from = '#dce35b'
-        to = '#45b649'
-        level = this.value
-        if (this.value >= 95) {
-          level = 100
+        this.full = false
+         if (value <= 20) {
+          from = '#e43a15'
+          to = '#e65245'
+          level = value
+        }
+        else if (value <= 70) {
+          to = '#ffcc33'
+          from = '#ffb347'
+          level = value
+        } else {
+          from = '#dce35b'
           to = '#45b649'
+          level = value
         }
       }
       return `height: ${level}%; background: ${from};background: -webkit-linear-gradient(to top,  ${from},  ${to});background: linear-gradient(to top,  ${from},  ${to});`
     }
   },
   mounted() {
+     this.batteryLevel = this.calculateBatteryLevel(this.value);
   }
 }
 </script>
@@ -122,7 +111,7 @@ export default {
     width: 100%;
     z-index: 1;
     bottom: 0;
-    transition: height 0.3s ease;
+    transition: height 0.1s ease;
   }
   
 </style>

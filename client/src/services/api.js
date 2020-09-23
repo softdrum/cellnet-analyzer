@@ -1,7 +1,8 @@
 import axios from 'axios'
-// axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+const apiURL = process.env.VUE_APP_DB_API_URL || `http://localhost:8081/api`;
+
 export default () => {
     return axios.create({
-        baseURL: 'http://192.168.0.103:8081/api/'
+        baseURL: apiURL
     }) 
 }

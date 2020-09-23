@@ -1,5 +1,10 @@
 const mongoose = require('mongoose')
 const {Schema} = require('mongoose')
+
+/**
+ * Basestation model stores data about basestations
+ * in geojson like style
+ */
 const basestationSchema = new mongoose.Schema({
   type: String,
   geometry: Schema.Types.Mixed,

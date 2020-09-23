@@ -16,6 +16,12 @@ export default new Vuex.Store({
     SET_THEME(state, value) {
       state.darkTheme = value
     },
+    SET_ERROR(state, message) {
+      state.snackMessage = {
+        color: 'red',
+        message
+      }
+    },
     SET_MESSAGE(state, message) {
       state.snackMessage = message
     },
