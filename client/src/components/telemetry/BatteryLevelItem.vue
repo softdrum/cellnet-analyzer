@@ -2,12 +2,12 @@
   <div class="d-flex mr-1 justify-center align-center battery">
     <div class="d-flex flex-column justify-center align-center">
         <div class="plus card-content inner-shadow">
-          <div class="topEnd" :class="{fullbattery: full}">
+          <div class="topEnd inner-shadow" :class="{fullbattery: full}">
           </div>
         </div>
       <div class="mr-0">
         <div class="back card-content inner-shadow">
-          <div class="top" :style="batteryLevel"></div>
+          <div class="top inner-shadow" :style="batteryLevel"></div>
         </div>
       </div>
     </div>
