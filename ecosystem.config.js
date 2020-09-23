@@ -42,7 +42,7 @@ module.exports = {
       script: 'index.js',
       cwd: '/home/pi/projects/vector-tile-server',
       env: {
-        "HOST": "192.168.0.100",
+        "HOST": "10.10.10.10",
         "PORT": 8083,
       },
       watch: '.'
