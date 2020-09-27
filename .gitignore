@@ -6,7 +6,7 @@ socket-server/node_modules
 client/dist/
 frontend/dist
 server/data
-server/src/csv
+server/src/geojson
 # local env files
 .env.local
 .env.*.local
