@@ -21,7 +21,7 @@ module.exports = {
         basestations = cachedData
       }
       else {
-        let basestationsJSON = await fs.readFile(`${appDir}/src/geojson/${city}.json`);
+        let basestationsJSON = await fs.readFile(`${appDir}/src/geojson/${city}_cells.json`);
         let basestationsArr = JSON.parse(basestationsJSON);
         if (basestationsArr) {
           basestations = basestationsArr
