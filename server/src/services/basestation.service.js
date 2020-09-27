@@ -11,10 +11,12 @@ module.exports = {
   async getBasestationsAround (coordinates, radius) {
       let basestations
       console.log('getting data');
+      let lat = coordinates.lat;
+      let lng = coordinates.lng;
       if ((lat >= 55.123 && lat <= 56.2) && (lng >= 36.8 && lng <= 38.43)) {
         city = 'moscow'
       } else {
-        'saint_petersburg'
+        city = 'saint_petersburg'
       }
       const cachedData = mcache.get('basestations')
       if (cachedData) {
