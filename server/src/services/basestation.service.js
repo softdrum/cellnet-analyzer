@@ -40,8 +40,8 @@ module.exports = {
         }
         mcache.put('basestations', basestations, cacheDuration * 1000)
       }
-      if (coordinates) return geoHelper.filterFeatures(basestations, coordinates, radius)
       prevCity = city;
+      if (coordinates) return geoHelper.filterFeatures(basestations, coordinates, radius)
       return basestations
   },
 }
