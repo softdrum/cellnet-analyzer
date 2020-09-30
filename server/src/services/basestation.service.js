@@ -6,7 +6,8 @@ const cacheDuration = 300
 const fs = require('fs').promises
 const path = require("path");
 const appDir = path.dirname(require.main.filename);
-
+let city = 'saint_petersburg'
+let prevCity = city
 module.exports = {
   async getBasestationsAround (coordinates, radius) {
       let basestations
@@ -18,9 +19,18 @@ module.exports = {
       } else {
         city = 'saint_petersburg'
       }
-      const cachedData = mcache.get('basestations')
-      if (cachedData) {
-        basestations = cachedData
+      if (city === prevCity) {
+        const cachedData = mcache.get('basestations')
+        if (cachedData) {
+          basestations = cachedData
+        } else {
+          let basestationsJSON = await fs.readFile(`${appDir}/src/geojson/${city}_cells.json`);
+          let basestationsArr = JSON.parse(basestationsJSON);
+          if (basestationsArr) {
+            basestations = basestationsArr
+          }
+          mcache.put('basestations', basestations, cacheDuration * 1000)
+        }
       }
       else {
         let basestationsJSON = await fs.readFile(`${appDir}/src/geojson/${city}_cells.json`);
@@ -31,6 +41,7 @@ module.exports = {
         mcache.put('basestations', basestations, cacheDuration * 1000)
       }
       if (coordinates) return geoHelper.filterFeatures(basestations, coordinates, radius)
+      prevCity = city;
       return basestations
   },
 }
