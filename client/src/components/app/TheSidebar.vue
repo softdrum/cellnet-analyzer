@@ -12,7 +12,7 @@
           @click.stop="sidebarHandler"
           style="cursor: pointer"
         >
-          <v-icon color="accent">mdi-arch</v-icon>
+          <v-icon color="accent">icon-bonch</v-icon>
         </v-list-item-avatar>
 
         <v-list-item-title>Mobile Tester</v-list-item-title>
@@ -21,7 +21,7 @@
           icon
           @click.stop="sidebarHandler"
         >
-          <v-icon>mdi-chevron-left</v-icon>
+          <v-icon>icon-chevron-left</v-icon>
         </v-btn>
       </v-list-item>
 

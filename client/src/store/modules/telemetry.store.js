@@ -48,7 +48,7 @@ export default {
       else return -1
     },
     freeDiskSpace: state => {
-      if (!state.diskSpace) return 0
+      if (!state.diskSpace) return -1
       return (state.diskSpace.free / 1000**3).toFixed(1)
     },
     diskSpaceInfo: state => {

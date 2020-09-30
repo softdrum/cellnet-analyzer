@@ -15,6 +15,7 @@
           :refName="chart.refName"
           :data="chart.data"
           :color="chart.color"
+          :scaleY="chart.scale"
         />
       </chart-card>
     </v-col>

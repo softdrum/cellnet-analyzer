@@ -26,13 +26,13 @@
           </v-btn>
           <div v-else>
             <v-btn icon small @click="setMeasureModeState('stopped')">
-              <v-icon small>icon-stop2</v-icon>
+              <v-icon small>icon-stop</v-icon>
             </v-btn>
             <v-btn icon small @click="setMeasureModeState('paused')" v-if="measureModeState === 'started'">
-              <v-icon small>icon-pause2</v-icon>
+              <v-icon small>icon-pause</v-icon>
             </v-btn>
             <v-btn icon small @click="setMeasureModeState('started')" v-else>
-              <v-icon small>icon-play3</v-icon>
+              <v-icon small>icon-play</v-icon>
             </v-btn>
           </div>
         </div>

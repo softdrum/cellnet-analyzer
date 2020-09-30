@@ -59,11 +59,13 @@ export default {
         'circle-color': [
           'step',
           ['get', 'point_count'],
-          '#51bbd6',
-          2,
-          '#f1f075',
-          750,
-          '#f28cb1'
+          '#82B1FF',
+          10,
+          '#2196F3',
+          100,
+          '#FFC107',
+          1000,
+          '#4CAF50'
           ],
           'circle-radius': [
           'step',

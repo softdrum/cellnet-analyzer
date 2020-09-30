@@ -29,7 +29,7 @@
             >
               <v-icon
                 :color="dir.color"
-                style="font-size: 70px"
+                style="font-size: 4.6rem"
               >
                 {{ dir.icon }}
               </v-icon>

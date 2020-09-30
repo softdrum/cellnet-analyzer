@@ -32,7 +32,7 @@ export default {
 <style>
   @import './styles/animation.css';
   @import './styles/scrollbar.scss';
-
+  @import '../node_modules/typeface-roboto/index.css';
   .v-card {
     border: none !important;
     border-radius: 5px !important;

@@ -35,12 +35,14 @@ export default {
         title: 'Signal level, dBm',
         refName: 'slvl',
         color: '#82B1FF',
+        scale: [-120, 0],
         data: []
       },
       {
         title: 'Bit Error Rate',
         refName: 'ber',
         color: '#82B1FF',
+        scale: [0, 100],
         data: []
       }
     ]

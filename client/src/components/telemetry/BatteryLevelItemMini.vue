@@ -22,6 +22,7 @@ export default {
       'batteryCapacity'
     ]),
     batteryWidth () {
+      if (this.batteryCapacity === -1) return '0%' 
       return this.batteryCapacity + '%'
     },
     batteryColor () {

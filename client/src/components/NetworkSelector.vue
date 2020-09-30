@@ -13,7 +13,7 @@
           :loading="loading"
           v-bind="attrs"
           v-on="on"
-          class="elevation-0 select-btn text--secondary"
+          class="elevation-0 select-btn text--secondary subtitle-1 font-weight-regular"
         >
           {{ networkMode }}
         </v-btn>

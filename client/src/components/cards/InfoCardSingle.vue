@@ -1,7 +1,7 @@
 <template>
   <v-card class="px-8 py-6">
       <div
-        v-if="info.title !== 'No data'"
+        v-if="info.value != -1"
         class="d-flex align-center justify-space-between"
         style="height: 100%"
       >

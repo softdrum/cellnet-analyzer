@@ -13,7 +13,7 @@
       @click="snackbar = false"
     >
       <v-icon>
-        icon-cross
+        icon-close
       </v-icon>
     </v-btn>
   </v-snackbar>

@@ -11,7 +11,7 @@
         class="base mr-3"
         to="/database"
       >
-        <v-icon left>mdi-arrow-left</v-icon>
+        <v-icon left>icon-arrow-left</v-icon>
         Back
       </v-btn>
       {{ files.length }} files are available
@@ -57,11 +57,9 @@
         >
           <v-card class="d-flex flex-column">
             <v-btn @click="deleteFile">
-              <v-icon small>mdi-delete</v-icon>
               Delete
             </v-btn>
             <v-btn @click="editFile">
-              <v-icon>mdi-pencil</v-icon>
               Rename
             </v-btn>
           </v-card>
@@ -110,12 +108,14 @@ export default {
         title: 'Signal level, dBm',
         refName: 'slvl',
         color: '#82B1FF',
+        scale: [-120, 0],
         data: []
       },
       {
         title: 'Bit Error Rate',
         refName: 'ber',
         color: '#82B1FF',
+        scale: [0, 100],
         data: []
       }
     ],
