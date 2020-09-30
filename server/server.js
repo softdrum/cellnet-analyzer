@@ -9,6 +9,6 @@ const mongoDB = require('./src/database')
  */
 server.listen(config.port, async () => {
   console.log(`Server started on port ${config.port}`);
-  // mongoDB.init()
+  mongoDB.init()
 })
   
